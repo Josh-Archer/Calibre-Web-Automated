@@ -81,7 +81,7 @@ done
 : "${DH_USER:=}"
 : "${DH_USER_FROM_ARG:=0}"
 : "${REPO_DIR:=}"
-: "${REPO_URL:=https://github.com/crocodilestick/calibre-web-automated.git}"
+: "${REPO_URL:=https://github.com/josh-archer/calibre-web-automated.git}"
 : "${build_type:=}"
 : "${version:=}"
 : "${testnum:=}"
@@ -194,14 +194,6 @@ fi
 
 # ---- Summary & confirmation ----
 NOW="$(date +"%Y-%m-%d %H:%M:%S")"
-
-if [ "${build_type}" = "dev" ]; then
-  image_preview="${DH_USER}/calibre-web-automated:dev-$testnum"
-  version_str="${version}-TEST-${testnum}"
-else
-  image_preview="${DH_USER}/calibre-web-automated:$version"
-  version_str="${version}"
-fi
 
 build_cmd="docker build --tag \"${image_preview}\" --build-arg \"BUILD_DATE=${NOW}\" --build-arg \"VERSION=${version_str}\" ."
 
