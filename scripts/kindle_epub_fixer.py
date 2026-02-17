@@ -735,8 +735,44 @@ class EPUBFixer:
                 
                 self.files[opf_filename] = opf_content
 
+                # Synchronize with metadata.db if possible
+                book_id, _ = self._extract_book_info_from_path(epub_path)
+                if book_id:
+                    self._update_language_in_metadata(book_id, language)
+
         except Exception as e:
             print_and_log(f'[cwa-kindle-epub-fixer] Skipping language validation - EPUB has non-standard structure: {e}', log=self.manually_triggered)
+
+    def _update_language_in_metadata(self, book_id: int, new_language: str):
+        """Update the language for a book in Calibre's metadata.db."""
+        try:
+            db_path = self._get_metadata_db_path()
+            if not db_path:
+                return
+
+            con = sqlite3.connect(db_path, timeout=30)
+            cur = con.cursor()
+
+            # 1. Ensure the new language exists in the languages table
+            cur.execute("INSERT OR IGNORE INTO languages (lang_code) VALUES (?);", (new_language,))
+            
+            # 2. Get the lang_code ID
+            res = cur.execute("SELECT id FROM languages WHERE lang_code = ?;", (new_language,)).fetchone()
+            if not res:
+                con.close()
+                return
+            lang_id = res[0]
+
+            # 3. Clean up existing links and insert the corrected one
+            # We replace existing links to ensure 'eee' or 'unknown' are removed
+            cur.execute("DELETE FROM books_languages_link WHERE book = ?;", (book_id,))
+            cur.execute("INSERT INTO books_languages_link (book, lang_code, item_order) VALUES (?, ?, 0);", (book_id, lang_id))
+
+            con.commit()
+            con.close()
+            print_and_log(f"[cwa-kindle-epub-fixer] Synchronized fixed language '{new_language}' to metadata.db for book {book_id}", log=self.manually_triggered)
+        except Exception as e:
+            print_and_log(f"[cwa-kindle-epub-fixer] Warning: Could not synchronize language to metadata.db: {e}", log=self.manually_triggered)
 
     def _detect_language_from_metadata(self, epub_path=None):
         """Attempt to detect language from Calibre's metadata.db"""
@@ -1256,6 +1292,8 @@ def main():
         if len(epubs_to_process) > 0:
             print_and_log(f"[cwa-kindle-epub-fixer] {len(epubs_to_process)} EPUBs found to process.")
             errored_files = {}
+            skipped_count = 0
+            fixed_count = 0
             for count, epub in enumerate(epubs_to_process):
                 exit_if_cancelled()
                 current_position = f"{count + 1}/{len(epubs_to_process)}"
@@ -1263,22 +1301,36 @@ def main():
                     # Skip if already fixed and force is not set
                     if not args.force and CWA_DB().is_epub_fixed(epub):
                         print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Skipping {epub} (already fixed). Use --force to override.")
+                        skipped_count += 1
                         continue
 
                     print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Processing {epub}...")
                     exit_if_cancelled()
                     EPUBFixer(manually_triggered=True, current_position=current_position).process(epub, epub, args.language)
+                    fixed_count += 1
                 except Exception as e:
                     print_and_log(f"[cwa-kindle-epub-fixer] {current_position} - The following error occurred when processing {epub}:\n{e}")
                     errored_files |= {epub:e}
+            
+            # Final Summary
+            print_and_log("\n" + "="*60)
+            print_and_log(" CWA EPUB FIXER RUN SUMMARY")
+            print_and_log("="*60)
+            print_and_log(f" Total EPUBs found:   {len(epubs_to_process)}")
+            print_and_log(f" Actually Processed:  {fixed_count}")
+            print_and_log(f" Skipped (already fixed): {skipped_count}")
+            print_and_log(f" Errored:             {len(errored_files)}")
+            print_and_log("="*60 + "\n")
+
             if errored_files:
-                print_and_log(f"\n[cwa-kindle-epub-fixer] {len(epubs_to_process) - len(errored_files)}/{len(epubs_to_process)} EPUBs in library successfully processed")
-                print_and_log(f"\n[cwa-kindle-epub-fixer] The following {len(errored_files)} encountered errors:\n")
+                print_and_log(f"[cwa-kindle-epub-fixer] The following {len(errored_files)} encountered errors:\n")
                 for file in errored_files:
                     print_and_log(f"   - {file}")
                     print_and_log(f"      - Error Encountered: {errored_files[file]}")
+            elif fixed_count > 0 or skipped_count > 0:
+                print_and_log(f"[cwa-kindle-epub-fixer] Library processing complete. {fixed_count} fixed, {skipped_count} skipped.")
             else:
-                print_and_log(f"\n[cwa-kindle-epub-fixer] All {len(epubs_to_process)} EPUBs in Library successfully processed! Exiting now...")
+                print_and_log("[cwa-kindle-epub-fixer] No EPUBs were actually processed or skipped.")
         else:
             print_and_log("[cwa-kindle-epub-fixer] No EPUBs found to process. Exiting now...")
         logger.info(f"\nCWA Kindle EPUB Fixer Service - Run Ended: {datetime.now()}\n")
