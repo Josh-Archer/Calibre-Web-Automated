@@ -149,20 +149,17 @@ def ensure_app_db_tables(conn):
 
 def ensure_checksum_table(conn):
     """
-    Ensure the book_format_checksums table exists with the correct schema.
-
-    This function is called during database initialization to create the checksum
-    table if it doesn't exist. If the table exists with a different schema, a
-    warning is logged and the table is left as-is to allow for proper migration.
-    If the schema matches but the foreign key is missing ON DELETE CASCADE,
-    the table is rebuilt in-place to add CASCADE and orphan rows are dropped.
-
     Args:
         conn: SQLAlchemy connection object or sqlite3 connection
+        force_recheck: If True, skip the existence check and attempt to validate/migrate schema
     """
     try:
-        # Detect connection type - SQLAlchemy uses text() wrapper, sqlite3 uses raw strings
-        is_sqlalchemy = hasattr(conn, 'execute') and hasattr(conn.execute.__self__, 'dialect')
+        # Detect connection type
+        is_sqlalchemy = hasattr(conn, 'execute') and (
+            hasattr(conn, 'dialect') or (
+                hasattr(conn, 'execute') and hasattr(conn.execute, '__self__') and hasattr(conn.execute.__self__, 'dialect')
+            )
+        )
 
         def execute_sql(sql):
             """Execute SQL with retries on database locks."""
@@ -171,8 +168,8 @@ def ensure_checksum_table(conn):
         # Check if 'calibre' database is attached (Calibre-Web architecture)
         is_calibre_attached = False
         try:
+            # PRAGMA database_list returns: (seq, name, file)
             db_list = execute_sql("PRAGMA database_list").fetchall()
-            # Row format: (seq, name, file)
             is_calibre_attached = any(str(row[1]) == 'calibre' for row in db_list)
         except Exception:
             is_calibre_attached = False
@@ -181,13 +178,15 @@ def ensure_checksum_table(conn):
         table_name = f"{table_prefix}book_format_checksums"
         master_table = f"{table_prefix}sqlite_master"
 
-        # Check if table exists
-        result = execute_sql(f"SELECT name FROM {master_table} WHERE type='table' AND name='book_format_checksums'")
-        table_exists = result.fetchone() is not None
+        # Check if table exists (case-insensitive check for robustness)
+        result = execute_sql(f"SELECT name FROM {master_table} WHERE type='table' AND name LIKE 'book_format_checksums'")
+        table_exists_row = result.fetchone()
+        table_exists = table_exists_row is not None
+        actual_name = table_exists_row[0] if table_exists else "book_format_checksums"
 
         if table_exists:
             # Check if table has the expected schema
-            pragma_result = execute_sql(f"PRAGMA {table_prefix}table_info(book_format_checksums)")
+            pragma_result = execute_sql(f"PRAGMA {table_prefix}table_info({actual_name})")
             columns = [row[1] for row in pragma_result.fetchall()]
 
             expected_columns = {'id', 'book', 'format', 'checksum', 'version', 'created'}

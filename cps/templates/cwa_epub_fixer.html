@@ -3,73 +3,93 @@
 {% block body %}
 <div class="discover" style="">
   <h2 style="color: white !important;">{{title}}</h2>
-    <div>
-      <div style="display: flex; justify-content: space-between; align-items: center;"></div>
-        <div style="display: flex;
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: center;"></div>
+    <div style="display: flex;
                     justify-content: space-between;
                     gap: 20px;
                     flex-wrap: wrap;">
-          <div style="width: fit-content;
+      <div style="width: fit-content;
                       display: flex;
                       flex-direction: column;
                       justify-content: space-between;">
-            <p style="font-size: 11px; max-width: max(50vw, 600px); width: -webkit-fill-available;">
-              Upon loading this page, if you have previously started a run of the CWA EPUB Fixer service either here in the Web UI or through the CLI, you will see the output of the most recent previous run below. 
-              Once you start a run, you are free to leave the page and return whenever you want to check on the run's progress. If you wish to cancel a run that is still in progress, simply press the Cancel button above 
-              and the run will terminate ASAP. This tool is based on the <a href="https://kindle-epub-fix.netlify.app/" class="external" target="_blank">Amazon Kindle EPUB Fix</a> tool by <a href="https://github.com/innocenat/kindle-epub-fix" class="external" target="_blank">innocenat</a>
-            </p>
-            <div style="margin-bottom: 10px; max-width: max(50vw, 600px); width: -webkit-fill-available;">
-              <label for="epub_fixer_book_search" style="color: #bbbbbb; display: block; margin-bottom: 4px;">{{ _('Run on a single book') }}</label>
-              <div style="display: flex; gap: 6px;">
-                <input type="text" id="epub_fixer_book_search" placeholder="{{ _('Search by title/author') }}" style="flex: 1; padding: 6px 8px; border: 1px solid transparent; border-radius: 4px; background-color: #151e2680; color: #fff;">
-                <button class="btn btn-default" type="button" onclick="searchEpubFixerBooks()" style="padding: 6px 10px;">{{ _('Search') }}</button>
-              </div>
-              <div id="epub_fixer_search_results" style="margin-top: 6px; max-height: 160px; overflow-y: auto; background: #0f151b; border-radius: 4px; display: none;"></div>
-              <input type="hidden" id="epub_fixer_selected_book_id" value="">
-              <button class="btn btn-default" type="button" onclick="runEpubFixerForSelectedBook()" style="margin-top: 6px; width: 100%;">{{ _('Run on selected book') }}</button>
-            </div>
+        <p style="font-size: 11px; max-width: max(50vw, 600px); width: -webkit-fill-available;">
+          Upon loading this page, if you have previously started a run of the CWA EPUB Fixer service either here in the
+          Web UI or through the CLI, you will see the output of the most recent previous run below.
+          Once you start a run, you are free to leave the page and return whenever you want to check on the run's
+          progress. If you wish to cancel a run that is still in progress, simply press the Cancel button above
+          and the run will terminate ASAP. This tool is based on the <a href="https://kindle-epub-fix.netlify.app/"
+            class="external" target="_blank">Amazon Kindle EPUB Fix</a> tool by <a
+            href="https://github.com/innocenat/kindle-epub-fix" class="external" target="_blank">innocenat</a>
+        </p>
+        <div style="margin-bottom: 10px; max-width: max(50vw, 600px); width: -webkit-fill-available;">
+          <label for="epub_fixer_book_search" style="color: #bbbbbb; display: block; margin-bottom: 4px;">{{ _('Run on a
+            single book') }}</label>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="epub_fixer_book_search" placeholder="{{ _('Search by title/author') }}"
+              style="flex: 1; padding: 6px 8px; border: 1px solid transparent; border-radius: 4px; background-color: #151e2680; color: #fff;">
+            <button class="btn btn-default" type="button" onclick="searchEpubFixerBooks()" style="padding: 6px 10px;">{{
+              _('Search') }}</button>
           </div>
-          <div style="display: flex; flex-direction: column; align-content: flex-start; justify-content: flex-end;">
-            <div>
-              <a class="btn btn-default" href="{{ url_for('epub_fixer.show_epub_fixer_logs') }}" style="background-color: #334148; vertical-align: top; float: right; margin-left: 10px;">{{_('Run Archive')}}</a>
-              <a class="btn btn-default" href="{{ url_for('epub_fixer.download_current_log', log_filename='epub-fixer.log') }}" style="background-color: #334148; vertical-align: top; float: right;">{{_('Download Log')}}</a>
-            </div>
-            <h3>Bulk Proccessing</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; margin-bottom: 1rem;">
-              <a class="btn btn-default" href="{{ url_for('epub_fixer.start_epub_fixer') }}" style="width: 100px;">{{_('Start')}}</a>
-              <a class="btn btn-default" href="{{ url_for('epub_fixer.start_epub_fixer', force='1') }}" style="width: 100px; background-color: #5c3b3b;">{{_('Force All')}}</a>
-              <a class="btn btn-default" href="{{ url_for('epub_fixer.cancel_epub_fixer') }}" style="width: 100px;">{{_('Cancel')}}</a>
-            </div>
-            {% if current_user.role_admin() %}
-            <div class="btn-group" role="group" aria-label="schedule" style="display: flex; justify-content: flex-start; flex-wrap: wrap; flex-direction: row; gap: 1rem; margin-bottom: 8px;">
-              <button class="btn btn-default" onclick="scheduleEpubFixer(5)">{{ _('Schedule 5m') }}</button>
-              <button class="btn btn-default" onclick="scheduleEpubFixer(15)">{{ _('Schedule 15m') }}</button>
-            </div>
-            {% endif %}
+          <div id="epub_fixer_search_results"
+            style="margin-top: 6px; max-height: 160px; overflow-y: auto; background: #0f151b; border-radius: 4px; display: none;">
           </div>
+          <input type="hidden" id="epub_fixer_selected_book_id" value="">
+          <button class="btn btn-default" type="button" onclick="runEpubFixerForSelectedBook()"
+            style="margin-top: 6px; width: 100%;">{{ _('Run on selected book') }}</button>
         </div>
-      <div class="progress-container" style="margin: 20px 0;">
-        <div id="progress-bar" style="width: 0%; height: 25px; background-color: green; text-align: center; color: white;"></div>
       </div>
-      <div class="row">
-        <div class="logging_window" style="padding-left: 15px;
+      <div style="display: flex; flex-direction: column; align-content: flex-start; justify-content: flex-end;">
+        <div>
+          <a class="btn btn-default" href="{{ url_for('epub_fixer.show_epub_fixer_logs') }}"
+            style="background-color: #334148; vertical-align: top; float: right; margin-left: 10px;">{{_('Run
+            Archive')}}</a>
+          <a class="btn btn-default"
+            href="{{ url_for('epub_fixer.download_current_log', log_filename='epub-fixer.log') }}"
+            style="background-color: #334148; vertical-align: top; float: right;">{{_('Download Log')}}</a>
+        </div>
+        <h3>Bulk Processing</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; margin-bottom: 2rem;">
+          <a class="btn btn-default" href="{{ url_for('epub_fixer.start_epub_fixer') }}"
+            style="width: 100px; background-color: #337ab7; border-color: #2e6da4;">{{_('Start')}}</a>
+          <a class="btn btn-default" href="{{ url_for('epub_fixer.start_epub_fixer', force='1') }}"
+            style="width: 100px; background-color: #d9534f; border-color: #d43f3a;">{{_('Force All')}}</a>
+          <a class="btn btn-default" href="{{ url_for('epub_fixer.cancel_epub_fixer') }}"
+            style="width: 100px;">{{_('Cancel')}}</a>
+        </div>
+        {% if current_user.role_admin() %}
+        <div class="btn-group" role="group" aria-label="schedule"
+          style="display: flex; justify-content: flex-start; flex-wrap: wrap; flex-direction: row; gap: 1rem; margin-bottom: 8px;">
+          <button class="btn btn-default" onclick="scheduleEpubFixer(5)">{{ _('Schedule 5m') }}</button>
+          <button class="btn btn-default" onclick="scheduleEpubFixer(15)">{{ _('Schedule 15m') }}</button>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="progress-container" style="margin: 20px 0;">
+      <div id="progress-bar"
+        style="width: 0%; height: 25px; background-color: green; text-align: center; color: white;"></div>
+    </div>
+    <div class="row">
+      <div class="logging_window" style="padding-left: 15px;
                                           padding-right: 15px;
                                           background: #0000003d;
                                           padding-top: 11px;
                                           padding-bottom: 1px;
                                           max-height: calc(100vh - 40rem);
                                           overflow-y: scroll;">
-          <p id="innerStatus" style="color: whitesmoke; font-size: small;">No current or previous run to display. Press the Start button above to initiate a run.</p>
-        </div>
+        <p id="innerStatus" style="color: whitesmoke; font-size: small;">No current or previous run to display. Press
+          the Start button above to initiate a run.</p>
       </div>
     </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block js %}
 <script>
   var timeout;
-  
+
   // Notification helper - creates a dismissible Bootstrap alert
   function showNotification(message, type) {
     type = type || 'info'; // info, success, warning, danger
@@ -81,7 +101,7 @@
         'bottom': '70px',
         'right': '20px',
         'z-index': '9999',
-        'width':'600px',
+        'width': '600px',
         'text-align': 'center',
         'max-height': 'fit-content',
         'overflow-y': 'auto',
@@ -94,11 +114,11 @@
         </button>
         ${message}
       `);
-    
+
     $('body').append(alertDiv);
-    
+
     // Auto-dismiss after 4 seconds
-    setTimeout(function() {
+    setTimeout(function () {
       alertDiv.alert('close');
     }, 4000);
   }
@@ -109,20 +129,20 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ delay_minutes: delayMinutes, username: '{{ current_user.name }}' })
     })
-    .then(r => {
-      if (!r.ok) {
-        return r.json().then(err => {
-          throw new Error(err.error || 'Failed to schedule');
-        });
-      }
-      return r.json();
-    })
-    .then(data => {
-      showNotification('{{ _("EPUB Fixer scheduled successfully") }}', 'success');
-    })
-    .catch(err => {
-      showNotification('{{ _("Error scheduling EPUB Fixer") }}: ' + err.message, 'danger');
-    });
+      .then(r => {
+        if (!r.ok) {
+          return r.json().then(err => {
+            throw new Error(err.error || 'Failed to schedule');
+          });
+        }
+        return r.json();
+      })
+      .then(data => {
+        showNotification('{{ _("EPUB Fixer scheduled successfully") }}', 'success');
+      })
+      .catch(err => {
+        showNotification('{{ _("Error scheduling EPUB Fixer") }}: ' + err.message, 'danger');
+      });
   }
 
   function renderEpubFixerSearchResults(rows) {
@@ -194,25 +214,25 @@
         throw new Error(data.error || 'Failed to start');
       }
       showNotification('{{ _("EPUB Fixer started for selected book") }}', 'success');
-        setTimeout(function() {
-          window.location.reload();
-        }, 500);
+      setTimeout(function () {
+        window.location.reload();
+      }, 500);
     } catch (e) {
       showNotification('{{ _("Error starting EPUB Fixer") }}: ' + e.message, 'danger');
     }
   }
-  
+
   async function getStatus() {
-  
+
     let get;
-    
+
     try {
       const res = await fetch("{{ url_for('epub_fixer.get_status')}}");
       get = await res.json();
     } catch (e) {
       console.error("Error: ", e);
     }
-    
+
     // Check if get.status is a non-empty string
     if (get.status && get.status.trim() !== "") {
       document.getElementById("innerStatus").innerHTML = get.status.replace(/\n/g, "<br>");
@@ -228,7 +248,7 @@
       }
     }
 
-    if (get.status.includes("CWA EPUB FIXER PROCESS TERMINATED BY USER AT")){
+    if (get.status.includes("CWA EPUB FIXER PROCESS TERMINATED BY USER AT")) {
       // Add finished log
       document.getElementById("innerStatus").innerHTML;
       // Check if run was cancelled, make progress bar red if so
@@ -238,8 +258,8 @@
       clearTimeout(timeout);
       return false;
     }
-    
-    if (get.status.includes("CWA Kindle EPUB Fixer Service - Run Ended:")){
+
+    if (get.status.includes("CWA Kindle EPUB Fixer Service - Run Ended:")) {
       // Add finished log
       document.getElementById("innerStatus").innerHTML;
       // Set the progress bar to 100%
@@ -251,10 +271,10 @@
       clearTimeout(timeout);
       return false;
     }
-  
+
     timeout = setTimeout(getStatus, 1000);
   }
-  
+
   getStatus();
-  </script>
+</script>
 {% endblock %}

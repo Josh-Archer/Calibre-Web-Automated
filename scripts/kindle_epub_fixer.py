@@ -406,6 +406,10 @@ class EPUBFixer:
             con = sqlite3.connect(metadb_path, timeout=30)
 
             try:
+                # Ensure the checksum table exists in metadata.db
+                from cps.progress_syncing.models import ensure_calibre_db_tables
+                ensure_calibre_db_tables(con)
+
                 success = store_checksum(
                     book_id=book_id,
                     book_format=file_format,
@@ -635,8 +639,12 @@ class EPUBFixer:
             # Check if language tag exists and has content
             if not language_tags or not language_tags[0].firstChild:
                 # No language tag - try to detect from Calibre metadata, else use default
-                language = self._detect_language_from_metadata(epub_path) or default_language
-                self.fixed_problems.append(f"No language tag found. Setting to: {language}")
+                detected = self._detect_language_from_metadata(epub_path)
+                language = detected or default_language
+                if detected:
+                    self.fixed_problems.append(f"No language tag found. Detected from metadata: {language}")
+                else:
+                    self.fixed_problems.append(f"No language tag found. Setting default: {language}")
             else:
                 # Language tag exists - extract and validate
                 original_language = language_tags[0].firstChild.nodeValue.strip()
@@ -646,10 +654,12 @@ class EPUBFixer:
 
                 if simplified_lang in known_bad_language_tags:
                     detected = self._detect_language_from_metadata(epub_path)
-                    language = detected or default_language
-                    if detected and detected != default_language or not in known_bad_language_tags:
+                    # Only use detected language if it's not ALSO a known bad tag
+                    if detected and detected.lower() not in known_bad_language_tags:
+                        language = detected
                         self.fixed_problems.append(f"Known bad language tag '{original_language}'. Detected from metadata: {language}")
                     else:
+                        language = default_language
                         self.fixed_problems.append(f"Known bad language tag '{original_language}'. Falling back to default: {language}")
                 # First check if the language looks like a valid code format (case-insensitive)
                 # Valid: en, de, zh, en-US, en-us, de-DE, zh-TW, eng, deu, zho
@@ -759,6 +769,13 @@ class EPUBFixer:
             
             if result and result[0]:
                 lang = result[0].lower().split('-')[0]  # Normalize
+                
+                # Check against known bad tags
+                known_bad = {'eee', 'unknown', 'und', 'zxx'}
+                if lang in known_bad:
+                    print_and_log(f"[cwa-kindle-epub-fixer] Metadata contains invalid language '{lang}'; ignoring.", log=self.manually_triggered)
+                    return None
+                    
                 print_and_log(f"[cwa-kindle-epub-fixer] Detected language '{lang}' from Calibre metadata", log=self.manually_triggered)
                 return lang
                 

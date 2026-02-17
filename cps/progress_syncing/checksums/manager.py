@@ -125,6 +125,17 @@ def store_checksum(
                 db_connection.close()
 
     except Exception as e:
+        # Robustness: handles cases where the table might be missing (e.g., first run or standalone script)
+        if "no such table" in str(e).lower() and db_connection is not None:
+            try:
+                from ..models import ensure_calibre_db_tables
+                log.info(f"book_format_checksums table missing; attempting auto-initialization for book {book_id}")
+                ensure_calibre_db_tables(db_connection)
+                # Retry once after initialization
+                return store_checksum(book_id, book_format, checksum, version, db_connection)
+            except Exception as init_err:
+                log.error(f"Auto-initialization of checksum table failed: {init_err}")
+
         log.error(f"Failed to store checksum for book {book_id}: {e}")
         return False
 
