@@ -652,19 +652,9 @@ class EPUBFixer:
                     else:
                         # Looks like a valid language tag but is not in Amazon's supported list.
                         # Preserve the metadata instead of replacing it with a default.
-                        language = simplified_lang
-                        if original_language.lower() != language and '-' in original_language:
-                            self.fixed_problems.append(
-                                f"Preserved language {original_language} as {language} (not in Amazon list; normalized base code)"
-                            )
-                        elif original_language != language:
-                            self.fixed_problems.append(
-                                f"Preserved language {original_language} as {language} (not in Amazon list; case standardization)"
-                            )
-                        else:
-                            self.fixed_problems.append(
-                                f"Preserved language '{original_language}' (not in Amazon list)"
-                            )
+                        language = default_language
+                        self.fixed_problems.append(f"Invalid language tag '{original_language}'. Using default: {language}")
+
                 else:
                     # Doesn't look like a language tag at all (e.g., "Unknown", "garbage")
                     detected = self._detect_language_from_metadata(epub_path)
