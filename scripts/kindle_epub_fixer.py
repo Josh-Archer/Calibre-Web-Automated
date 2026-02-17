@@ -162,6 +162,23 @@ class EPUBFixer:
 
         self.aggressive_mode = bool(self.cwa_settings.get('kindle_epub_fixer_aggressive', 0))
         self.encoding_confidence_threshold = 0.7 if not self.aggressive_mode else 0.4
+        self.server_default_language = self._get_default_locale_from_db()
+
+    def _get_default_locale_from_db(self) -> str:
+        """Fetch the server-wide default interface language from app.db"""
+        try:
+            # We use /config/app.db which is standard for Calibre-Web
+            con = sqlite3.connect("/config/app.db", timeout=30)
+            cur = con.cursor()
+            # config_default_locale is the interface language set in Basic Configuration
+            res = cur.execute('SELECT config_default_locale FROM settings;').fetchone()
+            con.close()
+            if res and res[0]:
+                return res[0]
+        except Exception:
+            # Fallback to English if db is inaccessible
+            pass
+        return 'en'
 
     def _normalize_encoding_name(self, encoding: Optional[str]) -> Optional[str]:
         if not encoding:
@@ -624,12 +641,16 @@ class EPUBFixer:
                 # Language tag exists - extract and validate
                 original_language = language_tags[0].firstChild.nodeValue.strip()
                 
-                known_bad_language_tags = {'eee', 'Unknown'}
+                known_bad_language_tags = {'eee', 'unknown'}
                 simplified_lang = original_language.split('-')[0].lower()
 
                 if simplified_lang in known_bad_language_tags:
-                    language = default_language
-                    self.fixed_problems.append(f"Known bad language tag '{original_language}'. Detected from metadata: {language}. Using {default_language}")
+                    detected = self._detect_language_from_metadata(epub_path)
+                    language = detected or default_language
+                    if detected and detected != default_language or not in known_bad_language_tags:
+                        self.fixed_problems.append(f"Known bad language tag '{original_language}'. Detected from metadata: {language}")
+                    else:
+                        self.fixed_problems.append(f"Known bad language tag '{original_language}'. Falling back to default: {language}")
                 # First check if the language looks like a valid code format (case-insensitive)
                 # Valid: en, de, zh, en-US, en-us, de-DE, zh-TW, eng, deu, zho
                 # Invalid: Unknown, undefined, garbage, 12345
@@ -1067,8 +1088,12 @@ class EPUBFixer:
                                     fixed_problems)
 
 
-    def process(self, input_path, output_path=None, default_language='en'):
+    def process(self, input_path, output_path=None, default_language=None):
         """Process a single EPUB file"""
+        if not default_language:
+            # Use server default if none provided
+            # This allows overriding via CLI but defaults to server setting
+            default_language = self.server_default_language
         if not output_path:
             output_path = input_path
 
@@ -1154,7 +1179,7 @@ def main():
     )
     parser.add_argument('--input_file', '-i', required=False, help='Input EPUB file path')
     parser.add_argument('--output', '-o', required=False, help='Output EPUB file path')
-    parser.add_argument('--language', '-l', required=False, default='en', help='Default language to use if not specified or invalid')
+    parser.add_argument('--language', '-l', required=False, default=None, help='Default language to use if not specified or invalid')
     parser.add_argument('--suffix', '-s',required=False,  default=False, action='store_true', help='Adds suffix "fixed" to output filename if given')
     parser.add_argument('--all', '-a', required=False, default=False, action='store_true', help='Will attempt to fix any issues in every EPUB in th user\'s library')
     parser.add_argument('--force', '-f', required=False, default=False, action='store_true', help='Override skip logic and process files even if already fixed')
