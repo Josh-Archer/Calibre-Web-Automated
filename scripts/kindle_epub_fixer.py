@@ -624,13 +624,22 @@ class EPUBFixer:
                 # Language tag exists - extract and validate
                 original_language = language_tags[0].firstChild.nodeValue.strip()
                 
+                known_bad_language_tags = {'eee', 'unknown'}
+                simplified_lang = original_language.split('-')[0].lower()
+
+                if simplified_lang in known_bad_language_tags:
+                    detected = self._detect_language_from_metadata(epub_path)
+                    if detected:
+                        language = detected
+                        self.fixed_problems.append(f"Invalid language tag '{original_language}'. Detected from metadata: {language}")
+                    else:
+                        language = default_language
+                        self.fixed_problems.append(f"Invalid language tag '{original_language}'. Using default: {language}")
                 # First check if the language looks like a valid code format (case-insensitive)
                 # Valid: en, de, zh, en-US, en-us, de-DE, zh-TW, eng, deu, zho
                 # Invalid: Unknown, undefined, garbage, 12345
-                if LANGUAGE_TAG_PATTERN.match(original_language):
+                elif LANGUAGE_TAG_PATTERN.match(original_language):
                     # Looks like a proper language tag - extract and normalize base language code
-                    simplified_lang = original_language.split('-')[0].lower()
-                    
                     if simplified_lang in allowed_languages:
                         # Valid language code - use it
                         language = simplified_lang
