@@ -54,8 +54,8 @@ jobs:
           ref: ${{ env.BUILD_REF }}
 
       # --- 1. Calculate Variables ---
-      - name: Set repo name to lowercase
-        run: echo "LOWER_REPO_NAME=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      - name: Set image repository to lowercase
+        run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Determine Docker Image Tag
         id: tag
@@ -94,7 +94,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           outputs: |
-            type=image,name=ghcr.io/${{ github.repository_owner }}/${{ env.LOWER_REPO_NAME }},push-by-digest=true,name-canonical=true,push=true
+            type=image,name=ghcr.io/${{ env.IMAGE_REPOSITORY }},push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VERSION=DEV_BUILD-${{ env.IMAGE_TAG }}-${{ vars.CURRENT_DEV_BUILD_NUM }}
@@ -142,8 +142,8 @@ jobs:
           ref: ${{ env.BUILD_REF }}
 
       # --- 1. Calculate Variables ---
-      - name: Set repo name to lowercase
-        run: echo "LOWER_REPO_NAME=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      - name: Set image repository to lowercase
+        run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Determine Docker Image Tag
         id: tag
@@ -183,8 +183,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           outputs: |
-            type=image,name=${{ secrets.DOCKERHUB_USERNAME }}/calibre-web-automated,push-by-digest=true,name-canonical=true,push=true
-            type=image,name=ghcr.io/${{ github.repository_owner }}/${{ env.LOWER_REPO_NAME }},push-by-digest=true,name-canonical=true,push=true
+            type=image,name=ghcr.io/${{ env.IMAGE_REPOSITORY }},push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VERSION=DEV_BUILD-${{ env.IMAGE_TAG }}-${{ vars.CURRENT_DEV_BUILD_NUM }}
@@ -248,8 +247,8 @@ jobs:
         with:
           ref: ${{ env.BUILD_REF }}
 
-      - name: Set repo name to lowercase
-        run: echo "LOWER_REPO_NAME=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      - name: Set image repository to lowercase
+        run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Determine Docker Image Tags
         id: tag
@@ -291,9 +290,9 @@ jobs:
         run: |
           # Push to GHCR (Both Tags)
           docker buildx imagetools create \
-            -t ghcr.io/${{ github.repository_owner }}/${{ env.LOWER_REPO_NAME }}:${{ env.FLOAT_TAG }} \
-            -t ghcr.io/${{ github.repository_owner }}/${{ env.LOWER_REPO_NAME }}:${{ env.UNIQUE_TAG }} \
-            $(printf 'ghcr.io/${{ github.repository_owner }}/${{ env.LOWER_REPO_NAME }}@sha256:%s ' *)
+            -t ghcr.io/${{ env.IMAGE_REPOSITORY }}:${{ env.FLOAT_TAG }} \
+            -t ghcr.io/${{ env.IMAGE_REPOSITORY }}:${{ env.UNIQUE_TAG }} \
+            $(printf 'ghcr.io/${{ env.IMAGE_REPOSITORY }}@sha256:%s ' *)
 
       # --- 4. Increment Build Number (Last Step) ---
       - name: Increment dev build number
