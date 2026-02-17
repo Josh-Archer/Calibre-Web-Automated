@@ -343,7 +343,7 @@ And that's you off to the races! 🥳 HOWEVER to avoid potential problems and en
 ---
 services:
   calibre-web-automated:
-    image: crocodilestick/calibre-web-automated:latest
+    image: ghcr.io/josh-archer/calibre-web-automated:latest
     container_name: calibre-web-automated
     environment:
       # Only change these if you know what you're doing
