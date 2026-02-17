@@ -570,41 +570,39 @@ class EPUBFixer:
                     self.files[filename] = content.replace(src, target)
                     self.fixed_problems.append(f"Replaced link target {src} with {target} in file {filename}.")
 
-    def fix_book_language(self, default_language='en', epub_path=None):
-        """Fix language field - preserves valid tags, only fixes truly invalid ones"""
-        # From https://kdp.amazon.com/en_US/help/topic/G200673300
-        # NOTE: Amazon's Send-to-Kindle only reads the FIRST 2 CHARACTERS of language tags.
-        # This means zh-TW and zh-CN both become 'zh' (we cannot distinguish them).
-        # We normalize region codes (de-DE → de) to match Amazon's behavior.
-        allowed_languages = [
-            # ISO 639-1 (2-character codes - what Amazon actually uses)
-            'aa', 'ab', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'as', 'av', 'ay', 'az', 'ba', 'be', 'bg', 'bi', 'bm',
-            'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ch', 'co', 'cr', 'cs', 'cu', 'cv', 'cy', 'da', 'de', 'dv', 'dz',
-            'ee', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fa', 'ff', 'fi', 'fj', 'fo', 'fr', 'fy', 'ga', 'gd', 'gl',
-            'gn', 'gu', 'gv', 'ha', 'he', 'hi', 'ho', 'hr', 'ht', 'hu', 'hy', 'hz', 'ia', 'id', 'ie', 'ig', 'ii',
-            'ik', 'in', 'io', 'is', 'it', 'iu', 'iw', 'ja', 'ji', 'jv', 'ka', 'kg', 'ki', 'kj', 'kk', 'kl', 'km',
-            'kn', 'ko', 'kr',
-            'ks', 'ku', 'kv', 'kw', 'ky', 'la', 'lb', 'lg', 'li', 'ln', 'lo', 'lt', 'lu', 'lv', 'mg', 'mh', 'mi',
-            'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'na', 'nb', 'nd', 'ne', 'ng', 'nl', 'nn', 'no', 'nr', 'nv',
-            'ny', 'oc', 'oj', 'om', 'or', 'os', 'pa', 'pi', 'pl', 'ps', 'pt', 'qu', 'rm', 'rn', 'ro', 'ru', 'rw',
-            'sa', 'sc', 'sd', 'se', 'sg', 'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'ss', 'st', 'su', 'sv',
-            'sw', 'ta', 'te', 'tg', 'th', 'ti', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk',
-            'ur', 'uz', 've', 'vi', 'vo', 'wa', 'wo', 'xh', 'yi', 'yo', 'za', 'zh', 'zu',
-            # ISO 639-2 (3-character codes - also supported)
-            'aar', 'abk', 'ave', 'afr', 'aka', 'amh', 'arg', 'ara', 'asm', 'ava', 'aym', 'aze', 'bak', 'bel', 'bul',
-            'bih', 'bis', 'bam', 'ben', 'tib', 'bre', 'bos', 'cat', 'che', 'cha', 'cos', 'cre', 'cze', 'chu', 'chv',
-            'wel', 'dan', 'ger', 'div', 'dzo', 'ewe', 'gre', 'eng', 'epo', 'spa', 'est', 'baq', 'per', 'ful', 'fin',
-            'fij', 'fao', 'fre', 'fry', 'gle', 'gla', 'glg', 'grn', 'guj', 'glv', 'hau', 'heb', 'hin', 'hmo', 'hrv',
-            'hat', 'hun', 'arm', 'her', 'ina', 'ind', 'ile', 'ibo', 'iii', 'ipk', 'ido', 'ice', 'ita', 'iku', 'jpn',
-            'jav', 'geo', 'kon', 'kik', 'kua', 'kaz', 'kal', 'khm',            'kor', 'kau', 'kas', 'kur', 'kom', 'cor',
-            'kir', 'lat', 'ltz', 'lug', 'lim', 'lin', 'lao', 'lit', 'lub', 'lav', 'mlg', 'mah', 'mao', 'mac', 'mal',
-            'mon', 'mar', 'may', 'mlt', 'bur', 'nau', 'nob', 'nde', 'nep', 'ndo', 'dut', 'nno', 'nor', 'nbl', 'nav',
-            'nya', 'oci', 'oji', 'orm', 'ori', 'oss', 'pan', 'pli', 'pol', 'pus', 'por', 'que', 'roh', 'run', 'rum',
-            'rus', 'kin', 'san', 'srd', 'snd', 'sme', 'sag', 'sin', 'slo', 'slv', 'smo', 'sna', 'som', 'alb', 'srp',
-            'ssw', 'sot', 'sun', 'swe', 'swa', 'tam', 'tel', 'tgk', 'tha', 'tir', 'tuk', 'tgl', 'tsn', 'ton', 'tur',
-            'tso', 'tat', 'twi', 'tah', 'uig', 'ukr', 'urd', 'uzb', 'ven', 'vie', 'vol', 'wln', 'wol', 'xho', 'yid',
-            'yor', 'zha', 'chi', 'zul',
-        ]
+    # From https://kdp.amazon.com/en_US/help/topic/G200673300
+    # NOTE: Amazon's Send-to-Kindle only reads the FIRST 2 CHARACTERS of language tags.
+    # This means zh-TW and zh-CN both become 'zh' (we cannot distinguish them).
+    # We normalize region codes (de-DE → de) to match Amazon's behavior.
+    allowed_languages = [
+        # ISO 639-1 (2-character codes - what Amazon actually uses)
+        'aa', 'ab', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'as', 'av', 'ay', 'az', 'ba', 'be', 'bg', 'bi', 'bm',
+        'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ch', 'co', 'cr', 'cs', 'cu', 'cv', 'cy', 'da', 'de', 'dv', 'dz',
+        'ee', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fa', 'ff', 'fi', 'fj', 'fo', 'fr', 'fy', 'ga', 'gd', 'gl',
+        'gn', 'gu', 'gv', 'ha', 'he', 'hi', 'ho', 'hr', 'ht', 'hu', 'hy', 'hz', 'ia', 'id', 'ie', 'ig', 'ii',
+        'ik', 'in', 'io', 'is', 'it', 'iu', 'iw', 'ja', 'ji', 'jv', 'ka', 'kg', 'ki', 'kj', 'kk', 'kl', 'km',
+        'kn', 'ko', 'kr',
+        'ks', 'ku', 'kv', 'kw', 'ky', 'la', 'lb', 'lg', 'li', 'ln', 'lo', 'lt', 'lu', 'lv', 'mg', 'mh', 'mi',
+        'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'na', 'nb', 'nd', 'ne', 'ng', 'nl', 'nn', 'no', 'nr', 'nv',
+        'ny', 'oc', 'oj', 'om', 'or', 'os', 'pa', 'pi', 'pl', 'ps', 'pt', 'qu', 'rm', 'rn', 'ro', 'ru', 'rw',
+        'sa', 'sc', 'sd', 'se', 'sg', 'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'ss', 'st', 'su', 'sv',
+        'sw', 'ta', 'te', 'tg', 'th', 'ti', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk',
+        'ur', 'uz', 've', 'vi', 'vo', 'wa', 'wo', 'xh', 'yi', 'yo', 'za', 'zh', 'zu',
+        # ISO 639-2 (3-character codes - also supported)
+        'aar', 'abk', 'ave', 'afr', 'aka', 'amh', 'arg', 'ara', 'asm', 'ava', 'aym', 'aze', 'bak', 'bel', 'bul',
+        'bih', 'bis', 'bam', 'ben', 'tib', 'bre', 'bos', 'cat', 'che', 'cha', 'cos', 'cre', 'cze', 'chu', 'chv',
+        'wel', 'dan', 'ger', 'div', 'dzo', 'ewe', 'gre', 'eng', 'epo', 'spa', 'est', 'baq', 'per', 'ful', 'fin',
+        'fij', 'fao', 'fre', 'fry', 'gle', 'gla', 'glg', 'grn', 'guj', 'glv', 'hau', 'heb', 'hin', 'hmo', 'hrv',
+        'hat', 'hun', 'arm', 'her', 'ina', 'ind', 'ile', 'ibo', 'iii', 'ipk', 'ido', 'ice', 'ita', 'iku', 'jpn',
+        'jav', 'geo', 'kon', 'kik', 'kua', 'kaz', 'kal', 'khm',            'kor', 'kau', 'kas', 'kur', 'kom', 'cor',
+        'kir', 'lat', 'ltz', 'lug', 'lim', 'lin', 'lao', 'lit', 'lub', 'lav', 'mlg', 'mah', 'mao', 'mac', 'mal',
+        'mon', 'mar', 'may', 'mlt', 'bur', 'nau', 'nob', 'nde', 'nep', 'ndo', 'dut', 'nno', 'nor', 'nbl', 'nav',
+        'nya', 'oci', 'oji', 'orm', 'ori', 'oss', 'pan', 'pli', 'pol', 'pus', 'por', 'que', 'roh', 'run', 'rum',
+        'rus', 'kin', 'san', 'srd', 'snd', 'sme', 'sag', 'sin', 'slo', 'slv', 'smo', 'sna', 'som', 'alb', 'srp',
+        'ssw', 'sot', 'sun', 'swe', 'swa', 'tam', 'tel', 'tgk', 'tha', 'tir', 'tuk', 'tgl', 'tsn', 'ton', 'tur',
+        'tso', 'tat', 'twi', 'tah', 'uig', 'ukr', 'urd', 'uzb', 'ven', 'vie', 'vol', 'wln', 'wol', 'xho', 'yid',
+        'yor', 'zha', 'chi', 'zul',
+    ]
 
     def _normalize_to_iso639_2(self, language_code: str) -> str:
         """Normalize a language code to ISO 639-2 (3-letter) format."""
@@ -631,27 +629,29 @@ class EPUBFixer:
             
         return clean_code
 
+    def fix_book_language(self, default_language='en', epub_path=None):
+        """Standardize language tag in OPF file to match Kindle expectations.
+        
+        Amazon specifically looks for ISO 639-1 or 639-2 codes.
+        If the tag is missing or invalid (like 'eee'), it handles it.
+        """
         try:
             # Find OPF file
-            if 'META-INF/container.xml' not in self.files:
-                print('Cannot find META-INF/container.xml')
-                return
-
-            container_xml = minidom.parseString(self.files['META-INF/container.xml'])
-            opf_filename = None
-            for rootfile in container_xml.getElementsByTagName('rootfile'):
-                if rootfile.getAttribute('media-type') == 'application/oebps-package+xml':
-                    opf_filename = rootfile.getAttribute('full-path')
-                    break
-
-            # Read OPF file
-            if not opf_filename or opf_filename not in self.files:
-                print('Cannot find OPF file!')
-                return
+            if 'content.opf' in self.files:
+                opf_filename = 'content.opf'
+            elif 'OEBPS/content.opf' in self.files:
+                opf_filename = 'OEBPS/content.opf'
+            else:
+                # Find any .opf file
+                opf_files = [f for f in self.files.keys() if f.endswith('.opf')]
+                if not opf_files:
+                    return
+                opf_filename = opf_files[0]
 
             opf_content = self._get_text_content(opf_filename)
             if opf_content is None:
                 return
+            
             if not self.aggressive_mode and 'xmlns:dc' not in opf_content:
                 print_and_log(f"[cwa-kindle-epub-fixer] Skipping language update for {opf_filename} (missing xmlns:dc)", log=self.manually_triggered)
                 return
@@ -691,7 +691,7 @@ class EPUBFixer:
                 # Invalid: Unknown, undefined, garbage, 12345
                 elif LANGUAGE_TAG_PATTERN.match(original_language):
                     # Looks like a proper language tag - extract and normalize base language code
-                    if simplified_lang in allowed_languages:
+                    if simplified_lang in self.allowed_languages:
                         # Valid language code - use it but normalize to 3-letter
                         language = self._normalize_to_iso639_2(simplified_lang)
                         
@@ -734,11 +734,12 @@ class EPUBFixer:
                     text_node = opf.createTextNode(language)
                     language_tags[0].appendChild(text_node)
 
-            # Always synchronize with metadata.db and companion OPF to ensure everything matches
             book_id, _ = self._extract_book_info_from_path(epub_path)
             if book_id:
                 self._update_language_in_metadata(book_id, language)
                 self._fix_companion_opf(epub_path, language)
+            else:
+                print_and_log(f"[cwa-kindle-epub-fixer] Warning: Could not extract book ID from path {epub_path} for database sync", log=self.manually_triggered)
 
             # Only write EPUB if we actually changed something in it
             # This check is now for the EPUB file content itself, not the external sync
@@ -1204,11 +1205,11 @@ class EPUBFixer:
         else:
             fixed_problems = "No fixes required"
 
-        self.db.epub_fixer_add_entry(Path(input_path).stem,
+        self.db.epub_fixer_add_entry(str(Path(input_path).stem),
                                     bool(self.manually_triggered),
                                     len(self.fixed_problems),
                                     str(self.cwa_settings['auto_backup_epub_fixes']),
-                                    output_path,
+                                    str(output_path),
                                     fixed_problems)
 
 
