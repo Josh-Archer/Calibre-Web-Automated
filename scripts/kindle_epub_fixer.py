@@ -596,7 +596,7 @@ class EPUBFixer:
             'wel', 'dan', 'ger', 'div', 'dzo', 'ewe', 'gre', 'eng', 'epo', 'spa', 'est', 'baq', 'per', 'ful', 'fin',
             'fij', 'fao', 'fre', 'fry', 'gle', 'gla', 'glg', 'grn', 'guj', 'glv', 'hau', 'heb', 'hin', 'hmo', 'hrv',
             'hat', 'hun', 'arm', 'her', 'ina', 'ind', 'ile', 'ibo', 'iii', 'ipk', 'ido', 'ice', 'ita', 'iku', 'jpn',
-            'jav', 'geo', 'kon', 'kik', 'kua', 'kaz', 'kal', 'khm', 'kan', 'kor', 'kau', 'kas', 'kur', 'kom', 'cor',
+            'jav', 'geo', 'kon', 'kik', 'kua', 'kaz', 'kal', 'khm',            'kor', 'kau', 'kas', 'kur', 'kom', 'cor',
             'kir', 'lat', 'ltz', 'lug', 'lim', 'lin', 'lao', 'lit', 'lub', 'lav', 'mlg', 'mah', 'mao', 'mac', 'mal',
             'mon', 'mar', 'may', 'mlt', 'bur', 'nau', 'nob', 'nde', 'nep', 'ndo', 'dut', 'nno', 'nor', 'nbl', 'nav',
             'nya', 'oci', 'oji', 'orm', 'ori', 'oss', 'pan', 'pli', 'pol', 'pus', 'por', 'que', 'roh', 'run', 'rum',
@@ -605,6 +605,31 @@ class EPUBFixer:
             'tso', 'tat', 'twi', 'tah', 'uig', 'ukr', 'urd', 'uzb', 'ven', 'vie', 'vol', 'wln', 'wol', 'xho', 'yid',
             'yor', 'zha', 'chi', 'zul',
         ]
+
+    def _normalize_to_iso639_2(self, language_code: str) -> str:
+        """Normalize a language code to ISO 639-2 (3-letter) format."""
+        if not language_code:
+            return 'eng'
+        
+        # Strip and take base
+        clean_code = language_code.strip().lower()
+        if '-' in clean_code:
+            clean_code = clean_code.split('-')[0]
+            
+        try:
+            import pycountry
+            if len(clean_code) == 2:
+                lang_obj = pycountry.languages.get(alpha_2=clean_code)
+                if lang_obj:
+                    return lang_obj.alpha_3
+            elif len(clean_code) == 3:
+                lang_obj = pycountry.languages.get(alpha_3=clean_code)
+                if lang_obj:
+                    return lang_obj.alpha_3
+        except Exception:
+            pass
+            
+        return clean_code
 
         try:
             # Find OPF file
@@ -640,7 +665,7 @@ class EPUBFixer:
             if not language_tags or not language_tags[0].firstChild:
                 # No language tag - try to detect from Calibre metadata, else use default
                 detected = self._detect_language_from_metadata(epub_path)
-                language = detected or default_language
+                language = self._normalize_to_iso639_2(detected or default_language)
                 if detected:
                     self.fixed_problems.append(f"No language tag found. Detected from metadata: {language}")
                 else:
@@ -656,10 +681,10 @@ class EPUBFixer:
                     detected = self._detect_language_from_metadata(epub_path)
                     # Only use detected language if it's not ALSO a known bad tag
                     if detected and detected.lower() not in known_bad_language_tags:
-                        language = detected
+                        language = self._normalize_to_iso639_2(detected)
                         self.fixed_problems.append(f"Known bad language tag '{original_language}'. Detected from metadata: {language}")
                     else:
-                        language = default_language
+                        language = self._normalize_to_iso639_2(default_language)
                         self.fixed_problems.append(f"Known bad language tag '{original_language}'. Falling back to default: {language}")
                 # First check if the language looks like a valid code format (case-insensitive)
                 # Valid: en, de, zh, en-US, en-us, de-DE, zh-TW, eng, deu, zho
@@ -667,28 +692,28 @@ class EPUBFixer:
                 elif LANGUAGE_TAG_PATTERN.match(original_language):
                     # Looks like a proper language tag - extract and normalize base language code
                     if simplified_lang in allowed_languages:
-                        # Valid language code - use it
-                        language = simplified_lang
+                        # Valid language code - use it but normalize to 3-letter
+                        language = self._normalize_to_iso639_2(simplified_lang)
                         
                         # If original had region code or different case, note the normalization
                         if original_language.lower() != language and '-' in original_language:
-                            self.fixed_problems.append(f"Normalized language from {original_language} to {language} (Amazon only reads base code)")
+                            self.fixed_problems.append(f"Normalized language from {original_language} to {language} (Kindle prefers ISO 639-2)")
                         elif original_language != language:
-                            self.fixed_problems.append(f"Normalized language from {original_language} to {language} (case standardization)")
+                            self.fixed_problems.append(f"Normalized language from {original_language} to {language} (case/length standardization)")
                     else:
                         # Looks like a valid language tag but is not in Amazon's supported list.
                         # Preserve the metadata instead of replacing it with a default.
-                        language = default_language
+                        language = self._normalize_to_iso639_2(default_language) # Use default if not in allowed list
                         self.fixed_problems.append(f"Invalid language tag '{original_language}'. Using default: {language}")
 
                 else:
                     # Doesn't look like a language tag at all (e.g., "Unknown", "garbage")
                     detected = self._detect_language_from_metadata(epub_path)
-                    if detected:
-                        language = detected
+                    if detected and detected.lower() not in known_bad_language_tags:
+                        language = self._normalize_to_iso639_2(detected)
                         self.fixed_problems.append(f"Invalid language tag '{original_language}'. Detected from metadata: {language}")
                     else:
-                        language = default_language
+                        language = self._normalize_to_iso639_2(default_language)
                         self.fixed_problems.append(f"Invalid language tag '{original_language}'. Using default: {language}")
 
             # Update or create language tag
@@ -709,7 +734,14 @@ class EPUBFixer:
                     text_node = opf.createTextNode(language)
                     language_tags[0].appendChild(text_node)
 
-            # Only write if we actually changed something
+            # Always synchronize with metadata.db and companion OPF to ensure everything matches
+            book_id, _ = self._extract_book_info_from_path(epub_path)
+            if book_id:
+                self._update_language_in_metadata(book_id, language)
+                self._fix_companion_opf(epub_path, language)
+
+            # Only write EPUB if we actually changed something in it
+            # This check is now for the EPUB file content itself, not the external sync
             if original_language != language or not original_language:
                 # Use regex replacement to preserve XML formatting instead of minidom.toxml()
                 # This prevents attribute reordering which can break Amazon's parser
@@ -735,12 +767,6 @@ class EPUBFixer:
                 
                 self.files[opf_filename] = opf_content
 
-                # Synchronize with metadata.db if possible
-                book_id, _ = self._extract_book_info_from_path(epub_path)
-                if book_id:
-                    self._update_language_in_metadata(book_id, language)
-                    self._fix_companion_opf(epub_path, language)
-
         except Exception as e:
             print_and_log(f'[cwa-kindle-epub-fixer] Skipping language validation - EPUB has non-standard structure: {e}', log=self.manually_triggered)
 
@@ -752,21 +778,7 @@ class EPUBFixer:
                 return
 
             # Calibre prefers 3-letter ISO 639-2 codes in the database (e.g., 'eng')
-            # attempt to convert 2-letter to 3-letter using pycountry
-            db_language = new_language
-            try:
-                import pycountry
-                if len(new_language) == 2:
-                    lang_obj = pycountry.languages.get(alpha_2=new_language.lower())
-                    if lang_obj:
-                        db_language = lang_obj.alpha_3
-                elif len(new_language) == 3:
-                    lang_obj = pycountry.languages.get(alpha_3=new_language.lower())
-                    if not lang_obj:
-                        # Fallback if 3-letter code isn't recognized
-                        db_language = new_language
-            except Exception:
-                pass
+            db_language = self._normalize_to_iso639_2(new_language)
 
             con = sqlite3.connect(db_path, timeout=30)
             cur = con.cursor()
