@@ -672,6 +672,15 @@ class CWA_DB:
         self.cur.execute("INSERT INTO epub_fixes(timestamp, filename, manually_triggered, num_of_fixes_applied, original_backed_up, file_path, fixes_applied) VALUES (?, ?, ?, ?, ?, ?, ?);", (timestamp, filename, manually_triggered, num_of_fixes_applied, original_backed_up, file_path, fixes_applied))
         self.con.commit()
 
+    def is_epub_fixed(self, file_path: str) -> bool:
+        """Checks if the given file_path exists in the epub_fixes table."""
+        try:
+            result = self.cur.execute("SELECT 1 FROM epub_fixes WHERE file_path = ? LIMIT 1;", (file_path,)).fetchone()
+            return result is not None
+        except Exception as e:
+            print(f"[cwa-db] ERROR checking if EPUB is fixed: {e}")
+            return False
+
     def get_stat_totals(self) -> dict[str,int]:
         totals = {"cwa_enforcement":0,
                 "cwa_conversions":0,

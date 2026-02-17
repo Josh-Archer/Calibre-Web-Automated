@@ -37,6 +37,7 @@
             <h3>Bulk Proccessing</h3>
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; margin-bottom: 1rem;">
               <a class="btn btn-default" href="{{ url_for('epub_fixer.start_epub_fixer') }}" style="width: 100px;">{{_('Start')}}</a>
+              <a class="btn btn-default" href="{{ url_for('epub_fixer.start_epub_fixer', force='1') }}" style="width: 100px; background-color: #5c3b3b;">{{_('Force All')}}</a>
               <a class="btn btn-default" href="{{ url_for('epub_fixer.cancel_epub_fixer') }}" style="width: 100px;">{{_('Cancel')}}</a>
             </div>
             {% if current_user.role_admin() %}

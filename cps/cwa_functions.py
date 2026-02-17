@@ -1904,11 +1904,17 @@ def get_status():
 ##                                                                            ##
 ##————————————————————————————————————————————————————————————————————————————##
 
-def epub_fixer_start(queue, input_file: str | None = None):
+def epub_fixer_start(queue, input_file: str | None = None, force: bool = False):
+    cmd = ['python3', '/app/calibre-web-automated/scripts/kindle_epub_fixer.py']
     if input_file:
-        ef_process = subprocess.Popen(['python3', '/app/calibre-web-automated/scripts/kindle_epub_fixer.py', '--input_file', input_file])
+        cmd.extend(['--input_file', input_file])
     else:
-        ef_process = subprocess.Popen(['python3', '/app/calibre-web-automated/scripts/kindle_epub_fixer.py', '--all'])
+        cmd.append('--all')
+    
+    if force:
+        cmd.append('--force')
+        
+    ef_process = subprocess.Popen(cmd)
     queue.put(ef_process)
 
 def is_epub_fixer_finished() -> bool:
@@ -2005,6 +2011,7 @@ def download_current_log(log_filename):
 
 @epub_fixer.route('/cwa-epub-fixer-start', methods=["GET"])
 def start_epub_fixer():
+    force = request.args.get('force', '0') == '1'
     # Wipe conversion log from previous runs
     open('/config/epub-fixer.log', 'w').close()
     # Remove any left over kill file
@@ -2015,7 +2022,7 @@ def start_epub_fixer():
     # Queue to share the subprocess reference
     process_queue = queue.Queue()
     # Create and start the subprocess thread
-    ef_thread = Thread(target=epub_fixer_start, args=(process_queue,))
+    ef_thread = Thread(target=epub_fixer_start, args=(process_queue, None, force))
     ef_thread.start()
     # Create and start the kill thread
     ef_kill_thread = Thread(target=kill_epub_fixer, args=(process_queue,))

@@ -624,17 +624,12 @@ class EPUBFixer:
                 # Language tag exists - extract and validate
                 original_language = language_tags[0].firstChild.nodeValue.strip()
                 
-                known_bad_language_tags = {'eee', 'unknown'}
+                known_bad_language_tags = {'eee', 'Unknown'}
                 simplified_lang = original_language.split('-')[0].lower()
 
                 if simplified_lang in known_bad_language_tags:
-                    detected = self._detect_language_from_metadata(epub_path)
-                    if detected:
-                        language = detected
-                        self.fixed_problems.append(f"Invalid language tag '{original_language}'. Detected from metadata: {language}")
-                    else:
-                        language = default_language
-                        self.fixed_problems.append(f"Invalid language tag '{original_language}'. Using default: {language}")
+                    language = default_language
+                    self.fixed_problems.append(f"Known bad language tag '{original_language}'. Detected from metadata: {language}. Using {default_language}")
                 # First check if the language looks like a valid code format (case-insensitive)
                 # Valid: en, de, zh, en-US, en-us, de-DE, zh-TW, eng, deu, zho
                 # Invalid: Unknown, undefined, garbage, 12345
@@ -1162,6 +1157,7 @@ def main():
     parser.add_argument('--language', '-l', required=False, default='en', help='Default language to use if not specified or invalid')
     parser.add_argument('--suffix', '-s',required=False,  default=False, action='store_true', help='Adds suffix "fixed" to output filename if given')
     parser.add_argument('--all', '-a', required=False, default=False, action='store_true', help='Will attempt to fix any issues in every EPUB in th user\'s library')
+    parser.add_argument('--force', '-f', required=False, default=False, action='store_true', help='Override skip logic and process files even if already fixed')
 
     args = parser.parse_args()
     # logger.info(f"CWA Kindle EPUB Fixer Service - Run Started: {datetime.now()}\n")
@@ -1222,6 +1218,11 @@ def main():
                 exit_if_cancelled()
                 current_position = f"{count + 1}/{len(epubs_to_process)}"
                 try:
+                    # Skip if already fixed and force is not set
+                    if not args.force and CWA_DB().is_epub_fixed(epub):
+                        print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Skipping {epub} (already fixed). Use --force to override.")
+                        continue
+
                     print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Processing {epub}...")
                     exit_if_cancelled()
                     EPUBFixer(manually_triggered=True, current_position=current_position).process(epub, epub, args.language)
