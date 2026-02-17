@@ -649,10 +649,10 @@ class EPUBFixer:
                 # Language tag exists - extract and validate
                 original_language = language_tags[0].firstChild.nodeValue.strip()
                 
-                known_bad_language_tags = {'eee', 'unknown'}
+                known_bad_language_tags = {'eee', 'unknown', 'und', 'zxx', 'nan', 'null', 'undefined'}
                 simplified_lang = original_language.split('-')[0].lower()
 
-                if simplified_lang in known_bad_language_tags:
+                if simplified_lang in known_bad_language_tags or not simplified_lang:
                     detected = self._detect_language_from_metadata(epub_path)
                     # Only use detected language if it's not ALSO a known bad tag
                     if detected and detected.lower() not in known_bad_language_tags:
@@ -739,6 +739,7 @@ class EPUBFixer:
                 book_id, _ = self._extract_book_info_from_path(epub_path)
                 if book_id:
                     self._update_language_in_metadata(book_id, language)
+                    self._fix_companion_opf(epub_path, language)
 
         except Exception as e:
             print_and_log(f'[cwa-kindle-epub-fixer] Skipping language validation - EPUB has non-standard structure: {e}', log=self.manually_triggered)
@@ -750,29 +751,87 @@ class EPUBFixer:
             if not db_path:
                 return
 
+            # Calibre prefers 3-letter ISO 639-2 codes in the database (e.g., 'eng')
+            # attempt to convert 2-letter to 3-letter using pycountry
+            db_language = new_language
+            try:
+                import pycountry
+                if len(new_language) == 2:
+                    lang_obj = pycountry.languages.get(alpha_2=new_language.lower())
+                    if lang_obj:
+                        db_language = lang_obj.alpha_3
+                elif len(new_language) == 3:
+                    lang_obj = pycountry.languages.get(alpha_3=new_language.lower())
+                    if not lang_obj:
+                        # Fallback if 3-letter code isn't recognized
+                        db_language = new_language
+            except Exception:
+                pass
+
             con = sqlite3.connect(db_path, timeout=30)
             cur = con.cursor()
 
             # 1. Ensure the new language exists in the languages table
-            cur.execute("INSERT OR IGNORE INTO languages (lang_code) VALUES (?);", (new_language,))
+            cur.execute("INSERT OR IGNORE INTO languages (lang_code) VALUES (?);", (db_language,))
             
             # 2. Get the lang_code ID
-            res = cur.execute("SELECT id FROM languages WHERE lang_code = ?;", (new_language,)).fetchone()
+            res = cur.execute("SELECT id FROM languages WHERE lang_code = ?;", (db_language,)).fetchone()
             if not res:
                 con.close()
                 return
             lang_id = res[0]
 
             # 3. Clean up existing links and insert the corrected one
-            # We replace existing links to ensure 'eee' or 'unknown' are removed
             cur.execute("DELETE FROM books_languages_link WHERE book = ?;", (book_id,))
             cur.execute("INSERT INTO books_languages_link (book, lang_code, item_order) VALUES (?, ?, 0);", (book_id, lang_id))
 
             con.commit()
             con.close()
-            print_and_log(f"[cwa-kindle-epub-fixer] Synchronized fixed language '{new_language}' to metadata.db for book {book_id}", log=self.manually_triggered)
+            print_and_log(f"[cwa-kindle-epub-fixer] Synchronized fixed language '{db_language}' to metadata.db for book {book_id}", log=self.manually_triggered)
         except Exception as e:
             print_and_log(f"[cwa-kindle-epub-fixer] Warning: Could not synchronize language to metadata.db: {e}", log=self.manually_triggered)
+
+    def _fix_companion_opf(self, epub_path, language):
+        """Fix the companion metadata.opf file if it exists in the same directory."""
+        try:
+            epub_path = Path(epub_path)
+            opf_path = epub_path.parent / "metadata.opf"
+            
+            if not opf_path.exists():
+                return
+
+            print_and_log(f"[cwa-kindle-epub-fixer] Fixing companion metadata.opf: {opf_path}", log=self.manually_triggered)
+            
+            with open(opf_path, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+
+            # Use regex to find and replace the language tag in metadata.opf
+            # Typical format: <dc:language>eee</dc:language>
+            new_tag = f"<dc:language>{language}</dc:language>"
+            
+            # Pattern to match <dc:language>...</dc:language>
+            lang_pattern = re.compile(r'<dc:language>.*?</dc:language>', re.IGNORECASE | re.DOTALL)
+            
+            if lang_pattern.search(content):
+                content = lang_pattern.sub(new_tag, content)
+            else:
+                # If no language tag found, try to insert it into <metadata>
+                metadata_pattern = re.compile(r'(<metadata[^>]*>)', re.IGNORECASE)
+                if metadata_pattern.search(content):
+                    content = metadata_pattern.sub(r'\1\n    ' + new_tag, content)
+
+            with open(opf_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            
+            # Change ownership if needed (matching the EPUB file)
+            try:
+                stat = epub_path.stat()
+                os.chown(opf_path, stat.st_uid, stat.st_gid)
+            except Exception:
+                pass
+                
+        except Exception as e:
+            print_and_log(f"[cwa-kindle-epub-fixer] Warning: Could not fix companion OPF: {e}", log=self.manually_triggered)
 
     def _detect_language_from_metadata(self, epub_path=None):
         """Attempt to detect language from Calibre's metadata.db"""
