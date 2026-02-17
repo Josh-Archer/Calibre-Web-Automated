@@ -88,7 +88,7 @@ jobs:
   # --------------------------------------------------------------------------------
   build-arm:
     # Use your self-hosted runner labels here
-    runs-on: [self-hosted, linux, ARM64]
+    runs-on: home-gh-runner-calibre-web-automation
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

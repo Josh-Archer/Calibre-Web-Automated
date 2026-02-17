@@ -126,7 +126,7 @@ jobs:
   # --------------------------------------------------------------------------------
   build-arm:
     # Use your self-hosted runner labels here
-    runs-on: [self-hosted, linux, ARM64]
+    runs-on: home-gh-runner-calibre-web-automation
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Set build ref
