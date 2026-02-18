@@ -1214,7 +1214,7 @@ class EPUBFixer:
 
 
     def process(self, input_path, output_path=None, default_language=None):
-        """Process a single EPUB file"""
+        """Process a book file (EPUB for deep fix, others for metadata sync)"""
         if not default_language:
             # Use server default if none provided
             # This allows overriding via CLI but defaults to server setting
@@ -1224,45 +1224,62 @@ class EPUBFixer:
 
         # Extract book_id and format from path for checksum management
         book_id, book_format = self._extract_book_info_from_path(input_path)
+        is_epub = input_path.lower().endswith('.epub')
 
-        # Back Up Original File
-        print_and_log("[cwa-kindle-epub-fixer] Backing up original file...", log=self.manually_triggered)
-        self.backup_original_file(input_path)
+        if is_epub:
+            # Back Up Original File
+            print_and_log("[cwa-kindle-epub-fixer] Backing up original file...", log=self.manually_triggered)
+            self.backup_original_file(input_path)
 
-        # Load EPUB
-        print_and_log("[cwa-kindle-epub-fixer] Loading provided EPUB...", log=self.manually_triggered)
-        self.read_epub(input_path)
+            # Load EPUB
+            print_and_log("[cwa-kindle-epub-fixer] Loading provided EPUB...", log=self.manually_triggered)
+            self.read_epub(input_path)
 
-        if self.decode_warnings:
-            for warning in self.decode_warnings:
-                print_and_log(f"[cwa-kindle-epub-fixer] Warning: {warning}", log=self.manually_triggered)
+            if self.decode_warnings:
+                for warning in self.decode_warnings:
+                    print_and_log(f"[cwa-kindle-epub-fixer] Warning: {warning}", log=self.manually_triggered)
 
-        # Run fixing procedures
-        print_and_log("[cwa-kindle-epub-fixer] Checking linking to body ID to prevent unresolved hyperlinks...", log=self.manually_triggered)
-        self.fix_body_id_link()
-        print_and_log("[cwa-kindle-epub-fixer] Checking META-INF/container.xml integrity...", log=self.manually_triggered)
-        self.fix_container_xml()
-        print_and_log("[cwa-kindle-epub-fixer] Checking UTF-8 encoding declaration...", log=self.manually_triggered)
-        self.fix_encoding()
-        print_and_log("[cwa-kindle-epub-fixer] Checking language field tag is valid...", log=self.manually_triggered)
-        self.fix_book_language(default_language, input_path)
-        print_and_log("[cwa-kindle-epub-fixer] Checking for stray images...", log=self.manually_triggered)
-        self.fix_stray_img()
+            # Run fixing procedures
+            print_and_log("[cwa-kindle-epub-fixer] Checking linking to body ID to prevent unresolved hyperlinks...", log=self.manually_triggered)
+            self.fix_body_id_link()
+            print_and_log("[cwa-kindle-epub-fixer] Checking META-INF/container.xml integrity...", log=self.manually_triggered)
+            self.fix_container_xml()
+            print_and_log("[cwa-kindle-epub-fixer] Checking UTF-8 encoding declaration...", log=self.manually_triggered)
+            self.fix_encoding()
+            print_and_log("[cwa-kindle-epub-fixer] Checking language field tag is valid...", log=self.manually_triggered)
+            self.fix_book_language(default_language, input_path)
+            print_and_log("[cwa-kindle-epub-fixer] Checking for stray images...", log=self.manually_triggered)
+            self.fix_stray_img()
 
-        # Notify user and/or write to log
-        self.export_issue_summary(input_path)
+            # Notify user and/or write to log
+            self.export_issue_summary(input_path)
 
-        # Write EPUB
-        print_and_log("[cwa-kindle-epub-fixer] Writing EPUB...", log=self.manually_triggered)
-        if Path(output_path).is_dir():
-            output_path = output_path + os.path.basename(input_path)
-        self.write_epub(output_path)
-        print_and_log("[cwa-kindle-epub-fixer] EPUB successfully written.", log=self.manually_triggered)
+            # Write EPUB
+            print_and_log("[cwa-kindle-epub-fixer] Writing EPUB...", log=self.manually_triggered)
+            if Path(output_path).is_dir():
+                output_path = output_path + os.path.basename(input_path)
+            self.write_epub(output_path)
+            print_and_log("[cwa-kindle-epub-fixer] EPUB successfully written.", log=self.manually_triggered)
 
-        # Calculate and store new checksum after modification
-        if book_id and self.fixed_problems:
-            # Only recalculate if fixes were actually applied
-            self._recalculate_checksum_after_modification(book_id, book_format, output_path)
+            # Calculate and store new checksum after modification
+            if book_id and self.fixed_problems:
+                # Only recalculate if fixes were actually applied
+                self._recalculate_checksum_after_modification(book_id, book_format, output_path)
+        else:
+            # Not an EPUB - only synchronize metadata if possible
+            print_and_log(f"[cwa-kindle-epub-fixer] Non-EPUB format ({book_format}) detected. Synchronizing metadata only.", log=self.manually_triggered)
+            
+            # Detect language for sync
+            detected = self._detect_language_from_metadata(input_path)
+            language = self._normalize_to_iso639_2(detected or default_language)
+            
+            if book_id:
+                self._update_language_in_metadata(book_id, language)
+                self._fix_companion_opf(input_path, language)
+                if detected:
+                    self.fixed_problems.append(f"Synchronized language '{language}' to database and OPF (detected from metadata)")
+                else:
+                    self.fixed_problems.append(f"Synchronized language '{language}' to database and OPF (using default)")
 
         # Add entry to cwa.db
         print_and_log("[cwa-kindle-epub-fixer] Adding run to cwa.db...", log=self.manually_triggered)
@@ -1287,12 +1304,14 @@ def get_library_location() -> str:
         library_dir = f"{dirs['calibre_library_dir']}/"
         return library_dir
 
-def get_all_epubs_in_library() -> list[str]:
-    """ Returns a list if the book dir given contains files of one or more of the supported formats"""
+def get_all_books_in_library() -> list[str]:
+    """ Returns a list of supported book files in the library """
     library_location = get_library_location()
     library_files = [os.path.join(dirpath,f) for (dirpath, dirnames, filenames) in os.walk(library_location) for f in filenames]
-    epubs_in_library = [f for f in library_files if f.endswith(f'.epub')]
-    return epubs_in_library
+    # We support EPUB for deep fixing, and others for metadata sync to clean up invalid language tags
+    supported_extensions = ('.epub', '.pdf', '.azw3', '.mobi', '.djvu', '.cbz', '.cbr')
+    books_in_library = [f for f in library_files if f.lower().endswith(supported_extensions)]
+    return books_in_library
 
 
 def main():
@@ -1300,13 +1319,13 @@ def main():
         prog='kindle-epub-fixer',
         description='Checks the encoding of a given EPUB file and automatically corrects any errors that could \
         prevent the file from being compatible with Amazon\'s Send-to-Kindle service. If the "-all" flag is \
-        passed, all epub files in the user\'s calibre library will be processed'
+        passed, all supported book files in the user\'s calibre library will be processed for language normalization'
     )
-    parser.add_argument('--input_file', '-i', required=False, help='Input EPUB file path')
-    parser.add_argument('--output', '-o', required=False, help='Output EPUB file path')
+    parser.add_argument('--input_file', '-i', required=False, help='Input book file path')
+    parser.add_argument('--output', '-o', required=False, help='Output book file path')
     parser.add_argument('--language', '-l', required=False, default=None, help='Default language to use if not specified or invalid')
     parser.add_argument('--suffix', '-s',required=False,  default=False, action='store_true', help='Adds suffix "fixed" to output filename if given')
-    parser.add_argument('--all', '-a', required=False, default=False, action='store_true', help='Will attempt to fix any issues in every EPUB in th user\'s library')
+    parser.add_argument('--all', '-a', required=False, default=False, action='store_true', help='Will attempt to fix any issues in every supported book in the user\'s library')
     parser.add_argument('--force', '-f', required=False, default=False, action='store_true', help='Override skip logic and process files even if already fixed')
 
     args = parser.parse_args()
@@ -1331,16 +1350,15 @@ def main():
             print(f"[cwa-kindle-epub-fixer] ERROR - Given file {args.input_file} does not exist")
             logger.info(f"\nCWA Kindle EPUB Fixer Service - Run Ended: {datetime.now()}\n")
             sys.exit(3)
-        if not args.input_file.lower().endswith('.epub'):
-            print("[cwa-kindle-epub-fixer] ERROR - The input file must be an EPUB file with a .epub extension.")
-            logger.info(f"\nCWA Kindle EPUB Fixer Service - Run Ended: {datetime.now()}\n")
-            sys.exit(1)
+        
         # Determine output path
         if args.output:
             output_path = args.output
         else:
             if args.suffix:
-                output_path = Path(args.input_file.split('.epub')[0] + " - fixed.epub")
+                # Handle different extensions
+                path_obj = Path(args.input_file)
+                output_path = path_obj.parent / f"{path_obj.stem} - fixed{path_obj.suffix}"
             else:
                 output_path = Path(args.input_file)
         # Run EPUBFixer
@@ -1358,37 +1376,37 @@ def main():
     ### ALL PASSED AS ARGUMENT
     elif args.all and not args.input_file:
         logger.info(f"CWA Kindle EPUB Fixer Service - Run Started: {datetime.now()}\n")
-        print_and_log("[cwa-kindle-epub-fixer] Processing all epubs in library...")
+        print_and_log("[cwa-kindle-epub-fixer] Processing all books in library...")
         exit_if_cancelled()
-        epubs_to_process = get_all_epubs_in_library()
-        if len(epubs_to_process) > 0:
-            print_and_log(f"[cwa-kindle-epub-fixer] {len(epubs_to_process)} EPUBs found to process.")
+        books_to_process = get_all_books_in_library()
+        if len(books_to_process) > 0:
+            print_and_log(f"[cwa-kindle-epub-fixer] {len(books_to_process)} books found to process.")
             errored_files = {}
             skipped_count = 0
             fixed_count = 0
-            for count, epub in enumerate(epubs_to_process):
+            for count, book in enumerate(books_to_process):
                 exit_if_cancelled()
-                current_position = f"{count + 1}/{len(epubs_to_process)}"
+                current_position = f"{count + 1}/{len(books_to_process)}"
                 try:
                     # Skip if already fixed and force is not set
-                    if not args.force and CWA_DB().is_epub_fixed(epub):
-                        print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Skipping {epub} (already fixed). Use --force to override.")
+                    if not args.force and CWA_DB().is_epub_fixed(book):
+                        print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Skipping {book} (already fixed). Use --force to override.")
                         skipped_count += 1
                         continue
 
-                    print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Processing {epub}...")
+                    print_and_log(f"\n[cwa-kindle-epub-fixer] {current_position} - Processing {book}...")
                     exit_if_cancelled()
-                    EPUBFixer(manually_triggered=True, current_position=current_position).process(epub, epub, args.language)
+                    EPUBFixer(manually_triggered=True, current_position=current_position).process(book, book, args.language)
                     fixed_count += 1
                 except Exception as e:
-                    print_and_log(f"[cwa-kindle-epub-fixer] {current_position} - The following error occurred when processing {epub}:\n{e}")
-                    errored_files |= {epub:e}
+                    print_and_log(f"[cwa-kindle-epub-fixer] {current_position} - The following error occurred when processing {book}:\n{e}")
+                    errored_files |= {book:e}
             
             # Final Summary
             print_and_log("\n" + "="*60)
             print_and_log(" CWA EPUB FIXER RUN SUMMARY")
             print_and_log("="*60)
-            print_and_log(f" Total EPUBs found:   {len(epubs_to_process)}")
+            print_and_log(f" Total books found:   {len(books_to_process)}")
             print_and_log(f" Actually Processed:  {fixed_count}")
             print_and_log(f" Skipped (already fixed): {skipped_count}")
             print_and_log(f" Errored:             {len(errored_files)}")
@@ -1400,11 +1418,11 @@ def main():
                     print_and_log(f"   - {file}")
                     print_and_log(f"      - Error Encountered: {errored_files[file]}")
             elif fixed_count > 0 or skipped_count > 0:
-                print_and_log(f"[cwa-kindle-epub-fixer] Library processing complete. {fixed_count} fixed, {skipped_count} skipped.")
+                print_and_log(f"[cwa-kindle-epub-fixer] Library processing complete. {fixed_count} processed/fixed, {skipped_count} skipped.")
             else:
-                print_and_log("[cwa-kindle-epub-fixer] No EPUBs were actually processed or skipped.")
+                print_and_log("[cwa-kindle-epub-fixer] No books were actually processed or skipped.")
         else:
-            print_and_log("[cwa-kindle-epub-fixer] No EPUBs found to process. Exiting now...")
+            print_and_log("[cwa-kindle-epub-fixer] No books found to process. Exiting now...")
         logger.info(f"\nCWA Kindle EPUB Fixer Service - Run Ended: {datetime.now()}\n")
         sys.exit(0)
 
