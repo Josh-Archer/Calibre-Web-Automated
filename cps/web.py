@@ -2951,6 +2951,32 @@ def show_book(book_id):
         cwa_db = CWA_DB()
         cwa_settings = cwa_db.cwa_settings
 
+        # Check for Kindle send activity
+        kindle_send_status = None
+        if current_user.is_authenticated:
+            try:
+                kindle_send_status = cwa_db.get_last_kindle_send(current_user.id, book_id)
+                if kindle_send_status and kindle_send_status['timestamp']:
+                    # SQLite CURRENT_TIMESTAMP is 'YYYY-MM-DD HH:MM:SS'
+                    try:
+                        from datetime import datetime
+                        kindle_send_status['timestamp'] = datetime.strptime(kindle_send_status['timestamp'], '%Y-%m-%d %H:%M:%S')
+                    except Exception:
+                        pass
+            except Exception as e:
+                log.debug(f"Failed to load Kindle send status for book {book_id}: {e}")
+
+        # Check for Amazon Library Sync status
+        kindle_library_status = None
+        amazon_sync_enabled = False
+        if current_user.is_authenticated:
+            amazon_sync_enabled = bool(cwa_settings.get('amazon_sync_enabled'))
+            if amazon_sync_enabled:
+                try:
+                    kindle_library_status = cwa_db.kindle_sync_get_status(current_user.id, book_id)
+                except Exception as e:
+                    log.debug(f"Failed to load Amazon sync status for book {book_id}: {e}")
+
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
@@ -2960,6 +2986,9 @@ def show_book(book_id):
                                      cwa_settings=cwa_settings,
                                      kosync_progress=kosync_progress,
                                      kosync_progress_timestamp=kosync_progress_timestamp,
+                                     kindle_send_status=kindle_send_status,
+                                     kindle_library_status=kindle_library_status,
+                                     amazon_sync_enabled=amazon_sync_enabled,
                                      page="book")
     else:
         log.debug("Selected book is unavailable. File does not exist or is not accessible")

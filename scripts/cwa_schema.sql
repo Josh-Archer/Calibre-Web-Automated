@@ -101,8 +101,25 @@ CREATE TABLE IF NOT EXISTS cwa_settings(
     duplicate_scan_cron TEXT DEFAULT '' NOT NULL,
     duplicate_scan_hour INTEGER DEFAULT 3 NOT NULL,
     duplicate_scan_chunk_size INTEGER DEFAULT 5000 NOT NULL,
-    duplicate_scan_debounce_seconds INTEGER DEFAULT 5 NOT NULL
+    duplicate_scan_debounce_seconds INTEGER DEFAULT 5 NOT NULL,
+    amazon_sync_enabled SMALLINT DEFAULT 0 NOT NULL,
+    amazon_session_cookies TEXT DEFAULT "" NOT NULL
 );
+
+-- Kindle Library Sync status tracking
+CREATE TABLE IF NOT EXISTS kindle_sync_status(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    book_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    asin TEXT DEFAULT "",
+    status TEXT DEFAULT "pending",             -- 'pending', 'confirmed', 'not_found', 'error'
+    last_check_at_utc TEXT,                    -- ISO8601 UTC timestamp
+    retry_count INTEGER DEFAULT 0,
+    confirmed_at_utc TEXT,                     -- ISO8601 UTC timestamp
+    error_message TEXT DEFAULT ""
+);
+CREATE INDEX IF NOT EXISTS idx_kindle_sync_book_user ON kindle_sync_status(book_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_kindle_sync_status ON kindle_sync_status(status);
 
 -- Persisted scheduled jobs (initial focus: auto-send). Rows remain until dispatched or manually cleared.
 CREATE TABLE IF NOT EXISTS cwa_scheduled_jobs(

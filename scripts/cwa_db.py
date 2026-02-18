@@ -924,6 +924,100 @@ class CWA_DB:
         except Exception as e:
             print(f"[cwa-db] Error logging activity: {e}")
 
+    def get_last_kindle_send(self, user_id, book_id):
+        """Returns the most recent Kindle send (EMAIL event) for a user and book."""
+        try:
+            self.cur.execute("""
+                SELECT timestamp, extra_data
+                FROM cwa_user_activity
+                WHERE user_id = ? AND item_id = ? AND event_type = 'EMAIL'
+                ORDER BY timestamp DESC
+                LIMIT 1
+            """, (user_id, book_id))
+            row = self.cur.fetchone()
+            if row:
+                return {
+                    'timestamp': row[0],
+                    'format': row[1]
+                }
+            return None
+            return None
+        except Exception as e:
+            print(f"[cwa-db] Error getting last Kindle send: {e}")
+            return None
+
+    def kindle_sync_get_status(self, user_id, book_id):
+        """Returns the Kindle sync status for a specific book and user."""
+        try:
+            self.cur.execute("""
+                SELECT status, asin, last_check_at_utc, retry_count, confirmed_at_utc, error_message
+                FROM kindle_sync_status
+                WHERE user_id = ? AND book_id = ?
+            """, (user_id, book_id))
+            row = self.cur.fetchone()
+            if row:
+                return {
+                    'status': row[0],
+                    'asin': row[1],
+                    'last_check_at_utc': row[2],
+                    'retry_count': row[3],
+                    'confirmed_at_utc': row[4],
+                    'error_message': row[5]
+                }
+            return None
+        except Exception as e:
+            print(f"[cwa-db] Error getting Kindle sync status: {e}")
+            return None
+
+    def kindle_sync_update(self, user_id, book_id, status=None, asin=None, error_message=None, reset_retry=False):
+        """Updates or creates a Kindle sync status record."""
+        try:
+            now = datetime.now(timezone.utc).isoformat()
+            existing = self.kindle_sync_get_status(user_id, book_id)
+            
+            if existing:
+                updates = []
+                params = []
+                if status:
+                    updates.append("status = ?")
+                    params.append(status)
+                    if status == 'confirmed':
+                        updates.append("confirmed_at_utc = ?")
+                        params.append(now)
+                if asin:
+                    updates.append("asin = ?")
+                    params.append(asin)
+                if error_message is not None:
+                    updates.append("error_message = ?")
+                    params.append(error_message)
+                
+                updates.append("last_check_at_utc = ?")
+                params.append(now)
+                
+                if reset_retry:
+                    updates.append("retry_count = 0")
+                else:
+                    updates.append("retry_count = retry_count + 1")
+                
+                params.extend([user_id, book_id])
+                
+                self.cur.execute(f"""
+                    UPDATE kindle_sync_status
+                    SET {", ".join(updates)}
+                    WHERE user_id = ? AND book_id = ?
+                """, params)
+            else:
+                self.cur.execute("""
+                    INSERT INTO kindle_sync_status (user_id, book_id, status, asin, error_message, last_check_at_utc, retry_count)
+                    VALUES (?, ?, ?, ?, ?, ?, 0)
+                """, (user_id, book_id, status or 'pending', asin or "", error_message or "", now))
+            
+            self.con.commit()
+            return True
+        except Exception as e:
+            print(f"[cwa-db] Error updating Kindle sync status: {e}")
+            return False
+
     def get_active_users(self):
         """Returns list of distinct users who have activity logged."""
         try:
