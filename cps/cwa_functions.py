@@ -39,7 +39,6 @@ from .services.worker import WorkerThread
 from .tasks.database import TaskReconnectDatabase
 from .tasks.auto_send import TaskAutoSend
 from .tasks.ops import TaskConvertLibraryRun, TaskEpubFixerRun
-from .tasks.kindle_sync import TaskKindleSync
 
 switch_theme = Blueprint('switch_theme', __name__)
 library_refresh = Blueprint('library_refresh', __name__)
@@ -2219,6 +2218,7 @@ def set_profile_picture():
 @cwa_internal.route("/cwa-kindle-sync", methods=["POST"])
 @user_login_required
 def cwa_kindle_sync():
+    from .tasks.kindle_sync import TaskKindleSync
     data = request.get_json()
     if not data or 'book_id' not in data:
         return jsonify({"error": "Missing book_id"}), 400
