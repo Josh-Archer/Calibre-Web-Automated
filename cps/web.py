@@ -50,6 +50,7 @@ from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 from .usermanagement import user_login_required
+from .tasks.kindle_sync import TaskKindleSync
 from .string_helper import strip_whitespaces
 
 # CWA Imports
@@ -1984,6 +1985,15 @@ def send_to_ereader(book_id, book_format, convert):
             )
         except Exception as e:
             log.debug(f"Failed to log email activity: {e}")
+            
+        # Trigger Kindle Sync Task
+        try:
+            cwa_db = CWA_DB()
+            if cwa_db.cwa_settings.get('amazon_sync_enabled'):
+                WorkerThread.add_app_task(TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
+        except Exception as e:
+            log.debug(f"Failed to start automatic Kindle Sync: {e}")
+            
         response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
                                                    eReadermail=current_user.kindle_mail)}]
     else:

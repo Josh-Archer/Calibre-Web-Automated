@@ -39,6 +39,7 @@ from .services.worker import WorkerThread
 from .tasks.database import TaskReconnectDatabase
 from .tasks.auto_send import TaskAutoSend
 from .tasks.ops import TaskConvertLibraryRun, TaskEpubFixerRun
+from .tasks.kindle_sync import TaskKindleSync
 
 switch_theme = Blueprint('switch_theme', __name__)
 library_refresh = Blueprint('library_refresh', __name__)
@@ -2214,3 +2215,23 @@ def set_profile_picture():
     return render_title_template("profile_pictures.html", 
                                 title=_("CWA Profile Picture Management (WIP)"), 
                                 page="profile-picture")
+
+@cwa_internal.route("/cwa-kindle-sync", methods=["POST"])
+@user_login_required
+def cwa_kindle_sync():
+    data = request.get_json()
+    if not data or 'book_id' not in data:
+        return jsonify({"error": "Missing book_id"}), 400
+    
+    book_id = data['book_id']
+    
+    # Check if user has access to this book (basic check)
+    book = calibre_db.get_book(book_id)
+    if not book:
+        return jsonify({"error": "Book not found"}), 404
+
+    # Queue the sync task
+    if not WorkerThread.add_app_task(TaskKindleSync("Manual Kindle Sync", book_id, current_user.id)):
+        return jsonify({"error": "Failed to queue sync task. Worker might be full."}), 500
+
+    return jsonify({"success": True, "message": "Sync task queued."})
