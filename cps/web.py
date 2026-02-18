@@ -2053,6 +2053,15 @@ def send_to_selected_ereaders(book_id):
             )
         except Exception as e:
             log.debug(f"Failed to log email activity: {e}")
+
+        # Trigger Kindle Sync Task
+        try:
+            cwa_db = CWA_DB()
+            if cwa_db.cwa_settings.get('amazon_sync_enabled'):
+                WorkerThread.add_app_task(TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
+        except Exception as e:
+            log.debug(f"Failed to start automatic Kindle Sync: {e}")
+
         response = [{'type': "success", 'message': _("Success! Book queued for sending to the selected address(es)!")}]
     else:
         response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
