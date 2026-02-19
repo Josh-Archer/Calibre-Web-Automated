@@ -13,6 +13,7 @@ class TaskKindleSync(CalibreTask):
         self.user_id = user_id
         self.max_retries = max_retries
 
+    @property
     def name(self):
         return "Kindle Library Sync"
 
