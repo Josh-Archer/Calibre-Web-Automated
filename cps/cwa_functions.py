@@ -2232,7 +2232,6 @@ def cwa_kindle_sync():
         return jsonify({"error": "Book not found"}), 404
 
     # Queue the sync task
-    if not WorkerThread.add_app_task(TaskKindleSync("Manual Kindle Sync", book_id, current_user.id)):
-        return jsonify({"error": "Failed to queue sync task. Worker might be full."}), 500
+    WorkerThread.add(current_user.name, TaskKindleSync("Manual Kindle Sync", book_id, current_user.id))
 
     return jsonify({"success": True, "message": "Sync task queued."})

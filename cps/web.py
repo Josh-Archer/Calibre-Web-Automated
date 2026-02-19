@@ -1990,7 +1990,7 @@ def send_to_ereader(book_id, book_format, convert):
             from .tasks.kindle_sync import TaskKindleSync
             cwa_db = CWA_DB()
             if cwa_db.cwa_settings.get('amazon_sync_enabled'):
-                WorkerThread.add_app_task(TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
+                WorkerThread.add(current_user.name, TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
         except Exception as e:
             log.debug(f"Failed to start automatic Kindle Sync: {e}")
             
@@ -2059,7 +2059,7 @@ def send_to_selected_ereaders(book_id):
             from .tasks.kindle_sync import TaskKindleSync
             cwa_db = CWA_DB()
             if cwa_db.cwa_settings.get('amazon_sync_enabled'):
-                WorkerThread.add_app_task(TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
+                WorkerThread.add(current_user.name, TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
         except Exception as e:
             log.debug(f"Failed to start automatic Kindle Sync: {e}")
 
