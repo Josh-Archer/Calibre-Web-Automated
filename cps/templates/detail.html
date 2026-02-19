@@ -1460,33 +1460,30 @@
         const statusSpan = document.getElementById('amazon-sync-status');
 
         btn.disabled = true;
-        const oldContent = statusSpan.innerHTML;
         statusSpan.innerHTML = '<span class="text-muted">Triggering...</span>';
 
-        fetch('/cwa-kindle-sync', {
-            method: 'POST',
-            body: JSON.stringify({ book_id: bookId }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
+        $.ajax({
+            url: getPath() + "/cwa-kindle-sync",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ book_id: bookId }),
+            success: function (data) {
                 if (data.error) {
                     statusSpan.innerHTML = '<span class="text-danger">' + data.error + '</span>';
                     btn.disabled = false;
                 } else {
                     statusSpan.innerHTML = '<span class="text-info">Task Queued</span>';
-                    // Reload page after a short delay to see task progress in Tasks
                     setTimeout(() => {
                         location.reload();
                     }, 1500);
                 }
-            })
-            .catch(error => {
-                statusSpan.innerHTML = '<span class="text-danger">Error: ' + error + '</span>';
+            },
+            error: function (xhr) {
+                var errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : xhr.statusText;
+                statusSpan.innerHTML = '<span class="text-danger">Error: ' + errorMsg + '</span>';
                 btn.disabled = false;
-            });
+            }
+        });
     }
 </script>
 
