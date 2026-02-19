@@ -624,6 +624,7 @@ def set_cwa_settings():
     float_settings = ['hardcover_auto_fetch_min_confidence', 'hardcover_auto_fetch_rate_limit']  # Special handling for float settings
     json_settings = ['metadata_provider_hierarchy', 'metadata_providers_enabled', 'duplicate_format_priority']  # Special handling for JSON settings
     string_settings.append('amazon_session_cookies')
+    string_settings.append('amazon_csrf_token')
     boolean_settings.append('amazon_sync_enabled')
     skip_settings = ['auto_convert_ignored_formats', 'auto_ingest_ignored_formats', 'auto_convert_retained_formats']  # Handled through individual format checkboxes
     

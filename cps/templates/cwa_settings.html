@@ -256,6 +256,16 @@
           {{_('Paste your full Amazon cookie string here.')}}
         </p>
 
+        <label for="amazon_csrf_token" style="margin-top: 15px; display: block;">{{_('Amazon CSRF Token')}}</label>
+        <input type="text" id="amazon_csrf_token" name="amazon_csrf_token"
+          value="{{ cwa_settings.get('amazon_csrf_token', '') }}"
+          style="width: 100%; max-width: 800px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 10px; font-family: monospace;"
+          placeholder="gQDSie... (Found via 'csrfToken' in console)">
+        <p class="cwa-settings-tooltip">
+          {{_('Paste your Amazon CSRF token here. You can find this by typing `csrfToken` in your browser console on the
+          Amazon MYCD page.')}}
+        </p>
+
         <details
           style="margin-top: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; max-width: 800px;">
           <summary style="cursor: pointer; font-weight: bold; color: var(--color-secondary);">{{_('How do I get my
@@ -269,7 +279,8 @@
               <li>{{_('Find a request named <b>myx</b> or <b>digital-console</b> in the list and click it.') | safe }}
               </li>
               <li>{{_('In the <b>Headers</b> tab, look for the <b>Request Headers</b> section and find the
-                <b>Cookie:</b> header.') | safe }}</li>
+                <b>Cookie:</b> header.') | safe }}
+              </li>
               <li>{{_('Copy the entire string (starting with session-id=...) and paste it into the box above.')}}</li>
             </ol>
             <p style="margin-top: 10px; color: #ffc107;">
