@@ -55,12 +55,18 @@ def sync_kindle_book(cookies_str, title, author=None):
         items = data.get('Value', {}).get('items', [])
         
         if not items:
+            print(f"[kindle-sync] No items returned from Amazon. Check cookies/session. Response snippet: {response.text[:200]}")
             return 'not_found', None, 'No items returned from Amazon'
 
         # Match logic: simple title/author check
         normalized_title = title.lower().strip()
         normalized_author = author.lower().strip() if author else ""
         
+        print(f"[kindle-sync] Searching for '{title}' (normalized: '{normalized_title}')")
+        print(f"[kindle-sync] First 5 items from Amazon:")
+        for i, item in enumerate(items[:5]):
+            print(f"  {i+1}: {item.get('title')} by {item.get('authors')} (ASIN: {item.get('asin')})")
+
         for item in items:
             item_title = item.get('title', '').lower().strip()
             item_authors = item.get('authors', '').lower().strip()
