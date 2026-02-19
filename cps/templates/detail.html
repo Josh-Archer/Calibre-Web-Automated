@@ -871,12 +871,16 @@
                                     <small>({{ kindle_library_status.asin }})</small>
                                     {% endif %}
                                     {% elif kindle_library_status.status == 'not_found' %}
-                                    <span class="text-warning">{{ _('Pending Sync...') }}</span>
+                                    <span class="text-warning" title="{{ kindle_library_status.error_message }}">{{
+                                        _('Not Found on Amazon') }}</span>
+                                    {% elif kindle_library_status.status == 'pending' %}
+                                    <span class="text-info">{{ _('Sync Pending...') }}</span>
                                     {% elif kindle_library_status.status == 'error' %}
                                     <span class="text-danger" title="{{ kindle_library_status.error_message }}">{{
                                         _('Error') }}</span>
                                     {% else %}
-                                    <span class="text-muted">{{ _('Checking...') }}</span>
+                                    <span class="text-muted">{{ _('State: ') }} {{ kindle_library_status.status
+                                        }}</span>
                                     {% endif %}
                                     {% else %}
                                     <span class="text-muted" style="opacity: 0.6;">{{ _('Unknown') }}</span>
