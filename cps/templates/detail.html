@@ -1466,6 +1466,10 @@
             url: getPath() + "/cwa-kindle-sync",
             method: "POST",
             contentType: "application/json",
+            dataType: 'json',
+            headers: {
+                "X-CSRFToken": "{{ csrf_token() }}"
+            },
             data: JSON.stringify({ book_id: bookId }),
             success: function (data) {
                 if (data.error) {
@@ -1480,6 +1484,9 @@
             },
             error: function (xhr) {
                 var errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : xhr.statusText;
+                if (xhr.status === 400 && !xhr.responseJSON) {
+                    errorMsg = "CSRF Token Error (Try refreshing the page)";
+                }
                 statusSpan.innerHTML = '<span class="text-danger">Error: ' + errorMsg + '</span>';
                 btn.disabled = false;
             }
