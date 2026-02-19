@@ -4,11 +4,23 @@ import json
 import time
 from datetime import datetime, timezone
 
-def sync_kindle_book(cookies_str, title, author=None):
+def sync_kindle_book(cookies_str, title, author=None, csrf_token=None, logger=None):
     """
     Attempts to find a book in Amazon's MYCD library using session cookies.
     Returns (status, asin, error_message)
     """
+    def log_info(msg):
+        if logger:
+            logger.info(msg)
+        else:
+            print(msg)
+
+    def log_error(msg):
+        if logger:
+            logger.error(msg)
+        else:
+            print(msg)
+
     if not cookies_str:
         return 'error', None, 'Missing Amazon session cookies'
 
@@ -34,6 +46,9 @@ def sync_kindle_book(cookies_str, title, author=None):
             }
         }
     }
+    
+    if csrf_token:
+        payload["csrfToken"] = csrf_token
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -55,17 +70,17 @@ def sync_kindle_book(cookies_str, title, author=None):
         items = data.get('Value', {}).get('items', [])
         
         if not items:
-            print(f"[kindle-sync] No items returned from Amazon. Check cookies/session. Response snippet: {response.text[:200]}")
+            log_error(f"[kindle-sync] No items returned from Amazon. Check cookies/session. Response snippet: {response.text[:200]}")
             return 'not_found', None, 'No items returned from Amazon'
 
         # Match logic: simple title/author check
         normalized_title = title.lower().strip()
         normalized_author = author.lower().strip() if author else ""
         
-        print(f"[kindle-sync] Searching for '{title}' (normalized: '{normalized_title}')")
-        print(f"[kindle-sync] First 5 items from Amazon:")
+        log_info(f"[kindle-sync] Searching for '{title}' (normalized: '{normalized_title}')")
+        log_info(f"[kindle-sync] First 5 items from Amazon:")
         for i, item in enumerate(items[:5]):
-            print(f"  {i+1}: {item.get('title')} by {item.get('authors')} (ASIN: {item.get('asin')})")
+            log_info(f"  {i+1}: {item.get('title')} by {item.get('authors')} (ASIN: {item.get('asin')})")
 
         for item in items:
             item_title = item.get('title', '').lower().strip()

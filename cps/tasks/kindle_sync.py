@@ -33,6 +33,7 @@ class TaskKindleSync(CalibreTask):
                 return
 
             cookies = settings.get('amazon_session_cookies', '')
+            csrf_token = settings.get('amazon_csrf_token', '')
             if not cookies:
                 self._handleError("Amazon session cookies are missing in settings.")
                 return
@@ -49,7 +50,7 @@ class TaskKindleSync(CalibreTask):
                 return
 
             # Perform the sync
-            status, asin, error = sync_kindle_book(cookies, book.title, book.authors[0].name if book.authors else None)
+            status, asin, error = sync_kindle_book(cookies, book.title, book.authors[0].name if book.authors else None, csrf_token=csrf_token, logger=log)
             
             # Update DB
             cwa_db.kindle_sync_update(self.user_id, self.book_id, status=status, asin=asin, error_message=error)
