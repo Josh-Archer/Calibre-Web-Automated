@@ -9,7 +9,7 @@ import sys
 import os
 from sqlite3 import Error as sqlError
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 
 from tabulate import tabulate
 

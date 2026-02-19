@@ -7,7 +7,7 @@
 from flask import Blueprint, redirect, flash, url_for, request, send_from_directory, abort, jsonify, current_app
 from flask_babel import gettext as _, lazy_gettext as _l
 
-from . import logger, config, constants, csrf, helper, ub, calibre_db
+from . import logger, config, constants, csrf, helper, ub, calibre_db, db
 from .usermanagement import login_required_if_no_ano, user_login_required
 from .admin import admin_required
 from .render_template import render_title_template
