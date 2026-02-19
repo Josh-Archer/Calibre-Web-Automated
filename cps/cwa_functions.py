@@ -2216,6 +2216,7 @@ def set_profile_picture():
                                 page="profile-picture")
 
 @cwa_internal.route("/cwa-kindle-sync", methods=["POST"])
+@csrf.exempt
 @user_login_required
 def cwa_kindle_sync():
     from .tasks.kindle_sync import TaskKindleSync
