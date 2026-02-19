@@ -122,13 +122,16 @@ def exit_if_cancelled() -> None:
 # Creates a lock file unless one already exists meaning an instance of the script is
 # already running, then the script is closed, the user is notified and the program
 # exits with code 2
-try:
-    lock = open(tempfile.gettempdir() + '/kindle_epub_fixer.lock', 'x')
-    lock.close()
-except FileExistsError:
-    print_and_log("[cwa-kindle-epub-fixer] CANCELLING... kindle-epub-fixer was initiated but is already running")
-    logger.info(f"\nCWA Kindle EPUB Fixer Service - Run Ended: {datetime.now()}")
-    sys.exit(2)
+def setup_lock():
+    try:
+        lock = open(tempfile.gettempdir() + '/kindle_epub_fixer.lock', 'x')
+        lock.close()
+        # Register function to delete the lock on script exit
+        atexit.register(removeLock)
+    except FileExistsError:
+        print_and_log("[cwa-kindle-epub-fixer] CANCELLING... kindle-epub-fixer was initiated but is already running")
+        logger.info(f"\nCWA Kindle EPUB Fixer Service - Run Ended: {datetime.now()}")
+        sys.exit(2)
 
 # Defining function to delete the lock on script exit
 def removeLock():
@@ -136,9 +139,6 @@ def removeLock():
         os.remove(tempfile.gettempdir() + '/kindle_epub_fixer.lock')
     except FileNotFoundError:
         ...
-
-# Will automatically run when the script exits
-atexit.register(removeLock)
 
 
 class EPUBFixer:
@@ -1315,6 +1315,7 @@ def get_all_books_in_library() -> list[str]:
 
 
 def main():
+    setup_lock()
     parser = argparse.ArgumentParser(
         prog='kindle-epub-fixer',
         description='Checks the encoding of a given EPUB file and automatically corrects any errors that could \
