@@ -104,7 +104,10 @@ CREATE TABLE IF NOT EXISTS cwa_settings(
     duplicate_scan_debounce_seconds INTEGER DEFAULT 5 NOT NULL,
     amazon_sync_enabled SMALLINT DEFAULT 0 NOT NULL,
     amazon_session_cookies TEXT DEFAULT "" NOT NULL,
-    amazon_csrf_token TEXT DEFAULT "" NOT NULL
+    amazon_csrf_token TEXT DEFAULT "" NOT NULL,
+    amazon_heartbeat_fail_count INTEGER DEFAULT 0 NOT NULL,
+    amazon_heartbeat_last_error TEXT DEFAULT "" NOT NULL,
+    amazon_heartbeat_last_success_utc TEXT DEFAULT "" NOT NULL
 );
 
 -- Kindle Library Sync status tracking

@@ -248,6 +248,25 @@
 
       <div id="amazon_sync_details"
         style="{% if not cwa_settings.get('amazon_sync_enabled') %}display: none;{% endif %} margin-left: 20px;">
+        {% set amazon_fail_count = cwa_settings.get('amazon_heartbeat_fail_count', 0) | int %}
+        {% set amazon_last_error = cwa_settings.get('amazon_heartbeat_last_error', '') %}
+        {% set amazon_last_success = cwa_settings.get('amazon_heartbeat_last_success_utc', '') %}
+
+        {% if amazon_fail_count >= 3 %}
+        <div style="max-width: 800px; background: rgba(220,53,69,0.18); border: 1px solid rgba(220,53,69,0.45); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+          <strong><span class="glyphicon glyphicon-warning-sign"></span> {{_('Amazon session health warning')}}</strong><br>
+          {{_('Background cookie refresh has failed')}} {{ amazon_fail_count }} {{_('times in a row. Sync may stop working until cookies are refreshed.')}}
+          {% if amazon_last_error %}<br><small>{{_('Last error')}}: {{ amazon_last_error }}</small>{% endif %}
+        </div>
+        {% endif %}
+
+        <div style="max-width: 800px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+          <strong>{{_('Amazon Session Health')}}</strong><br>
+          <small>{{_('Consecutive heartbeat failures')}}: {{ amazon_fail_count }}</small><br>
+          <small>{{_('Last successful heartbeat (UTC)')}}: {{ amazon_last_success if amazon_last_success else _('Never') }}</small>
+          {% if amazon_last_error %}<br><small>{{_('Last error')}}: {{ amazon_last_error }}</small>{% endif %}
+        </div>
+
         <label for="amazon_session_cookies">{{_('Amazon Session Cookies')}}</label><br>
         <textarea id="amazon_session_cookies" name="amazon_session_cookies" rows="4"
           style="width: 100%; max-width: 800px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 10px; font-family: monospace;"
