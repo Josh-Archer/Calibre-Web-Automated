@@ -11,6 +11,29 @@ KINDLE_HEADER = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
+
+def _parse_cookie_header(cookie_header):
+    parsed = {}
+    if not cookie_header:
+        return parsed
+    for part in str(cookie_header).split(';'):
+        part = part.strip()
+        if not part or '=' not in part:
+            continue
+        key, value = part.split('=', 1)
+        key = key.strip()
+        if key:
+            parsed[key] = value.strip()
+    return parsed
+
+
+def _merge_cookie_headers(existing_cookie_header, refreshed_cookie_dict):
+    merged = _parse_cookie_header(existing_cookie_header)
+    for key, value in (refreshed_cookie_dict or {}).items():
+        if key:
+            merged[str(key)] = str(value)
+    return '; '.join([f"{k}={v}" for k, v in merged.items()])
+
 MYCD_AJAX_URL = "https://www.amazon.com/hz/mycd/ajax"
 
 
@@ -164,7 +187,7 @@ def fetch_all_amazon_items(cookies_str, logger=None):
 
         # Get updated cookies from session
         updated_cookies = session.cookies.get_dict()
-        cookie_string = "; ".join([f"{k}={v}" for k, v in updated_cookies.items()])
+        cookie_string = _merge_cookie_headers(cookies_str, updated_cookies)
         
         return final_ebooks, final_pdocs, cookie_string if cookie_string else cookies_str, None
     except Exception as e:
@@ -194,7 +217,7 @@ def amazon_session_heartbeat(cookies_str, logger=None):
         page_resp = session.get("https://www.amazon.com/hz/mycd/myx", timeout=20)
         if page_resp.ok:
             updated_cookies = session.cookies.get_dict()
-            cookie_string = "; ".join([f"{k}={v}" for k, v in updated_cookies.items()])
+            cookie_string = _merge_cookie_headers(cookies_str, updated_cookies)
             log_info("[amazon-heartbeat] Session refreshed successfully.")
             return cookie_string if cookie_string else cookies_str, None
         else:
