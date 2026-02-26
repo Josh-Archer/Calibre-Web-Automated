@@ -381,7 +381,7 @@ def _schedule_archived_book_cleanup(scheduler, timezone_info):
 
 
 def _schedule_amazon_heartbeat(scheduler, timezone_info):
-    """Schedule background Amazon session heartbeat (default every 6 hours)."""
+    """Schedule background Amazon session heartbeat (immediate + every 2 hours)."""
     try:
         import sys as _sys
         if '/app/calibre-web-automated/scripts/' not in _sys.path:
@@ -394,8 +394,15 @@ def _schedule_amazon_heartbeat(scheduler, timezone_info):
         if not enabled:
             return
 
-        # Use 6-hour interval for heartbeat
-        trigger = IntervalTrigger(hours=6, timezone=timezone_info)
+        # Run once at startup, then refresh every 2 hours
+        scheduler.schedule_task_immediately(
+            lambda: TaskAmazonHeartbeat("Refreshing Amazon Session"),
+            user='System',
+            name='immediately amazon session heartbeat',
+            hidden=True,
+        )
+
+        trigger = IntervalTrigger(hours=2, timezone=timezone_info)
         name = 'amazon session heartbeat'
 
         scheduler.schedule_task(lambda: TaskAmazonHeartbeat("Refreshing Amazon Session"), user='System',
