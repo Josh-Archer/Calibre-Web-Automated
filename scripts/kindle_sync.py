@@ -101,29 +101,8 @@ def fetch_all_amazon_items(cookies_str, logger=None):
         if logger:
             logger.error(msg)
 
-    import os
-    local_ebooks = []
-    local_pdocs = []
-    sidecar_candidates = [
-        "/tmp/amazon_library.json",
-        "/config/amazon_library.json",
-        "/app/calibre-web-automated/amazon_library.json",
-        "amazon_library.json",
-    ]
-    for local_sidecar in sidecar_candidates:
-        if os.path.exists(local_sidecar):
-            log_info(f"[kindle-sync] Found side-load file {local_sidecar}, buffering for merge.")
-            try:
-                with open(local_sidecar, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                    local_ebooks = data.get("ebook_items", [])
-                    local_pdocs = data.get("pdoc_items", [])
-                break
-            except Exception as e:
-                log_error(f"[kindle-sync] Error reading side-load file {local_sidecar}: {e}")
-
     if not cookies_str:
-        return local_ebooks, local_pdocs, None, 'Missing Amazon session cookies'
+        return [], [], None, 'Missing Amazon session cookies'
 
     session = requests.Session()
     session.headers.update(KINDLE_HEADER)
@@ -178,23 +157,10 @@ def fetch_all_amazon_items(cookies_str, logger=None):
                 return f"ta:{title}|{author}"
             return None
 
-        def merge_by_asin(base_list, extension_list):
-            # Live data (base) takes priority for identical keys
-            merged = {}
-            for item in base_list:
-                key = _item_key(item)
-                if key:
-                    merged[key] = item
-            for item in extension_list:
-                key = _item_key(item)
-                if key and key not in merged:
-                    merged[key] = item
-            return list(merged.values())
+        final_ebooks = live_ebooks
+        final_pdocs = live_pdocs
 
-        final_ebooks = merge_by_asin(live_ebooks, local_ebooks)
-        final_pdocs = merge_by_asin(live_pdocs, local_pdocs)
-        
-        log_info(f"[kindle-sync] Final library state: {len(final_ebooks)} Ebooks, {len(final_pdocs)} PDOCs (merged with sidecar)")
+        log_info(f"[kindle-sync] Final library state: {len(final_ebooks)} Ebooks, {len(final_pdocs)} PDOCs (live fetch only)")
 
         # Get updated cookies from session
         updated_cookies = session.cookies.get_dict()
@@ -203,10 +169,6 @@ def fetch_all_amazon_items(cookies_str, logger=None):
         return final_ebooks, final_pdocs, cookie_string if cookie_string else cookies_str, None
     except Exception as e:
         log_error(f"[kindle-sync] Exception fetching all items: {e}")
-        # Fail-safe: if live fetch fails, return local buffer if available
-        if local_ebooks or local_pdocs:
-            log_info("[kindle-sync] Returning cached local data as fail-safe due to live fetch failure.")
-            return local_ebooks, local_pdocs, cookies_str, None
         return [], [], None, str(e)
 
 
