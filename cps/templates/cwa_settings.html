@@ -132,7 +132,7 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  <form action="{{ url_for('cwa_settings.set_cwa_settings')}}" method="post">
+  <form action="{{ url_for('cwa_settings.set_cwa_settings')}}" method="post" enctype="multipart/form-data">
     <div class="settings-container" style="margin-top: 3rem;">
       <h4 class="settings-section-header">{{_('Enable/Disable Calibre-Web Automated Services')}}</h4>
 
@@ -273,6 +273,13 @@
           placeholder="session-id=...; ubid-main=...; at-main=...">{{ cwa_settings.get('amazon_session_cookies', '') }}</textarea>
         <p class="cwa-settings-tooltip">
           {{_('Paste your full Amazon cookie string here.')}}
+        </p>
+
+        <label for="amazon_cookie_file">{{_('Or upload Cookie File')}}</label><br>
+        <input id="amazon_cookie_file" name="amazon_cookie_file" type="file" accept=".txt,text/plain"
+          style="max-width: 800px; width: 100%; margin-bottom: 8px;">
+        <p class="cwa-settings-tooltip">
+          {{_('Upload a Netscape-format cookies.txt export. CWA will import Amazon cookies from the file and overwrite the cookie field above when you click Save.')}}
         </p>
 
 

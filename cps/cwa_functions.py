@@ -118,6 +118,63 @@ def parse_metadata_providers_enabled(raw_value):
     except (json.JSONDecodeError, ValueError, TypeError, AttributeError):
         return {}
 
+
+def extract_amazon_cookie_header_from_upload(file_storage):
+    """Parse an uploaded cookie file and extract Amazon cookies as a header string.
+
+    Supports Netscape cookie file format and raw Cookie header format.
+    Returns tuple[cookie_header:str|None, error:str|None].
+    """
+    try:
+        raw = file_storage.read()
+        if not raw:
+            return None, "Uploaded file is empty"
+
+        text = raw.decode('utf-8', errors='ignore')
+        if not text.strip():
+            return None, "Uploaded file has no readable content"
+
+        cookie_map = {}
+
+        for line in text.splitlines():
+            stripped = line.strip()
+            if not stripped or stripped.startswith('#'):
+                continue
+
+            if '\t' in stripped:
+                cols = stripped.split('\t')
+                if len(cols) < 7:
+                    continue
+                domain, _, _, _, _, name, value = cols[:7]
+                normalized_domain = domain.lstrip('.').lower()
+                if 'amazon.com' not in normalized_domain:
+                    continue
+                if normalized_domain.endswith('amazon-adsystem.com'):
+                    continue
+                if name:
+                    cookie_map[name.strip()] = value.strip()
+
+        if not cookie_map:
+            # Fallback: raw cookie header format from a copied request header
+            for part in text.replace('\r', '\n').split(';'):
+                part = part.strip()
+                if not part or '=' not in part:
+                    continue
+                name, value = part.split('=', 1)
+                name = name.strip()
+                if name:
+                    cookie_map[name] = value.strip()
+
+        if not cookie_map:
+            return None, "No cookies were detected in uploaded file"
+
+        cookie_header = '; '.join([f"{k}={v}" for k, v in cookie_map.items()])
+        if len(cookie_header) < 20:
+            return None, "Parsed cookie header looks invalid (too short)"
+        return cookie_header, None
+    except Exception as e:
+        return None, f"Failed to parse uploaded cookie file: {e}"
+
 def validate_and_cleanup_provider_enabled_map(enabled_map, available_provider_ids):
     """
     Validate and cleanup the provider enabled map.
@@ -685,6 +742,16 @@ def set_cwa_settings():
                         value = cwa_db.cwa_settings['auto_convert_target_format']
 
                 result |= {setting:value}
+
+            # Optional cookie file upload (Netscape format export or raw Cookie header)
+            uploaded_cookie_file = request.files.get('amazon_cookie_file')
+            if uploaded_cookie_file and uploaded_cookie_file.filename:
+                parsed_cookie_header, parse_error = extract_amazon_cookie_header_from_upload(uploaded_cookie_file)
+                if parse_error:
+                    flash(_("Amazon cookie file upload failed: %(error)s", error=parse_error), category="error")
+                elif parsed_cookie_header:
+                    result['amazon_session_cookies'] = parsed_cookie_header
+                    flash(_("Amazon cookies imported from uploaded file."), category="success")
             
             # Prevent ignoring of target format
             if result['auto_convert_target_format'] in result['auto_convert_ignored_formats']:
