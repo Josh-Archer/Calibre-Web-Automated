@@ -201,3 +201,8 @@ cython_debug/
 
 # Dev instance files for testing in the same folder
 instance/
+
+# Sensitive browser/session cookie exports
+cookies.txt
+*cookies*.txt
+local_cookies.txt

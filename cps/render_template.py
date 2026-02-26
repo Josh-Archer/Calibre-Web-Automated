@@ -311,7 +311,10 @@ def render_title_template(*args, **kwargs):
     try:
         if current_user.is_authenticated:
             cwa_db_inst = cwa_db if 'cwa_db' in locals() else CWA_DB()
-            aws_synced_books = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+            if current_user.role_admin():
+                aws_synced_books = cwa_db_inst.kindle_sync_get_all_confirmed_any_user()
+            else:
+                aws_synced_books = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
         else:
             aws_synced_books = set()
     except Exception as e:

@@ -473,7 +473,10 @@ def render_books_list(data, sort_param, book_id, page):
     elif data == "aws_unsynced":
         from scripts.cwa_db import CWA_DB
         cwa_db_inst = CWA_DB()
-        synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+            if current_user.role_admin():
+                synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed_any_user()
+            else:
+                synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
         
         if synced_ids:
             db_filter = ~db.Books.id.in_(synced_ids)
@@ -592,9 +595,9 @@ def render_downloaded_books(page, order, user_id):
     user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
     if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD) and user:
         entries, random, pagination = calibre_db.fill_indexpage(page,
-                                                            0,
+                                                                0,
                                                             db.Books,
-                                                            ub.Downloads.user_id == user_id,
+                                                                ub.Downloads.user_id == user_id,
                                                             order[0],
                                                             True, config.config_read_column,
                                                             db.books_series_link,
@@ -1464,7 +1467,10 @@ def list_books():
     try:
         from scripts.cwa_db import CWA_DB
         cwa_db_inst = CWA_DB()
-        aws_synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+        if current_user.role_admin():
+            aws_synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed_any_user()
+        else:
+            aws_synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
     except Exception as e:
         log.debug("[cwa-aws-sync] Failed to load confirmed IDs for table: %s", str(e))
 

@@ -984,6 +984,20 @@ class CWA_DB:
             print(f"[cwa-db] Error getting all confirmed Kindle sync status: {e}")
             return set()
 
+    def kindle_sync_get_all_confirmed_any_user(self):
+        """Returns a set of all book_ids that have status='confirmed' for any user."""
+        try:
+            self.cur.execute("""
+                SELECT DISTINCT book_id
+                FROM kindle_sync_status
+                WHERE status = 'confirmed'
+            """)
+            rows = self.cur.fetchall()
+            return {row[0] for row in rows}
+        except Exception as e:
+            print(f"[cwa-db] Error getting global confirmed Kindle sync status: {e}")
+            return set()
+
     def kindle_sync_update(self, user_id, book_id, status=None, asin=None, error_message=None, reset_retry=False):
         """Updates or creates a Kindle sync status record."""
         try:
@@ -999,6 +1013,9 @@ class CWA_DB:
                     if status == 'confirmed':
                         updates.append("confirmed_at_utc = ?")
                         params.append(now)
+                        if error_message is None:
+                            updates.append("error_message = ?")
+                            params.append("")
                 if asin:
                     updates.append("asin = ?")
                     params.append(asin)

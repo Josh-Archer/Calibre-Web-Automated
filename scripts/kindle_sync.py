@@ -330,6 +330,8 @@ def sync_kindle_book(cookies_str, title, author=None, csrf_token=None, logger=No
                     author_match = True
                 elif author_words and len(author_words & item_author_words) >= 2:
                     author_match = True
+                elif author_words and item_author_words and len(author_words) == 1 and len(item_author_words) == 1 and len(author_words & item_author_words) == 1:
+                    author_match = True
                 elif '@' in str(iauthors):
                     # For Send-to-Kindle, Amazon frequently sets author to the sender email address.
                     author_match = True
