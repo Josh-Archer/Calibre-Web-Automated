@@ -37,12 +37,12 @@ $(function() {
                 method: "get",
                 url: getPath() + "/ajax/emailstat",
                 async: true,
-                timeout: 900,
+                timeout: 5000,
                 success: function (data) {
                     $('#tasktable').bootstrapTable("load", data);
                 }
             });
-        }, 1000);
+        }, 3000);
     }
     if ($('#upcomingtable').length) {
         $('#upcomingtable').bootstrapTable({
