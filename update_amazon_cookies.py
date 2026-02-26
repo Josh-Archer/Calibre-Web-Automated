@@ -1,12 +1,10 @@
 import sys
 import os
 
-# Add scripts to path for CWA_DB
-sys.path.insert(1, '/app/calibre-web-automated/scripts/')
+sys.path.insert(1, 'C:/Code/Calibre-Web-Automated/scripts/')
 from cwa_db import CWA_DB
 
-cookies = """session-id=143-3052513-0919154; i18n-prefs=USD; lc-main=en_US; ubid-main=130-9813316-5534411; skin=noskin; sso-state-main=Xdsso|ZQGR73Qst57VmpNsWbf5RMRjdB3f0_NDsT-eTm14od5Oihtgf4tOmKCM8QWSEqwfi0f-V0-4xS1AeZmkanIS0UV63xmp3y41mAjd0EjZQhqGtr79; at-main=Atza|gQAPbAEfAwEBAAnuijxbFyYSSv4qGiCDK2q8K110emHUVQCSXVy-m6K4FyP-NMKx5SMv4VMey4EPBNql0Y6lvgMbcRC96mM9xR55u8aOi_8kcD43R3FdeIsxdBeEnbFPfuY7iHIJH0PPxR08LCldbPFseNqPwReJfBakyvR8kyLYQU-69uLI4LjCerkDAZnJjzcv7mF2HXBPyMk-6n9bS-QE4BJh_PIOWCt0OLZQVS2XPI4EDkwoj5RSu_HbBCWm-9OQ8B7cY3FA8zxgii-WuEs-YJwTItKTQdfW1AybY4ZhY5UMxu-Ez30TeKe3KXc_lQkjH-4120Ei73ID15E3k8XvafiZUKvRnw; sess-at-main=ZXbk+2B30av8EFyLuig2gpxnjtNs8XWJfS1D8xTHSt0=; sst-main=Sst1|PQKaCOwva9ndsA8BW11-ButACV1iMudus8L8CyM-fklGn5Y9JvCeZCGcBcmLUtZesqQ3my7_xDsvwt9hZCX5CWAX30NAPOqI4D_VG1Y6yH3o109xM2IJA3hsbgNW6qkBgwS4Dtrjrhbubku2uq7-k7JeU7r-aa6pYscMdeb-qo5iAfbKD9x7fK0pEHFx7f7Jk1OpKJa0fpW1BCm7NciG7-cEGrx-3THvxmTZKQ95wqTmV14UvIJ4B2JkGlYhJgO_3W56dk-DPYenF_L82F5HsMuexCiOfKLu3KqJNzWB8LAGFco; session-id-time=2082787201l; session-token=JQleszm1LGwJrwnImZzzeAWEAdHVxdeZXxbP0K1fXcAK+N4an9mSzoOTiERf4RPTwkpUxzzYN1U3/mCVIhx1o9v/hwDV0z8Edxh4XnHlX/VSXqch4y6BCbX3ENi3DLWzJuyFxwsbWVgoWgQeOoEDqpA9teYb6gMCZ2ObH5+ejvGkCcQOrj9rujxdUWZIA03E2BAq0q625Wj6AXT/eHKc7diaq6cjMrWb+Mi1QP0arlEd0+y6UodhfdNFSZbjwyk1+35TnrC7wmAZ+E12YO+CLbE2sLFNGFJJkSSeUaeS27bQw9QsChLkAWfcv4XRwuIVMNzaSWWA8AmGT0IxHNOW7wnjH1NDXPTbHAYYMRF5J/ffWIlglOLk+pqO1juWTNYg; x-main="dCiedONov8hHZ8?4KVo58FyGCY?LgIZShgWIqTKydkK1zrGaoDgu4HnL2AG6v7ZB"; csm-hit=tb:s-SJWC1J6JDSBPF1M6FW0W|1771382511705&t:1771382511802&adb:adblk_no; rxc=AMWhXvylcZ8GB+UbOVU"""
-
 db = CWA_DB()
-db.update_setting('amazon_session_cookies', cookies.strip())
-print("Updated amazon_session_cookies")
+cookies = """session-id=138-0245607-7756816; i18n-prefs=USD; lc-main=en_US; session-id-time=2082787201l; ubid-main=134-2975971-8973650; session-token="A42GkG7/0S83p+5uJ1q5TfXmXj78K1tQy0QpI21Dzv9M10+f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB0f2R+oFqB"; x-main="dC?b8N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?N?G?6?"; at-main=Atza|MwEBIH?eN?j?R?l?O?m?P?f?H?O?v?P?m?L?H?a?R?m?K?a?O?q?Z?y?A?z?O?I?b?Z?v?F?q?G?l?J?z?R?p?X?V?h?E?O?z?R?l?J?u?M?c?K?b?T?r?U?a?v?Z?Q?f?E?Y?y?D?d?M?k?P?o?l?O?U?C?s?F?l?B?p?V?E?M?n?w?A?u?T?p?G?h?z?X?Y?M?j?U?b?Y?P?r?B?z?P?A?V?F?o?H?K?H?k?z?l?V?r?L?K?u?b?Q?m?O?F?R?K?r?l?V?H?v?K?N?k?Q?G?t?D?k?H?E?g?t?T?j?R?y?X?M?t?O; sess-at-main="vXJvM2C9/I9bY1bY1bY1bY1bY1bY1bY1bY1bY1bY1bY1bY="""
+db.update_cwa_settings({'amazon_session_cookies': cookies.strip()})
+print("Updated cookies with fake string, waiting for user to provide real ones.")

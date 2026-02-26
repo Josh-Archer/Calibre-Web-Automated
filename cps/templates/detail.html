@@ -1,4 +1,6 @@
 {% extends is_xhr|yesno("fragment.html", "layout.html") %}
+{% from 'modal_dialogs.html' import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal,
+change_confirm_modal %}
 {% block header %}
 <meta property="og:type" content="book" />
 <meta property="og:title" content="{{ entry.title|truncate(35) }}" />
@@ -859,23 +861,23 @@
                                 {% endif %}
                             </div>
                             {% endif %}
-                            {% if amazon_sync_enabled %}
+                            {% if amazon_sync_enabled|default(false) %}
                             <div class="meta-chip kindle-library-sync" id="kindle-sync-status-container">
                                 <span class="glyphicon glyphicon-cloud"></span>
                                 <span class="meta-label">{{ _('Amazon Library Status') }}:</span>
                                 <span id="amazon-sync-status" class="meta-value">
-                                    {% if kindle_library_status %}
-                                    {% if kindle_library_status.status == 'confirmed' %}
+                                    {% if kindle_library_status|default(None) %}
+                                    {% if kindle_library_status.status|default('') == 'confirmed' %}
                                     <span class="text-success" style="color: #28a745;">{{ _('Confirmed') }}</span>
-                                    {% if kindle_library_status.asin %}
+                                    {% if kindle_library_status.asin|default('') %}
                                     <small>({{ kindle_library_status.asin }})</small>
                                     {% endif %}
-                                    {% elif kindle_library_status.status == 'not_found' %}
+                                    {% elif kindle_library_status.status|default('') == 'not_found' %}
                                     <span class="text-warning" title="{{ kindle_library_status.error_message }}">{{
                                         _('Not Found on Amazon') }}</span>
-                                    {% elif kindle_library_status.status == 'pending' %}
+                                    {% elif kindle_library_status.status|default('') == 'pending' %}
                                     <span class="text-info">{{ _('Sync Pending...') }}</span>
-                                    {% elif kindle_library_status.status == 'error' %}
+                                    {% elif kindle_library_status.status|default('') == 'error' %}
                                     <span class="text-danger" title="{{ kindle_library_status.error_message }}">{{
                                         _('Error') }}</span>
                                     {% else %}
@@ -888,8 +890,8 @@
                                 </span>
                                 <button id="refresh-kindle-sync" class="btn btn-xs btn-primary"
                                     style="margin-left: 10px; padding: 2px 6px; font-size: 10px;"
-                                    onclick="refreshKindleSync({{ entry.id }})" {% if kindle_library_status and
-                                    kindle_library_status.status=='confirmed' %}disabled{% endif %}>
+                                    onclick="refreshKindleSync({{ entry.id }})" {% if kindle_library_status|default(None) and
+                                    kindle_library_status.status|default('')=='confirmed' %}disabled{% endif %}>
                                     <span class="glyphicon glyphicon-refresh"></span> {{ _('Refresh') }}
                                 </button>
                             </div>

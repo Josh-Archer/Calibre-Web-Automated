@@ -71,6 +71,7 @@ def register_scheduled_tasks(reconnect=True):
 
         _schedule_hardcover_auto_fetch(scheduler, timezone_info)
         _schedule_archived_book_cleanup(scheduler, timezone_info)
+        _schedule_amazon_heartbeat(scheduler, timezone_info)
 
         # Kick-off tasks, if they should currently be running
         if should_task_be_running(start, duration):
@@ -374,6 +375,31 @@ def _schedule_archived_book_cleanup(scheduler, timezone_info):
         if trigger:
             scheduler.schedule_task(lambda: TaskCleanArchivedBooks(), user='System',
                                     trigger=trigger, name=name, hidden=True)
+    except Exception:
+        # Scheduling is best-effort; never block startup
+        pass
+
+
+def _schedule_amazon_heartbeat(scheduler, timezone_info):
+    """Schedule background Amazon session heartbeat (default every 6 hours)."""
+    try:
+        import sys as _sys
+        if '/app/calibre-web-automated/scripts/' not in _sys.path:
+            _sys.path.insert(1, '/app/calibre-web-automated/scripts/')
+        from cwa_db import CWA_DB
+        from .tasks.amazon_heartbeat import TaskAmazonHeartbeat
+
+        db = CWA_DB()
+        enabled = bool(db.cwa_settings.get('amazon_sync_enabled', 0))
+        if not enabled:
+            return
+
+        # Use 6-hour interval for heartbeat
+        trigger = IntervalTrigger(hours=6, timezone=timezone_info)
+        name = 'amazon session heartbeat'
+
+        scheduler.schedule_task(lambda: TaskAmazonHeartbeat("Refreshing Amazon Session"), user='System',
+                                trigger=trigger, name=name, hidden=True)
     except Exception:
         # Scheduling is best-effort; never block startup
         pass

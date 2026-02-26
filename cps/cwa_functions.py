@@ -624,7 +624,6 @@ def set_cwa_settings():
     float_settings = ['hardcover_auto_fetch_min_confidence', 'hardcover_auto_fetch_rate_limit']  # Special handling for float settings
     json_settings = ['metadata_provider_hierarchy', 'metadata_providers_enabled', 'duplicate_format_priority']  # Special handling for JSON settings
     string_settings.append('amazon_session_cookies')
-    string_settings.append('amazon_csrf_token')
     boolean_settings.append('amazon_sync_enabled')
     skip_settings = ['auto_convert_ignored_formats', 'auto_ingest_ignored_formats', 'auto_convert_retained_formats']  # Handled through individual format checkboxes
     
@@ -654,7 +653,9 @@ def set_cwa_settings():
         string_settings.append(f"convert_retained_{format}")
 
     if request.method == 'POST':
-        if request.form['submit_button'] == "Submit":
+        print(f"[CWA-DEBUG] POST to /cwa-settings received", flush=True)
+        if request.form.get('submit_button') == "Submit":
+            print(f"[CWA-DEBUG] Submit button clicked. Form keys: {list(request.form.keys())}", flush=True)
             result = {"auto_convert_ignored_formats":[], "auto_ingest_ignored_formats":[], "auto_convert_retained_formats":[]}
             # set boolean_settings
             for setting in boolean_settings:
@@ -863,6 +864,7 @@ def set_cwa_settings():
             config.config_kobo_sync_magic_shelves = 'config_kobo_sync_magic_shelves' in request.form
             config.save()
 
+            print(f"[CWA-DEBUG] Final result to save: {result}", flush=True)
             cwa_db.update_cwa_settings(result)
             cwa_settings = cwa_db.get_cwa_settings()
 
@@ -2236,3 +2238,19 @@ def cwa_kindle_sync():
     WorkerThread.add(current_user.name, TaskKindleSync("Manual Kindle Sync", book_id, current_user.id))
 
     return jsonify({"success": True, "message": "Sync task queued."})
+
+
+@cwa_internal.route("/cwa-mass-kindle-sync", methods=["POST"])
+@cwa_internal.route("/cwa-mass-kindle-sync/", methods=["POST"])
+@cwa_internal.route("/cwa/cwa-mass-kindle-sync", methods=["POST"])
+@cwa_internal.route("/cwa/cwa-mass-kindle-sync/", methods=["POST"])
+@csrf.exempt
+@user_login_required
+def cwa_mass_kindle_sync():
+    """Queues a background task to bulk sync all books with Amazon."""
+    from .tasks.mass_kindle_sync import TaskMassKindleSync
+
+    # The background task will fetch the library once and scan the entire DB
+    WorkerThread.add(current_user.name, TaskMassKindleSync("Mass Kindle Library Sync", current_user.id))
+
+    return jsonify({"success": True, "message": "Mass sync task queued."})

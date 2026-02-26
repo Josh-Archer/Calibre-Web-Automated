@@ -307,11 +307,23 @@ def render_title_template(*args, **kwargs):
                     }
     except Exception as e:
         log.debug("[cwa-duplicates] Failed to build duplicate notification context: %s", str(e))
+
+    try:
+        if current_user.is_authenticated:
+            cwa_db_inst = cwa_db if 'cwa_db' in locals() else CWA_DB()
+            aws_synced_books = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+        else:
+            aws_synced_books = set()
+    except Exception as e:
+        log.debug("[cwa-aws-sync] Failed to build aws_synced_books context: %s", str(e))
+        aws_synced_books = set()
+
     try:
         return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
                        accept=config.config_upload_formats.split(','),
                        magic_shelf_routes=magic_shelf_routes,
                        duplicate_notification=duplicate_notification,
+                       aws_synced_books=aws_synced_books,
                        *args, **kwargs)
     except PermissionError:
         log.error("No permission to access {} file.".format(args[0]))

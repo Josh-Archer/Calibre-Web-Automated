@@ -1,0 +1,63 @@
+{
+    "ebook_items": [
+        {
+            "asin": "B003G93YLY",
+            "title": "Merriam-Webster's Advanced Learner's Dictionary",
+            "authors": "Merriam-Webster"
+        },
+        {
+            "asin": "B0180T0IUY",
+            "title": "Dark Matter: A Novel",
+            "authors": "Blake Crouch",
+            "contentCategoryType": "Ebook"
+        }
+    ],
+    "pdoc_items": [
+        {
+            "asin": "BFGKIGMLUG2MNHHMCPZWQE5QHGHBXWR5",
+            "title": "",
+            "authors": "",
+            "sortableTitle": "Yumi and the Nightmare Painter",
+            "sortableAuthors": "Brandon Sanderson",
+            "contentCategoryType": "KindlePDoc"
+        },
+        {
+            "asin": "GRSGKUL4OKQFXFIQZ77RAKMWY2UUZKJL",
+            "title": "",
+            "authors": "",
+            "sortableTitle": "Razorblade Tears",
+            "sortableAuthors": "S. A. Cosby",
+            "contentCategoryType": "KindlePDoc"
+        },
+        {
+            "asin": "B09G3T8M6Y",
+            "title": "The Blacktongue Thief",
+            "authors": "Christopher Buehlman",
+            "sortableTitle": "Blacktongue Thief, The",
+            "sortableAuthors": "Buehlman, Christopher",
+            "contentCategoryType": "KindlePDoc"
+        },
+        {
+            "asin": "B0B8T8V6WZ",
+            "title": "The Way of Kings",
+            "authors": "Brandon Sanderson",
+            "contentCategoryType": "KindlePDoc"
+        },
+        {
+            "asin": "QOGTISMVFXFEO4LBMSKY423O4KT6UGRQ",
+            "title": "",
+            "authors": "",
+            "sortableTitle": "alloy of law brandon sanderson, the",
+            "sortableAuthors": "sanderson, brandon",
+            "contentCategoryType": "KindlePDoc"
+        },
+        {
+            "asin": "",
+            "title": "",
+            "authors": "",
+            "sortableTitle": "Rhythm of War",
+            "sortableAuthors": "Brandon Sanderson",
+            "contentCategoryType": "KindlePDoc"
+        }
+    ]
+}

@@ -470,6 +470,24 @@ def render_books_list(data, sort_param, book_id, page):
         return render_adv_search_results(term, offset, order, config.config_books_per_page)
     elif data == "magicshelf":
         return render_magic_shelf(book_id, sort_param, page)
+    elif data == "aws_unsynced":
+        from scripts.cwa_db import CWA_DB
+        cwa_db_inst = CWA_DB()
+        synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+        
+        if synced_ids:
+            db_filter = ~db.Books.id.in_(synced_ids)
+        else:
+            db_filter = True
+            
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, db_filter, order[0],
+                                                                True, config.config_read_column,
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series)
+        title = _('Books Not in AWS')
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=title, page="aws_unsynced", order=order[1])
     else:
         website = data or "newest"
         entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order[0],
@@ -1441,6 +1459,14 @@ def list_books():
     order = request.args.get("order", "").lower()
     state = None
     join = tuple()
+    aws_synced_ids = set()
+
+    try:
+        from scripts.cwa_db import CWA_DB
+        cwa_db_inst = CWA_DB()
+        aws_synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+    except Exception as e:
+        log.debug("[cwa-aws-sync] Failed to load confirmed IDs for table: %s", str(e))
 
     if sort_param == "state":
         state = json.loads(request.args.get("state", "[]"))
@@ -1501,6 +1527,7 @@ def list_books():
         val = entry[0]
         val.is_archived = entry[1] is True
         val.read_status = entry[2] == ub.ReadBook.STATUS_FINISHED
+        val.aws_sync_confirmed = val.id in aws_synced_ids
         for lang_index in range(0, len(val.languages)):
             val.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), val.languages[
                 lang_index].lang_code)

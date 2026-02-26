@@ -303,6 +303,10 @@ class CalibreTask:
         self.progress = 1
 
     def __str__(self):
-        if callable(self.name):
-            return self.name()
-        return self.name
+        try:
+            name = self.name
+            if callable(name):
+                return name()
+            return name
+        except Exception:
+            return "CalibreTask"

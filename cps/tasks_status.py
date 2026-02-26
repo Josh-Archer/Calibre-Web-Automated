@@ -65,7 +65,8 @@ def render_task_status(tasklist):
                 else:
                     ret['status'] = _('Unknown Status')
 
-            ret['taskMessage'] = "{}: {}".format(task.name, task.message) if task.message else task.name
+            task_name = task.name() if callable(task.name) else task.name
+            ret['taskMessage'] = "{}: {}".format(task_name, task.message) if task.message else task_name
             ret['progress'] = "{} %".format(int(task.progress * 100))
             ret['user'] = escape(user)  # prevent xss
 

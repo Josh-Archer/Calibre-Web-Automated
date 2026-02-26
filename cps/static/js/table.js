@@ -1120,6 +1120,13 @@ function ratingFormatter(value, row) {
     return (value/2);
 }
 
+function awsSyncFormatter(value, row) {
+    if (value) {
+        return '<span class="glyphicon glyphicon-cloud aws-sync-icon-table" title="Synced to Amazon Kindle"></span>';
+    }
+    return '';
+}
+
 
 /* Do some hiding disabling after user list is loaded */
 function loadSuccess() {

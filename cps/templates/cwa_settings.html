@@ -256,15 +256,6 @@
           {{_('Paste your full Amazon cookie string here.')}}
         </p>
 
-        <label for="amazon_csrf_token" style="margin-top: 15px; display: block;">{{_('Amazon CSRF Token')}}</label>
-        <input type="text" id="amazon_csrf_token" name="amazon_csrf_token"
-          value="{{ cwa_settings.get('amazon_csrf_token', '') }}"
-          style="width: 100%; max-width: 800px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 10px; font-family: monospace;"
-          placeholder="gQDSie... (Found via 'csrfToken' in console)">
-        <p class="cwa-settings-tooltip">
-          {{_('Paste your Amazon CSRF token here. You can find this by typing `csrfToken` in your browser console on the
-          Amazon MYCD page.')}}
-        </p>
 
         <details
           style="margin-top: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; max-width: 800px;">

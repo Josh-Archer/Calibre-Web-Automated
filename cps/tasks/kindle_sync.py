@@ -17,13 +17,14 @@ class TaskKindleSync(CalibreTask):
     def name(self):
         return "Kindle Library Sync"
 
+    @property
     def is_cancellable(self):
         return True
 
     def run(self, worker_thread):
         try:
             from scripts.cwa_db import CWA_DB
-            from scripts.kindle_sync import sync_kindle_book
+            from scripts.kindle_sync import sync_kindle_book, fetch_all_amazon_items
             
             cwa_db = CWA_DB()
             settings = cwa_db.cwa_settings
@@ -38,6 +39,18 @@ class TaskKindleSync(CalibreTask):
                 self._handleError("Amazon session cookies are missing in settings.")
                 return
 
+            ebook_items, pdoc_items, updated_cookies, fetch_err = fetch_all_amazon_items(cookies, logger=log)
+            if fetch_err:
+                self._handleError(f"Failed to fetch Amazon library: {fetch_err}")
+                return
+
+            if updated_cookies and updated_cookies != cookies:
+                try:
+                    cwa_db.update_cwa_settings({'amazon_session_cookies': updated_cookies})
+                    cookies = updated_cookies
+                except Exception as e:
+                    log.debug(f"Failed to persist updated Amazon cookies: {e}")
+
             book = calibre_db.get_book(self.book_id)
             if not book:
                 self._handleError(f"Book ID {self.book_id} not found in library.")
@@ -50,7 +63,14 @@ class TaskKindleSync(CalibreTask):
                 return
 
             # Perform the sync
-            status, asin, error = sync_kindle_book(cookies, book.title, book.authors[0].name if book.authors else None, csrf_token=csrf_token, logger=log)
+            status, asin, error = sync_kindle_book(
+                cookies,
+                book.title,
+                book.authors[0].name if book.authors else None,
+                csrf_token=csrf_token,
+                logger=log,
+                pre_fetched_items=(ebook_items, pdoc_items)
+            )
             
             # Update DB
             cwa_db.kindle_sync_update(self.user_id, self.book_id, status=status, asin=asin, error_message=error)

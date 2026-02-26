@@ -33,6 +33,11 @@
       position: static !important;
       margin-top: 0.8rem !important;
   }
+
+  .aws-sync-icon-table {
+      color: #5bc0de;
+      font-size: 14px;
+  }
 </style>
 {% endblock %}
 {% block body %}
@@ -75,6 +80,13 @@
         {{ _('Clear all') }}
       </div>
       {% endif %}
+      {% if current_user.role_admin() %}
+      <div class="btn btn-info" id="mass-sync-btn-table" onclick="triggerMassKindleSyncFromTable()" data-toggle="tooltip"
+        title="{{_('Sync all books to Amazon Kindle Library')}}">
+        <span class="glyphicon glyphicon-cloud-upload"></span> {{_('Mass AWS Sync')}}
+      </div>
+      <span id="mass-sync-status-table" style="margin-left: 8px;"></span>
+      {% endif %}
     </div>
     <div>
       <br>
@@ -99,6 +111,7 @@
               <th data-field="state" data-checkbox="true" data-sortable="true"></th>
             {% endif %}
               <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
+              <th data-field="aws_sync_confirmed" id="aws_sync_confirmed" data-sortable="false" data-switchable="true" data-formatter="awsSyncFormatter">{{_('AWS')}}</th>
               {{ text_table_row('title', _('Enter Title'),_('Title'), true, true) }}
               {{ text_table_row('sort', _('Enter Title Sort'),_('Title Sort'), false, true) }}
               {{ text_table_row('author_sort', _('Enter Author Sort'),_('Author Sort'), false, true) }}
@@ -382,4 +395,68 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-wysihtml5-0.0.3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/wysihtml5-0.0.3.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script>
+  function triggerMassKindleSyncFromTable() {
+    const btn = document.getElementById('mass-sync-btn-table');
+    const statusSpan = document.getElementById('mass-sync-status-table');
+
+    if (!btn || !statusSpan) {
+      return;
+    }
+    if (!confirm("Are you sure you want to mass sync all books to AWS? This may take several minutes.")) {
+      return;
+    }
+
+    btn.classList.add('disabled');
+    btn.setAttribute('aria-disabled', 'true');
+    statusSpan.innerHTML = '<span class="text-muted"><i class="glyphicon glyphicon-refresh fast-spin"></i> Triggering...</span>';
+
+    const endpoints = [getPath() + "/cwa-mass-kindle-sync", "/cwa-mass-kindle-sync"];
+    const tryRequest = function (index) {
+      if (index >= endpoints.length) {
+        statusSpan.innerHTML = '<span class="text-danger">Error: Failed to queue sync (all endpoints)</span>';
+        btn.classList.remove('disabled');
+        btn.removeAttribute('aria-disabled');
+        return;
+      }
+
+      $.ajax({
+        url: endpoints[index],
+        method: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token() }}"
+        },
+        success: function (data) {
+          if (data && data.error) {
+            statusSpan.innerHTML = '<span class="text-danger">' + data.error + '</span>';
+            btn.classList.remove('disabled');
+            btn.removeAttribute('aria-disabled');
+          } else {
+            statusSpan.innerHTML = '<span class="text-success">Task Queued! Check Tasks page.</span>';
+          }
+        },
+        error: function (xhr) {
+          if (index + 1 < endpoints.length) {
+            tryRequest(index + 1);
+            return;
+          }
+          var detail = "";
+          if (xhr) {
+            detail = (xhr.status ? ('HTTP ' + xhr.status) : 'request failed');
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+              detail += ': ' + xhr.responseJSON.error;
+            }
+          }
+          statusSpan.innerHTML = '<span class="text-danger">Error: ' + detail + '</span>';
+          btn.classList.remove('disabled');
+          btn.removeAttribute('aria-disabled');
+        }
+      });
+    };
+
+    tryRequest(0);
+  }
+</script>
 {% endblock %}
