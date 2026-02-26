@@ -1,63 +1,1129 @@
 {
-    "ebook_items": [
-        {
-            "asin": "B003G93YLY",
-            "title": "Merriam-Webster's Advanced Learner's Dictionary",
-            "authors": "Merriam-Webster"
-        },
-        {
-            "asin": "B0180T0IUY",
-            "title": "Dark Matter: A Novel",
-            "authors": "Blake Crouch",
-            "contentCategoryType": "Ebook"
-        }
-    ],
-    "pdoc_items": [
-        {
-            "asin": "BFGKIGMLUG2MNHHMCPZWQE5QHGHBXWR5",
-            "title": "",
-            "authors": "",
-            "sortableTitle": "Yumi and the Nightmare Painter",
-            "sortableAuthors": "Brandon Sanderson",
-            "contentCategoryType": "KindlePDoc"
-        },
-        {
-            "asin": "GRSGKUL4OKQFXFIQZ77RAKMWY2UUZKJL",
-            "title": "",
-            "authors": "",
-            "sortableTitle": "Razorblade Tears",
-            "sortableAuthors": "S. A. Cosby",
-            "contentCategoryType": "KindlePDoc"
-        },
-        {
-            "asin": "B09G3T8M6Y",
-            "title": "The Blacktongue Thief",
-            "authors": "Christopher Buehlman",
-            "sortableTitle": "Blacktongue Thief, The",
-            "sortableAuthors": "Buehlman, Christopher",
-            "contentCategoryType": "KindlePDoc"
-        },
-        {
-            "asin": "B0B8T8V6WZ",
-            "title": "The Way of Kings",
-            "authors": "Brandon Sanderson",
-            "contentCategoryType": "KindlePDoc"
-        },
-        {
-            "asin": "QOGTISMVFXFEO4LBMSKY423O4KT6UGRQ",
-            "title": "",
-            "authors": "",
-            "sortableTitle": "alloy of law brandon sanderson, the",
-            "sortableAuthors": "sanderson, brandon",
-            "contentCategoryType": "KindlePDoc"
-        },
-        {
-            "asin": "",
-            "title": "",
-            "authors": "",
-            "sortableTitle": "Rhythm of War",
-            "sortableAuthors": "Brandon Sanderson",
-            "contentCategoryType": "KindlePDoc"
-        }
-    ]
+  "ebook_items": [
+    {
+      "asin": "B003G93YLY",
+      "title": "Merriam-Webster Advanced Learners Dictionary",
+      "authors": "Merriam-Webster"
+    },
+    {
+      "asin": "B0180T0IUY",
+      "title": "Dark Matter: A Novel",
+      "authors": "Blake Crouch",
+      "contentCategoryType": "Ebook"
+    }
+  ],
+  "pdoc_items": [
+    {
+      "asin": "QOGTISMVFXFEO4LBMSKY423O4KT6UGRQ",
+      "title": "The Alloy of Law",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Alloy of Law",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-EA88375335E03B670B13F7D23C613D63",
+      "title": "Children of Time",
+      "authors": "Adrian Tchaikovsky",
+      "sortableTitle": "Children of Time",
+      "sortableAuthors": "Adrian Tchaikovsky",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-B3074ED659A6A7EFAF7CCE677210E23B",
+      "title": "The Pariah",
+      "authors": "Anthony Ryan",
+      "sortableTitle": "The Pariah",
+      "sortableAuthors": "Anthony Ryan",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-E36113C023433BDF74BBD7792EE4FEDF",
+      "title": "Elantris",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Elantris",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-F7F92E03CE884A5D8DF98FE7BAA81CBF",
+      "title": "Six of Crows",
+      "authors": "Leigh Bardugo",
+      "sortableTitle": "Six of Crows",
+      "sortableAuthors": "Leigh Bardugo",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-DDDA751D942B2C595ED946B730301385",
+      "title": "Empire of Silence",
+      "authors": "Christopher Ruocchio",
+      "sortableTitle": "Empire of Silence",
+      "sortableAuthors": "Christopher Ruocchio",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-BB6F4AF2D63699A5330E5C2C5BC5A7B6",
+      "title": "Project Hail Mary",
+      "authors": "Andy Weir",
+      "sortableTitle": "Project Hail Mary",
+      "sortableAuthors": "Andy Weir",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-BE32E81380DC7C911E77C44D542E6F39",
+      "title": "The Last Thing He Told Me",
+      "authors": "Laura Dave",
+      "sortableTitle": "The Last Thing He Told Me",
+      "sortableAuthors": "Laura Dave",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-CC8D71F2454284B7456CE4D0ED69BD5D",
+      "title": "The Time Machine",
+      "authors": "H.G. Wells",
+      "sortableTitle": "The Time Machine",
+      "sortableAuthors": "H.G. Wells",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-C8778827C90C628BE64929AAC5DE3C3B",
+      "title": "The Martian",
+      "authors": "Andy Weir",
+      "sortableTitle": "The Martian",
+      "sortableAuthors": "Andy Weir",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-6A0C6333FCB8269A9C42C8814114B28A",
+      "title": "Recursion",
+      "authors": "Blake Crouch",
+      "sortableTitle": "Recursion",
+      "sortableAuthors": "Blake Crouch",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-FDF55A04CE1CF05029A75BA6879C1250",
+      "title": "East of Eden",
+      "authors": "John Steinbeck",
+      "sortableTitle": "East of Eden",
+      "sortableAuthors": "John Steinbeck",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-7942DC69FA776421F65AEEC743E36E58",
+      "title": "Beyond Order",
+      "authors": "Jordan B. Peterson",
+      "sortableTitle": "Beyond Order",
+      "sortableAuthors": "Jordan B. Peterson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "B0180T0IUY",
+      "title": "Dark Matter",
+      "authors": "Blake Crouch",
+      "sortableTitle": "Dark Matter",
+      "sortableAuthors": "Blake Crouch",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-58315C1BFC4185874AFE2EBCB21C7F60",
+      "title": "Kings of the Wyld",
+      "authors": "Nicholas Eames",
+      "sortableTitle": "Kings of the Wyld",
+      "sortableAuthors": "Nicholas Eames",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-C7D94EF7647D4987C38E3CB866EED0D3",
+      "title": "American Gods",
+      "authors": "Neil Gaiman",
+      "sortableTitle": "American Gods",
+      "sortableAuthors": "Neil Gaiman",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-A384AEA31678D41245AC7925D4F7EAD7",
+      "title": "The Rage of Dragons",
+      "authors": "Evan Winter",
+      "sortableTitle": "The Rage of Dragons",
+      "sortableAuthors": "Evan Winter",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-989BE946E97E359DE41B15002D3382BD",
+      "title": "A Little Hatred",
+      "authors": "Joe Abercrombie",
+      "sortableTitle": "A Little Hatred",
+      "sortableAuthors": "Joe Abercrombie",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-94C535CFF44FEE4986F98B13B895A9EC",
+      "title": "The Eye of the World",
+      "authors": "Robert Jordan",
+      "sortableTitle": "The Eye of the World",
+      "sortableAuthors": "Robert Jordan",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-A2A72C3F273834128C0CD89F6BB9F444",
+      "title": "One Dark Window",
+      "authors": "Rachel Gillig",
+      "sortableTitle": "One Dark Window",
+      "sortableAuthors": "Rachel Gillig",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-994A7A4107DAA340D48CB27689C32A0F",
+      "title": "The Stand",
+      "authors": "Stephen King",
+      "sortableTitle": "The Stand",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-66932A2EE796EAA0E6A35C9898211D79",
+      "title": "A Darker Shade of Magic",
+      "authors": "V.E. Schwab",
+      "sortableTitle": "A Darker Shade of Magic",
+      "sortableAuthors": "V.E. Schwab",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-3A2D247EE9DFFDFFA85DF40B4C8B3CFA",
+      "title": "Catch-22",
+      "authors": "Joseph Heller",
+      "sortableTitle": "Catch-22",
+      "sortableAuthors": "Joseph Heller",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-3FCC27444572C296D2AE7DD85C5DB34F",
+      "title": "Red Rising",
+      "authors": "Pierce Brown",
+      "sortableTitle": "Red Rising",
+      "sortableAuthors": "Pierce Brown",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-76DBB9F8A7CCB393D0E5D8B09DD562A8",
+      "title": "The Poppy War",
+      "authors": "R.F. Kuang",
+      "sortableTitle": "The Poppy War",
+      "sortableAuthors": "R.F. Kuang",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1EE5B1D7DC3D97826D326488EB6893FD",
+      "title": "Jade War",
+      "authors": "Fonda Lee",
+      "sortableTitle": "Jade War",
+      "sortableAuthors": "Fonda Lee",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-0328B9573BBBE4101DF5ACE7BA5FB126",
+      "title": "The Count of Monte Cristo",
+      "authors": "Alexandre Dumas",
+      "sortableTitle": "The Count of Monte Cristo",
+      "sortableAuthors": "Alexandre Dumas",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-AC9FF44588C27AE05B41690BE32867F5",
+      "title": "Hyperion",
+      "authors": "Dan Simmons",
+      "sortableTitle": "Hyperion",
+      "sortableAuthors": "Dan Simmons",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-B2D8646823E08B04A2A776ACFAA97750",
+      "title": "Annihilation",
+      "authors": "Jeff Vandermeer",
+      "sortableTitle": "Annihilation",
+      "sortableAuthors": "Jeff Vandermeer",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-CF4205677C74782EC6A35F9291709961",
+      "title": "The Black Prism",
+      "authors": "Brent Weeks",
+      "sortableTitle": "The Black Prism",
+      "sortableAuthors": "Brent Weeks",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-F22AC3BFCB30EBC59CBF405A5DE18302",
+      "title": "Demon Copperhead",
+      "authors": "Barbara Kingsolver",
+      "sortableTitle": "Demon Copperhead",
+      "sortableAuthors": "Barbara Kingsolver",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-F0007D156B181D88BB3E3C233570A803",
+      "title": "Station Eleven",
+      "authors": "Emily St. John Mandel",
+      "sortableTitle": "Station Eleven",
+      "sortableAuthors": "Emily St. John Mandel",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5F17C323768C9F59CE7F64AE30F70246",
+      "title": "The Shadow of What Was Lost",
+      "authors": "James Islington",
+      "sortableTitle": "The Shadow of What Was Lost",
+      "sortableAuthors": "James Islington",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-23FA2A2628938785EC36E2786B9FEF16",
+      "title": "The Lies of Locke Lamora",
+      "authors": "Scott Lynch",
+      "sortableTitle": "The Lies of Locke Lamora",
+      "sortableAuthors": "Scott Lynch",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-AB6513A2DD28552E3C068F5576A6E573",
+      "title": "The Light of All That Falls",
+      "authors": "James Islington",
+      "sortableTitle": "The Light of All That Falls",
+      "sortableAuthors": "James Islington",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1711F7F4156382B97D1715DB2C02AAEB",
+      "title": "A Wizard of Earthsea",
+      "authors": "Ursula K. Le Guin",
+      "sortableTitle": "A Wizard of Earthsea",
+      "sortableAuthors": "Ursula K. Le Guin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "B09G3T8M6Y",
+      "title": "The Blacktongue Thief",
+      "authors": "Christopher Buehlman",
+      "sortableTitle": "The Blacktongue Thief",
+      "sortableAuthors": "Christopher Buehlman",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-BD65BC1603B9245D89331B17E485F0A3",
+      "title": "Sword Catcher",
+      "authors": "Cassandra Clare",
+      "sortableTitle": "Sword Catcher",
+      "sortableAuthors": "Cassandra Clare",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5281A482947D607A03FE1B8BBD09463D",
+      "title": "Black Sun",
+      "authors": "Rebecca Roanhorse",
+      "sortableTitle": "Black Sun",
+      "sortableAuthors": "Rebecca Roanhorse",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-EFAD48BF704D805610782A6C01D2188E",
+      "title": "Velocity Weapon",
+      "authors": "Megan E. O'Keefe",
+      "sortableTitle": "Velocity Weapon",
+      "sortableAuthors": "Megan E. O'Keefe",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-2E8631CEFA7B3781EEE4EA4AF0716895",
+      "title": "Skyward",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Skyward",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-9EDB1CC7AC716D57FEA396B4ED1F45CD",
+      "title": "Den of Theives",
+      "authors": "James B. Stewart",
+      "sortableTitle": "Den of Theives",
+      "sortableAuthors": "James B. Stewart",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-9B321EEFDD59831726ACC5C672369907",
+      "title": "The Bitcoin Standard",
+      "authors": "Saifedean Ammous",
+      "sortableTitle": "The Bitcoin Standard",
+      "sortableAuthors": "Saifedean Ammous",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5D2A8DAB4FA7DE4CEADDF9AAFC50F88B",
+      "title": "Sleeping Giants",
+      "authors": "Sylvain Neuvel",
+      "sortableTitle": "Sleeping Giants",
+      "sortableAuthors": "Sylvain Neuvel",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-964700F9477BA708707D9F0FE6731290",
+      "title": "American Prometheus",
+      "authors": "Kai Bird",
+      "sortableTitle": "American Prometheus",
+      "sortableAuthors": "Kai Bird",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-0086CBF1E305FA7E67DD57A4950D745A",
+      "title": "Shadow and Bone",
+      "authors": "Leigh Bardugo",
+      "sortableTitle": "Shadow and Bone",
+      "sortableAuthors": "Leigh Bardugo",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-A9A6ED81BB5BC6BA4B37B3E3CD63C8C9",
+      "title": "Ender\u00e2\u20ac\u2122s Game",
+      "authors": "Orson Scott Card",
+      "sortableTitle": "Ender\u00e2\u20ac\u2122s Game",
+      "sortableAuthors": "Orson Scott Card",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-2C1A5F48F3EE773E5719679FC51504B4",
+      "title": "Ninth House",
+      "authors": "Leigh Bardugo",
+      "sortableTitle": "Ninth House",
+      "sortableAuthors": "Leigh Bardugo",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-FD5D7166593EB1762308541466E103D2",
+      "title": "Stoner",
+      "authors": "John Williams",
+      "sortableTitle": "Stoner",
+      "sortableAuthors": "John Williams",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-25B280993351A3E1A6541D737C958BF6",
+      "title": "Artificial Condition",
+      "authors": "Martha Wells",
+      "sortableTitle": "Artificial Condition",
+      "sortableAuthors": "Martha Wells",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-E5E8F74E94E19155CA01A76313AB8640",
+      "title": "A Memory Called Empire",
+      "authors": "Arkady Martine",
+      "sortableTitle": "A Memory Called Empire",
+      "sortableAuthors": "Arkady Martine",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-42176B62F18E5B025C19152002B0B872",
+      "title": "The Kind Worth Killing",
+      "authors": "Peter Swanson",
+      "sortableTitle": "The Kind Worth Killing",
+      "sortableAuthors": "Peter Swanson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-94281F742269520746E9404A752C15CA",
+      "title": "Foundryside",
+      "authors": "Robert Jackson Bennett",
+      "sortableTitle": "Foundryside",
+      "sortableAuthors": "Robert Jackson Bennett",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-E42536A7F732A1B48BEB6EB6D796F2DB",
+      "title": "Nobody's Fool",
+      "authors": "Richard Russo",
+      "sortableTitle": "Nobody's Fool",
+      "sortableAuthors": "Richard Russo",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-71BE121017A02C2AB45C2AC3308077A1",
+      "title": "The Dragonbone Chair",
+      "authors": "Tad Williams",
+      "sortableTitle": "The Dragonbone Chair",
+      "sortableAuthors": "Tad Williams",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-E688F7E6F38F47779E6ACDBBE222C389",
+      "title": "Legion",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Legion",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-08E41B3A34EEB909E209A2C488B6BFB0",
+      "title": "Warbreaker",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Warbreaker",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-EEED74A71B66E4952CEA3AC8FAF4F98C",
+      "title": "ReDawn",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "ReDawn",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-55008380EDB5EEF70C5CB0C66D82785F",
+      "title": "The Way of Kings Prime",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Way of Kings Prime",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-FEF46CF6EC1C12D99D50167E1B571A65",
+      "title": "Sunreach",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Sunreach",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-0D5F3CBCD84BBABDC1CF8AF785ECAAD4",
+      "title": "Shadows for Silence in the Forests of Hell",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Shadows for Silence in the Forests of Hell",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-EA317DC497CA1A030FDCB00A2A201E14",
+      "title": "Defiant",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Defiant",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5D6908BC09C4DD4C97C62F10563C14EB",
+      "title": "Evershore",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Evershore",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1011DE74A6AEB546C0EAA54118C90CE9",
+      "title": "Shadows of Self",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Shadows of Self",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5DF360AF9E6D1C8446ACF59402C8911D",
+      "title": "Dawnshard",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Dawnshard",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-71E9070D183C6392EF9BA5BA3EAC0C9A",
+      "title": "Steelheart",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Steelheart",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-4C57EFC67DD3E469207EB0F4C3FF245F",
+      "title": "Perfect State",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Perfect State",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-6080E4614E7CF5A3BF78E9756E066E31",
+      "title": "Oathbringer",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Oathbringer",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1E53CC9146F1244C394BA11F16C28CA5",
+      "title": "Edgedancer",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Edgedancer",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-8C3395A2A2415FA9CFF81A796B8A3D49",
+      "title": "The City of Brass",
+      "authors": "S.A. Chakraborty",
+      "sortableTitle": "The City of Brass",
+      "sortableAuthors": "S.A. Chakraborty",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-3CAB9E7F24043917B912AF131F6B7B1E",
+      "title": "Starsight",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Starsight",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-EC9E3E54E53CC9375B8635E879957C24",
+      "title": "The Sunlit Man",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Sunlit Man",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-0D19C1A966C2E3B7C31D5D7B97164387",
+      "title": "The Name of the Wind",
+      "authors": "Patrick Rothfuss",
+      "sortableTitle": "The Name of the Wind",
+      "sortableAuthors": "Patrick Rothfuss",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5FB6ACAC6F5C1629DB7FD4530D2539B5",
+      "title": "The Hero of Ages",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Hero of Ages",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1C6B3AA4E033742D59186582C19B016B",
+      "title": "Lost in Time",
+      "authors": "A.G. Riddle",
+      "sortableTitle": "Lost in Time",
+      "sortableAuthors": "A.G. Riddle",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-D1A2D661D224BCFE8CFE33F80BB3BD49",
+      "title": "The Eleventh Metal",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Eleventh Metal",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-09F61EFCE436D6E340A682C7D1CF7018",
+      "title": "The Emperor's Soul",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Emperor's Soul",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-19D5D0BF23D5E4A6141FACE424514F55",
+      "title": "Nineteen Eighty-four",
+      "authors": "George Orwell",
+      "sortableTitle": "Nineteen Eighty-four",
+      "sortableAuthors": "George Orwell",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-4C40AC8171D30D9A7D1EAC6CD9173F5F",
+      "title": "Words of Radiance",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Words of Radiance",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-FF66380570F7DE46E938603603325BA6",
+      "title": "Snapshot",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Snapshot",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-44A53221AEF8E7B64081D4AA0004A437",
+      "title": "Magician",
+      "authors": "Raymond E. Feist",
+      "sortableTitle": "Magician",
+      "sortableAuthors": "Raymond E. Feist",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-F4CDBF04C5D6EBB5926E91B8C7979C89",
+      "title": "Sixth of the Dusk",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Sixth of the Dusk",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-05AF4B5301CD9C048285C21ED27E85A5",
+      "title": "The Rithmatist",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Rithmatist",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-2D6F16FB8D1BE253A08E52BBECE78818",
+      "title": "Carrie",
+      "authors": "Stephen King",
+      "sortableTitle": "Carrie",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-8A1805CC284DFA9E24C8EC78AD22C6F3",
+      "title": "Dungeon Crawler Carl",
+      "authors": "Matt Dinniman",
+      "sortableTitle": "Dungeon Crawler Carl",
+      "sortableAuthors": "Matt Dinniman",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-30F5CA94A92CBB568F2A42A442DD1D54",
+      "title": "The Hedge Knight",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "The Hedge Knight",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "GRSGKUL4OKQFXFIQZ77RAKMWY2UUZKJL",
+      "title": "Razorblade Tears",
+      "authors": "S.A. Cosby",
+      "sortableTitle": "Razorblade Tears",
+      "sortableAuthors": "S.A. Cosby",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-BBF3543C255F9756C9E6B8406F1A7511",
+      "title": "A Storm of Swords",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "A Storm of Swords",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-43931D58ABFECD7A2E8ECA102C8792CB",
+      "title": "Fire & Blood",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "Fire & Blood",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5AC7FA8ABE29C9056FD7097F3AA74562",
+      "title": "A Dance with Dragons",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "A Dance with Dragons",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-D153CBF450C143FF2182A4BF93FD8F5D",
+      "title": "A Feast for Crows",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "A Feast for Crows",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-4E858155C3AE20B8FB0906871A25AF14",
+      "title": "A Clash of Kings",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "A Clash of Kings",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-E47130F4DF3806D97C75108478B8B70E",
+      "title": "A Knight of the Seven Kingdoms",
+      "authors": "George R.R. Martin",
+      "sortableTitle": "A Knight of the Seven Kingdoms",
+      "sortableAuthors": "George R.R. Martin",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-751011870F0C0C2A09266D45EC2AE798",
+      "title": "Decline and Fall of the Roman Empire",
+      "authors": "Edward Gibbon",
+      "sortableTitle": "Decline and Fall of the Roman Empire",
+      "sortableAuthors": "Edward Gibbon",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-ADA48A44016F76F3E92FC597488F9571",
+      "title": "Holly",
+      "authors": "Stephen King",
+      "sortableTitle": "Holly",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-57B345C25E43802145770D196D32100F",
+      "title": "Call of the Bone Ships",
+      "authors": "R.J. Barker",
+      "sortableTitle": "Call of the Bone Ships",
+      "sortableAuthors": "R.J. Barker",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-CF7D0A9FAB27CCCA101D199BAB1D83D2",
+      "title": "Fairy Tale",
+      "authors": "Stephen King",
+      "sortableTitle": "Fairy Tale",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-808B589FD12F243553884A0595C7DB1E",
+      "title": "The Mist",
+      "authors": "Stephen King",
+      "sortableTitle": "The Mist",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-2D705FE113726EFF7DD21376F84AC485",
+      "title": "The Talisman",
+      "authors": "Stephen King",
+      "sortableTitle": "The Talisman",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-2864BE3EFB2EA4073039CAF128CA70AA",
+      "title": "Different Seasons",
+      "authors": "Stephen King",
+      "sortableTitle": "Different Seasons",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-01490FCB2122CB0C9CA60E5D6ABD91B6",
+      "title": "Dreamcatcher",
+      "authors": "Stephen King",
+      "sortableTitle": "Dreamcatcher",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1FC6B6BCDD5B99325EB4349B0F87E0C6",
+      "title": "Wizard and Glass",
+      "authors": "Stephen King",
+      "sortableTitle": "Wizard and Glass",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-8DBF7D72A0C7552F0724F89FA42BB160",
+      "title": "The Eyes of the Dragon",
+      "authors": "Stephen King",
+      "sortableTitle": "The Eyes of the Dragon",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-53DC65AA2F431C8076DB4C77277D374E",
+      "title": "Firestarter",
+      "authors": "Stephen King",
+      "sortableTitle": "Firestarter",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-387A1011AB7965892DBB81B187C8FCFE",
+      "title": "Salem's Lot by Stephen King",
+      "authors": "Stephen King",
+      "sortableTitle": "Salem's Lot by Stephen King",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-9434D768C0DFE0547DC8FFA48DE8628B",
+      "title": "Pet Sematary",
+      "authors": "Stephen King",
+      "sortableTitle": "Pet Sematary",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-97D826C8ED8B627AA6E609E03D84C495",
+      "title": "Desperation",
+      "authors": "Stephen King",
+      "sortableTitle": "Desperation",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-65A236A18C7CBF356A09B75463E2F361",
+      "title": "The Shining",
+      "authors": "Stephen King",
+      "sortableTitle": "The Shining",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-84D2BD689FC72719E26928F3504AAFA3",
+      "title": "On Writing",
+      "authors": "Stephen King",
+      "sortableTitle": "On Writing",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-E1B8963356B959B76E0C93F654407FD2",
+      "title": "The Gunslinger",
+      "authors": "Stephen King",
+      "sortableTitle": "The Gunslinger",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-3F1EF714B950744F18D146E266397623",
+      "title": "Babel",
+      "authors": "R.F. Kuang",
+      "sortableTitle": "Babel",
+      "sortableAuthors": "R.F. Kuang",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-79F8F6493E93787E464D4600E42B1BF2",
+      "title": "Skeleton Crew",
+      "authors": "Stephen King",
+      "sortableTitle": "Skeleton Crew",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-70CF1264600AD2CE6CB108359BD53402",
+      "title": "Under the Dome",
+      "authors": "Stephen King",
+      "sortableTitle": "Under the Dome",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-A3DA1F76C2DEEA03AF18276004F60308",
+      "title": "Cell",
+      "authors": "Stephen King",
+      "sortableTitle": "Cell",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-866A110A79F118D58D8DAAEF14228BC0",
+      "title": "Misery",
+      "authors": "Stephen King",
+      "sortableTitle": "Misery",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-AD47C033B73AD5897F8B22D556BDD13A",
+      "title": "It",
+      "authors": "Stephen King",
+      "sortableTitle": "It",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-461B49960BEAC14136752E91AA52AA4C",
+      "title": "Rose Madder",
+      "authors": "Stephen King",
+      "sortableTitle": "Rose Madder",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-515FC5F66744673B21D71085052C76AF",
+      "title": "Gerald's Game",
+      "authors": "Stephen King",
+      "sortableTitle": "Gerald's Game",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-1E58E9CF2D7695541EE0FA9273DA0DD9",
+      "title": "The Dark Tower",
+      "authors": "Stephen King",
+      "sortableTitle": "The Dark Tower",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-29FDEC85DE1CE0556950946686359ECF",
+      "title": "Wolves of the Calla",
+      "authors": "Stephen King",
+      "sortableTitle": "Wolves of the Calla",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-52668B8778C80A66A5C96D98B3D64212",
+      "title": "Drawing of the Three, The (Revised Edition): The Dark Tower II by Stephen King",
+      "authors": "Stephen King",
+      "sortableTitle": "Drawing of the Three, The (Revised Edition): The Dark Tower II by Stephen King",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-671D86E50AA1E2C3D17FEC1F69A1E046",
+      "title": "Song of Susannah",
+      "authors": "Stephen King",
+      "sortableTitle": "Song of Susannah",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-66CDBE6FDC171DB6F7215C8C3D9878E5",
+      "title": "Doctor Sleep",
+      "authors": "Stephen King",
+      "sortableTitle": "Doctor Sleep",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-48714AC10B5A16FA55A6EFE296007DB6",
+      "title": "Full Dark, No Stars",
+      "authors": "Stephen King",
+      "sortableTitle": "Full Dark, No Stars",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-84D10C07BA442C73AC9AA6E9447AC070",
+      "title": "The Wind Through the Keyhole",
+      "authors": "Stephen King",
+      "sortableTitle": "The Wind Through the Keyhole",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-DF471D719E87A55E1DA0DA043846A95C",
+      "title": "Duma Key",
+      "authors": "Stephen King",
+      "sortableTitle": "Duma Key",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-05BB817973DD979F0DC46AF774901744",
+      "title": "Revival",
+      "authors": "Stephen King",
+      "sortableTitle": "Revival",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5A091213C323F2343201807477FA373A",
+      "title": "Later",
+      "authors": "Stephen King",
+      "sortableTitle": "Later",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-7F4E204EF6432AEB308CD7D207AC1CB2",
+      "title": "If It Bleeds",
+      "authors": "Stephen King",
+      "sortableTitle": "If It Bleeds",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-3B485E9659B5EFAD8F94463EEB0591A0",
+      "title": "Finders Keepers",
+      "authors": "Stephen King",
+      "sortableTitle": "Finders Keepers",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "B0B8T8V6WZ",
+      "title": "The Way of Kings",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "The Way of Kings",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-C98CF1B7BFDA8A50D32512AB12E1E66E",
+      "title": "A Father's Story",
+      "authors": "Lionel Dahmer",
+      "sortableTitle": "A Father's Story",
+      "sortableAuthors": "Lionel Dahmer",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-AB99F6C3831E5D0867F33CAB98AD0FE4",
+      "title": "Billy Summers",
+      "authors": "Stephen King",
+      "sortableTitle": "Billy Summers",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5AABA029B5B36E96CA9BD6EF2BC257F1",
+      "title": "Joyland",
+      "authors": "Stephen King",
+      "sortableTitle": "Joyland",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "BFGKIGMLUG2MNHHMCPZWQE5QHGHBXWR5",
+      "title": "Yumi and the Nightmare Painter",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Yumi and the Nightmare Painter",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-5D060D286F84AC6DC7787790F057A45A",
+      "title": "Rhythm of War",
+      "authors": "Brandon Sanderson",
+      "sortableTitle": "Rhythm of War",
+      "sortableAuthors": "Brandon Sanderson",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-EC3D1B68B11104CD67469F27E4DB82F5",
+      "title": "Mr. Mercedes",
+      "authors": "Stephen King",
+      "sortableTitle": "Mr. Mercedes",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-D1AA8400D7253F88FDA27C7D95DB4C14",
+      "title": "End of Watch",
+      "authors": "Stephen King",
+      "sortableTitle": "End of Watch",
+      "sortableAuthors": "Stephen King",
+      "contentCategoryType": "KindlePDoc"
+    },
+    {
+      "asin": "CWA-B1433516D64E17E120DD9CF5B21CBA5A",
+      "title": "The Giver",
+      "authors": "Lois Lowry",
+      "sortableTitle": "The Giver",
+      "sortableAuthors": "Lois Lowry",
+      "contentCategoryType": "KindlePDoc"
+    }
+  ]
 }
