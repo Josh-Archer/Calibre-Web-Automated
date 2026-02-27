@@ -65,15 +65,20 @@ class TaskSendUnsyncedToKindle(CalibreTask):
                     book_format = email_share_list[0]['format']
                     convert_flag = email_share_list[0]['convert']
 
-                    result = helper.send_mail(
-                        book_id=book.id,
-                        book_format=book_format,
-                        convert=convert_flag,
-                        ereader_mail=user.kindle_mail,
-                        calibrepath=config.get_book_path(),
-                        user_id=user.name,
-                        subject=user.kindle_mail_subject
-                    )
+                    try:
+                        with app.test_request_context('/'):
+                            result = helper.send_mail(
+                                book_id=book.id,
+                                book_format=book_format,
+                                convert=convert_flag,
+                                ereader_mail=user.kindle_mail,
+                                calibrepath=config.get_book_path(),
+                                user_id=user.name,
+                                subject=user.kindle_mail_subject
+                            )
+                    except Exception as send_exc:
+                        result = str(send_exc)
+                        log.error(f"Send failed for book {book.id} ('{book.title}'): {send_exc}")
 
                     if result is None:
                         ub.update_download(book.id, int(user.id))
