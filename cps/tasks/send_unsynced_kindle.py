@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from flask_babel import lazy_gettext as N_
-
 from cps.services.worker import CalibreTask
 from cps import helper, ub, db, config, logger
 
@@ -14,7 +12,7 @@ class TaskSendUnsyncedToKindle(CalibreTask):
 
     @property
     def name(self):
-        return N_("Send Unsynced to Kindle")
+        return "Send Unsynced to Kindle"
 
     @property
     def is_cancellable(self):
