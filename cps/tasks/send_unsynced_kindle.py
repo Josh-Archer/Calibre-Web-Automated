@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from cps.services.worker import CalibreTask
-from cps import helper, ub, db, config, logger
+from cps import helper, ub, db, config, logger, app
 
 log = logger.create()
 
@@ -24,67 +24,68 @@ class TaskSendUnsyncedToKindle(CalibreTask):
         failed_count = 0
 
         try:
-            from scripts.cwa_db import CWA_DB
-            from cps.db import Books
+            with app.app_context():
+                from scripts.cwa_db import CWA_DB
+                from cps.db import Books
 
-            cwa_db = CWA_DB()
-            confirmed_ids = cwa_db.kindle_sync_get_all_confirmed(self.user_id) or set()
+                cwa_db = CWA_DB()
+                confirmed_ids = cwa_db.kindle_sync_get_all_confirmed(self.user_id) or set()
 
-            calibre_db_instance = db.CalibreDB(expire_on_commit=False, init=True)
-            user = ub.session.query(ub.User).filter(ub.User.id == self.user_id).first()
-            if not user:
-                self._handleError(f"User {self.user_id} not found")
-                return
-
-            if not user.kindle_mail:
-                self._handleError(f"User {user.name} has no eReader email configured")
-                return
-
-            all_books = calibre_db_instance.session.query(Books).all()
-            unsynced_books = [book for book in all_books if book.id not in confirmed_ids]
-            total_books = len(unsynced_books)
-
-            if total_books == 0:
-                self.statmsg = "No unrecognized books found to send."
-                self._handleSuccess()
-                return
-
-            for index, book in enumerate(unsynced_books):
-                if getattr(worker_thread, 'stop_execution', False):
-                    self._handleError("Task cancelled")
+                calibre_db_instance = db.CalibreDB(expire_on_commit=False, init=True)
+                user = ub.session.query(ub.User).filter(ub.User.id == self.user_id).first()
+                if not user:
+                    self._handleError(f"User {self.user_id} not found")
                     return
 
-                self.progress = index / total_books
+                if not user.kindle_mail:
+                    self._handleError(f"User {user.name} has no eReader email configured")
+                    return
 
-                email_share_list = helper.check_send_to_ereader(book)
-                if not email_share_list:
-                    skipped_count += 1
-                    continue
+                all_books = calibre_db_instance.session.query(Books).all()
+                unsynced_books = [book for book in all_books if book.id not in confirmed_ids]
+                total_books = len(unsynced_books)
 
-                book_format = email_share_list[0]['format']
-                convert_flag = email_share_list[0]['convert']
+                if total_books == 0:
+                    self.statmsg = "No unrecognized books found to send."
+                    self._handleSuccess()
+                    return
 
-                result = helper.send_mail(
-                    book_id=book.id,
-                    book_format=book_format,
-                    convert=convert_flag,
-                    ereader_mail=user.kindle_mail,
-                    calibrepath=config.get_book_path(),
-                    user_id=user.name,
-                    subject=user.kindle_mail_subject
-                )
+                for index, book in enumerate(unsynced_books):
+                    if getattr(worker_thread, 'stop_execution', False):
+                        self._handleError("Task cancelled")
+                        return
 
-                if result is None:
-                    ub.update_download(book.id, int(user.id))
-                    cwa_db.kindle_sync_update(self.user_id, book.id, status='pending', error_message=None, reset_retry=True)
-                    sent_count += 1
-                else:
-                    cwa_db.kindle_sync_update(self.user_id, book.id, status='error', error_message=str(result), reset_retry=False)
-                    failed_count += 1
+                    self.progress = index / total_books
 
-            self.progress = 1.0
-            self.statmsg = f"Queued {sent_count} unsynced books for Kindle send (skipped: {skipped_count}, failed: {failed_count})."
-            self._handleSuccess()
+                    email_share_list = helper.check_send_to_ereader(book)
+                    if not email_share_list:
+                        skipped_count += 1
+                        continue
+
+                    book_format = email_share_list[0]['format']
+                    convert_flag = email_share_list[0]['convert']
+
+                    result = helper.send_mail(
+                        book_id=book.id,
+                        book_format=book_format,
+                        convert=convert_flag,
+                        ereader_mail=user.kindle_mail,
+                        calibrepath=config.get_book_path(),
+                        user_id=user.name,
+                        subject=user.kindle_mail_subject
+                    )
+
+                    if result is None:
+                        ub.update_download(book.id, int(user.id))
+                        cwa_db.kindle_sync_update(self.user_id, book.id, status='pending', error_message=None, reset_retry=True)
+                        sent_count += 1
+                    else:
+                        cwa_db.kindle_sync_update(self.user_id, book.id, status='error', error_message=str(result), reset_retry=False)
+                        failed_count += 1
+
+                self.progress = 1.0
+                self.statmsg = f"Queued {sent_count} unsynced books for Kindle send (skipped: {skipped_count}, failed: {failed_count})."
+                self._handleSuccess()
 
         except Exception as e:
             log.error(f"TaskSendUnsyncedToKindle failed: {e}")
