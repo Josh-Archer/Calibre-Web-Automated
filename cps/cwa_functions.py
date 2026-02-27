@@ -1619,11 +1619,11 @@ def cwa_scheduled_upcoming():
 @login_required_if_no_ano
 @admin_required
 def cwa_scheduled_upcoming_ops():
-    """Return upcoming scheduled operations (non auto-send), e.g., convert_library, epub_fixer, mass_kindle_sync."""
+    """Return upcoming scheduled operations (non auto-send), e.g., convert_library, epub_fixer, mass_kindle_sync, kindle_sync_check."""
     try:
         db = CWA_DB()
         ops = []
-        for jt in ('convert_library', 'epub_fixer', 'mass_kindle_sync'):
+        for jt in ('convert_library', 'epub_fixer', 'mass_kindle_sync', 'kindle_sync_check'):
             ops.extend(db.scheduled_get_upcoming_by_type(jt, limit=100))
         # sort by time ascending
         ops.sort(key=lambda r: r.get('run_at_utc') or '')
@@ -2377,5 +2377,5 @@ def cwa_send_unsynced_kindle():
     if not current_user.kindle_mail:
         return jsonify({"success": False, "error": _("Oops! Please update your profile with a valid eReader Email.")}), 400
 
-    WorkerThread.add(current_user.name, TaskSendUnsyncedToKindle("Send unrecognized Kindle books", current_user.id))
-    return jsonify({"success": True, "message": _("Send unsynced books task queued. Check Tasks page.")})
+    WorkerThread.add(current_user.name, TaskSendUnsyncedToKindle("Send books missing from Kindle", current_user.id))
+    return jsonify({"success": True, "message": _("Send books missing from Kindle task queued. Check Tasks page.")})

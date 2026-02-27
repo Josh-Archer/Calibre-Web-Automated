@@ -139,7 +139,7 @@ def register_startup_tasks():
             # If scripts not available or table missing, skip
             pass
 
-        # Rehydrate other scheduled ops (convert_library, epub_fixer, mass_kindle_sync)
+        # Rehydrate other scheduled ops (convert_library, epub_fixer, mass_kindle_sync, kindle_sync_check)
         try:
             import sys as _sys
             if '/app/calibre-web-automated/scripts/' not in _sys.path:
@@ -149,9 +149,10 @@ def register_startup_tasks():
             # wrappers will trigger internal routes themselves
             from .tasks.ops import TaskConvertLibraryRun, TaskEpubFixerRun
             from .tasks.mass_kindle_sync import TaskMassKindleSync
+            from .tasks.kindle_sync import TaskKindleSync
 
             db = CWA_DB()
-            for job_type in ('convert_library', 'epub_fixer', 'mass_kindle_sync'):
+            for job_type in ('convert_library', 'epub_fixer', 'mass_kindle_sync', 'kindle_sync_check'):
                 try:
                     rows = db.scheduled_get_pending_by_type(job_type)
                 except Exception:
@@ -163,8 +164,9 @@ def register_startup_tasks():
                         schedule_id = int(row['id'])
                         username = row.get('username') or 'System'
                         mass_user_id = int(row.get('user_id') or 0)
+                        delayed_book_id = int(row.get('book_id') or 0)
 
-                        def _rehydrate_trigger(sid=schedule_id, jt=job_type, u=username, uid=mass_user_id):
+                        def _rehydrate_trigger(sid=schedule_id, jt=job_type, u=username, uid=mass_user_id, bid=delayed_book_id):
                             should_run = False
                             try:
                                 should_run = bool(CWA_DB().scheduled_mark_dispatched(int(sid)))
@@ -178,6 +180,8 @@ def register_startup_tasks():
                                 WorkerThread.add(u, TaskEpubFixerRun(), hidden=False)
                             elif jt == 'mass_kindle_sync':
                                 WorkerThread.add(u, TaskMassKindleSync("Mass Kindle Library Sync", uid), hidden=False)
+                            elif jt == 'kindle_sync_check' and bid > 0 and uid > 0:
+                                WorkerThread.add(u, TaskKindleSync("Kindle Library Sync (Auto - Delayed)", bid, uid), hidden=False)
 
                         job = scheduler.schedule(func=_rehydrate_trigger, trigger=DateTrigger(run_date=run_at_local), name=f"rehydrated {job_type} {schedule_id}")
                         try:

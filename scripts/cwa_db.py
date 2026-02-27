@@ -728,7 +728,7 @@ class CWA_DB:
             print(f"[cwa-db] ERROR adding scheduled auto-send: {e}")
             return None
 
-    def scheduled_add_job(self, job_type: str, run_at_utc_iso: str, username: str = 'System', title: str = '') -> int | None:
+    def scheduled_add_job(self, job_type: str, run_at_utc_iso: str, username: str = 'System', title: str = '', book_id: int | None = None, user_id: int | None = None) -> int | None:
         """Insert a scheduled generic job (e.g., convert_library, epub_fixer) and return row id."""
         try:
             created_at = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -737,7 +737,7 @@ class CWA_DB:
                 INSERT INTO cwa_scheduled_jobs(job_type, book_id, user_id, username, title, run_at_utc, created_at_utc, state)
                 VALUES(?,?,?,?,?,?,?, 'scheduled')
                 """,
-                (str(job_type), None, None, username, title, run_at_utc_iso, created_at)
+                (str(job_type), book_id, user_id, username, title, run_at_utc_iso, created_at)
             )
             self.con.commit()
             return self.cur.lastrowid

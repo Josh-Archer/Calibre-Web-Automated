@@ -12,7 +12,7 @@ class TaskSendUnsyncedToKindle(CalibreTask):
 
     @property
     def name(self):
-        return "Send Unsynced to Kindle"
+        return "Send Books missing from Kindle"
 
     @property
     def is_cancellable(self):
@@ -22,6 +22,7 @@ class TaskSendUnsyncedToKindle(CalibreTask):
         sent_count = 0
         skipped_count = 0
         failed_count = 0
+        skipped_examples = []
 
         try:
             with app.app_context():
@@ -46,7 +47,7 @@ class TaskSendUnsyncedToKindle(CalibreTask):
                 total_books = len(unsynced_books)
 
                 if total_books == 0:
-                    self.statmsg = "No unrecognized books found to send."
+                    self.statmsg = "No books missing from Kindle were found to send."
                     self._handleSuccess()
                     return
 
@@ -60,6 +61,10 @@ class TaskSendUnsyncedToKindle(CalibreTask):
                     email_share_list = helper.check_send_to_ereader(book)
                     if not email_share_list:
                         skipped_count += 1
+                        skip_reason = "No email-compatible format under current mail size/conversion settings"
+                        cwa_db.kindle_sync_update(self.user_id, book.id, status='error', error_message=skip_reason, reset_retry=False)
+                        if len(skipped_examples) < 5:
+                            skipped_examples.append(f"{book.title}: {skip_reason}")
                         continue
 
                     book_format = email_share_list[0]['format']
@@ -89,7 +94,9 @@ class TaskSendUnsyncedToKindle(CalibreTask):
                         failed_count += 1
 
                 self.progress = 1.0
-                self.statmsg = f"Queued {sent_count} unsynced books for Kindle send (skipped: {skipped_count}, failed: {failed_count})."
+                self.statmsg = f"Queued {sent_count} books missing from Kindle for send (skipped: {skipped_count}, failed: {failed_count})."
+                if skipped_examples:
+                    self.statmsg += " Skipped examples: " + " | ".join(skipped_examples)
                 self._handleSuccess()
 
         except Exception as e:

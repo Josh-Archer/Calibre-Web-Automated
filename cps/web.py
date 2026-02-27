@@ -112,20 +112,52 @@ _start_time = time.time()
 
 def _queue_delayed_kindle_sync_check(book_id, user_id, username, delay_minutes=5):
     try:
-        from datetime import datetime, timedelta
+        from datetime import datetime, timedelta, timezone
         from .services.background_scheduler import BackgroundScheduler, DateTrigger
         from .tasks.kindle_sync import TaskKindleSync
 
         scheduler = BackgroundScheduler()
         if scheduler:
             run_at_local = datetime.now() + timedelta(minutes=max(0, int(delay_minutes)))
-            scheduler.schedule_task(
-                lambda: TaskKindleSync("Kindle Library Sync (Auto - Delayed)", book_id, user_id),
-                user=username,
+            run_at_utc_iso = run_at_local.astimezone(timezone.utc).replace(tzinfo=timezone.utc).isoformat().replace('+00:00', 'Z')
+
+            row_id = None
+            try:
+                cwa_db = CWA_DB()
+                row_id = cwa_db.scheduled_add_job(
+                    'kindle_sync_check',
+                    run_at_utc_iso,
+                    username=username,
+                    title=f'Kindle sync check for book {book_id}',
+                    book_id=int(book_id),
+                    user_id=int(user_id),
+                )
+            except Exception as e:
+                log.debug(f"Failed to persist scheduled kindle sync check: {e}")
+
+            def _trigger_delayed_kindle_sync(sid=row_id, u=username, bid=book_id, uid=user_id):
+                should_run = True
+                try:
+                    if sid is not None:
+                        should_run = bool(CWA_DB().scheduled_mark_dispatched(int(sid)))
+                except Exception:
+                    pass
+                if not should_run:
+                    return
+                WorkerThread.add(u, TaskKindleSync("Kindle Library Sync (Auto - Delayed)", bid, uid), hidden=False)
+
+            job = scheduler.schedule(
+                func=_trigger_delayed_kindle_sync,
                 trigger=DateTrigger(run_date=run_at_local),
                 name=f"Kindle Library Sync delayed check for book {book_id}",
-                hidden=False,
             )
+
+            try:
+                if row_id is not None and job is not None:
+                    CWA_DB().scheduled_update_job_id(int(row_id), str(job.id))
+            except Exception:
+                pass
+
             return True
 
         WorkerThread.add(username, TaskKindleSync("Kindle Library Sync (Auto)", book_id, user_id))
