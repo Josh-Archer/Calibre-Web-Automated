@@ -405,7 +405,8 @@
             statusSpan.innerHTML = '<span class="text-danger">' + data.error + '</span>';
             btn.disabled = false;
           } else {
-            statusSpan.innerHTML = '<span class="text-success">Task Queued! Check Tasks page.</span>';
+            const okMessage = (data && data.message) ? data.message : 'Task Queued! Check Tasks page.';
+            statusSpan.innerHTML = '<span class="text-success">' + okMessage + '</span>';
           }
         },
         error: function (xhr) {

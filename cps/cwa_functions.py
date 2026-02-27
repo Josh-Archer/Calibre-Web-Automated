@@ -1619,11 +1619,11 @@ def cwa_scheduled_upcoming():
 @login_required_if_no_ano
 @admin_required
 def cwa_scheduled_upcoming_ops():
-    """Return upcoming scheduled operations (non auto-send), e.g., convert_library, epub_fixer."""
+    """Return upcoming scheduled operations (non auto-send), e.g., convert_library, epub_fixer, mass_kindle_sync."""
     try:
         db = CWA_DB()
         ops = []
-        for jt in ('convert_library', 'epub_fixer'):
+        for jt in ('convert_library', 'epub_fixer', 'mass_kindle_sync'):
             ops.extend(db.scheduled_get_upcoming_by_type(jt, limit=100))
         # sort by time ascending
         ops.sort(key=lambda r: r.get('run_at_utc') or '')
@@ -2314,12 +2314,48 @@ def cwa_kindle_sync():
 @csrf.exempt
 @user_login_required
 def cwa_mass_kindle_sync():
-    """Queues a background task to bulk sync all books with Amazon."""
+    """Schedules a near-term background task to bulk sync all books with Amazon."""
     from .tasks.mass_kindle_sync import TaskMassKindleSync
+    scheduler = BackgroundScheduler()
 
-    # The background task will fetch the library once and scan the entire DB
+    # Prefer persisted scheduling so it appears in Upcoming Scheduled Operations
+    if scheduler:
+        run_at_local = datetime.now() + timedelta(minutes=1)
+        try:
+            from datetime import timezone
+            run_at_utc_iso = run_at_local.astimezone(timezone.utc).replace(tzinfo=timezone.utc).isoformat().replace('+00:00', 'Z')
+        except Exception:
+            run_at_utc_iso = run_at_local.isoformat()
+
+        row_id = None
+        try:
+            db = CWA_DB()
+            row_id = db.scheduled_add_job('mass_kindle_sync', run_at_utc_iso, username=current_user.name, title='Mass Kindle Library Sync')
+        except Exception as e:
+            log.error(f"Failed to record scheduled mass kindle sync in cwa.db: {e}")
+
+        def _trigger_mass_kindle_sync(sid=row_id, u=current_user.name, uid=current_user.id):
+            should_run = True
+            try:
+                if sid is not None:
+                    should_run = bool(CWA_DB().scheduled_mark_dispatched(int(sid)))
+            except Exception:
+                pass
+            if not should_run:
+                return
+            WorkerThread.add(u, TaskMassKindleSync("Mass Kindle Library Sync", uid), hidden=False)
+
+        job = scheduler.schedule(func=_trigger_mass_kindle_sync, trigger=DateTrigger(run_date=run_at_local), name="Mass Kindle Library Sync (scheduled)")
+        try:
+            if row_id is not None and job is not None:
+                CWA_DB().scheduled_update_job_id(int(row_id), str(job.id))
+        except Exception:
+            pass
+
+        return jsonify({"success": True, "message": "Mass sync scheduled to start in about 1 minute.", "run_at": run_at_local.isoformat(), "schedule_id": row_id})
+
+    # Fallback if scheduler unavailable
     WorkerThread.add(current_user.name, TaskMassKindleSync("Mass Kindle Library Sync", current_user.id))
-
     return jsonify({"success": True, "message": "Mass sync task queued."})
 
 
