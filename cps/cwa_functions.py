@@ -2321,3 +2321,25 @@ def cwa_mass_kindle_sync():
     WorkerThread.add(current_user.name, TaskMassKindleSync("Mass Kindle Library Sync", current_user.id))
 
     return jsonify({"success": True, "message": "Mass sync task queued."})
+
+
+@cwa_internal.route("/cwa-send-unsynced-kindle", methods=["POST"])
+@cwa_internal.route("/cwa-send-unsynced-kindle/", methods=["POST"])
+@cwa_internal.route("/cwa/cwa-send-unsynced-kindle", methods=["POST"])
+@cwa_internal.route("/cwa/cwa-send-unsynced-kindle/", methods=["POST"])
+@csrf.exempt
+@user_login_required
+def cwa_send_unsynced_kindle():
+    from .tasks.send_unsynced_kindle import TaskSendUnsyncedToKindle
+
+    if not current_user.role_admin():
+        abort(403)
+
+    if not config.get_mail_server_configured():
+        return jsonify({"success": False, "error": _("Please configure the SMTP mail settings first...")}), 400
+
+    if not current_user.kindle_mail:
+        return jsonify({"success": False, "error": _("Oops! Please update your profile with a valid eReader Email.")}), 400
+
+    WorkerThread.add(current_user.name, TaskSendUnsyncedToKindle("Send unrecognized Kindle books", current_user.id))
+    return jsonify({"success": True, "message": _("Send unsynced books task queued. Check Tasks page.")})

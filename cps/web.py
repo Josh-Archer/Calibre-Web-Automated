@@ -109,6 +109,31 @@ sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 _start_time = time.time()
 
+
+def _queue_delayed_kindle_sync_check(book_id, user_id, username, delay_minutes=5):
+    try:
+        from datetime import datetime, timedelta
+        from .services.background_scheduler import BackgroundScheduler, DateTrigger
+        from .tasks.kindle_sync import TaskKindleSync
+
+        scheduler = BackgroundScheduler()
+        if scheduler:
+            run_at_local = datetime.now() + timedelta(minutes=max(0, int(delay_minutes)))
+            scheduler.schedule_task(
+                lambda: TaskKindleSync("Kindle Library Sync (Auto - Delayed)", book_id, user_id),
+                user=username,
+                trigger=DateTrigger(run_date=run_at_local),
+                name=f"Kindle Library Sync delayed check for book {book_id}",
+                hidden=False,
+            )
+            return True
+
+        WorkerThread.add(username, TaskKindleSync("Kindle Library Sync (Auto)", book_id, user_id))
+        return False
+    except Exception as e:
+        log.debug(f"Failed to queue delayed Kindle Sync check: {e}")
+        return False
+
 @app.after_request
 def add_security_headers(resp):
     default_src = ([host.strip() for host in config.config_trustedhosts.split(',') if host] +
@@ -2018,17 +2043,25 @@ def send_to_ereader(book_id, book_format, convert):
         except Exception as e:
             log.debug(f"Failed to log email activity: {e}")
             
-        # Trigger Kindle Sync Task
+        delayed_check_scheduled = False
         try:
-            from .tasks.kindle_sync import TaskKindleSync
             cwa_db = CWA_DB()
             if cwa_db.cwa_settings.get('amazon_sync_enabled'):
-                WorkerThread.add(current_user.name, TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
+                delayed_check_scheduled = _queue_delayed_kindle_sync_check(
+                    book_id=book_id,
+                    user_id=current_user.id,
+                    username=current_user.name,
+                    delay_minutes=5,
+                )
         except Exception as e:
             log.debug(f"Failed to start automatic Kindle Sync: {e}")
-            
-        response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
-                                                   eReadermail=current_user.kindle_mail)}]
+
+        if delayed_check_scheduled:
+            response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s. We will auto-check Kindle acceptance in 5 minutes.",
+                                                       eReadermail=current_user.kindle_mail)}]
+        else:
+            response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
+                                                       eReadermail=current_user.kindle_mail)}]
     else:
         response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     return Response(json.dumps(response), mimetype='application/json')
@@ -2087,16 +2120,23 @@ def send_to_selected_ereaders(book_id):
         except Exception as e:
             log.debug(f"Failed to log email activity: {e}")
 
-        # Trigger Kindle Sync Task
+        delayed_check_scheduled = False
         try:
-            from .tasks.kindle_sync import TaskKindleSync
             cwa_db = CWA_DB()
             if cwa_db.cwa_settings.get('amazon_sync_enabled'):
-                WorkerThread.add(current_user.name, TaskKindleSync("Kindle Library Sync (Auto)", book_id, current_user.id))
+                delayed_check_scheduled = _queue_delayed_kindle_sync_check(
+                    book_id=book_id,
+                    user_id=current_user.id,
+                    username=current_user.name,
+                    delay_minutes=5,
+                )
         except Exception as e:
             log.debug(f"Failed to start automatic Kindle Sync: {e}")
 
-        response = [{'type': "success", 'message': _("Success! Book queued for sending to the selected address(es)!")}]
+        if delayed_check_scheduled:
+            response = [{'type': "success", 'message': _("Success! Book queued for sending to the selected address(es)! We will auto-check Kindle acceptance in 5 minutes.")}]
+        else:
+            response = [{'type': "success", 'message': _("Success! Book queued for sending to the selected address(es)!")}]
     else:
         response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
 

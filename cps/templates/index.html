@@ -149,7 +149,12 @@
         title="{{_('Sync all books to Amazon Kindle Library')}}">
         <span class="glyphicon glyphicon-cloud-upload"></span> {{_('Mass AWS Sync')}}
       </button>
+      <button onclick="triggerSendUnsyncedKindle()" class="btn btn-warning" id="send-unsynced-btn" data-toggle="tooltip"
+        title="{{_('Send books not recognized in Kindle library')}}">
+        <span class="glyphicon glyphicon-send"></span> {{_('Send Unrecognized to Kindle')}}
+      </button>
       <span id="mass-sync-status"></span>
+      <span id="send-unsynced-status"></span>
     </div>
     {% endif %}
     {% if page == 'magicshelf' %}
@@ -383,6 +388,60 @@
     const tryRequest = function (index) {
       if (index >= endpoints.length) {
         statusSpan.innerHTML = '<span class="text-danger">Error: Failed to queue sync (all endpoints)</span>';
+        btn.disabled = false;
+        return;
+      }
+
+      $.ajax({
+        url: endpoints[index],
+        method: "POST",
+        contentType: "application/json",
+        dataType: 'json',
+        headers: {
+          "X-CSRFToken": "{{ csrf_token() }}"
+        },
+        success: function (data) {
+          if (data && data.error) {
+            statusSpan.innerHTML = '<span class="text-danger">' + data.error + '</span>';
+            btn.disabled = false;
+          } else {
+            statusSpan.innerHTML = '<span class="text-success">Task Queued! Check Tasks page.</span>';
+          }
+        },
+        error: function (xhr) {
+          if (index + 1 < endpoints.length) {
+            tryRequest(index + 1);
+            return;
+          }
+          var detail = "";
+          if (xhr) {
+            detail = (xhr.status ? ('HTTP ' + xhr.status) : 'request failed');
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+              detail += ': ' + xhr.responseJSON.error;
+            }
+          }
+          statusSpan.innerHTML = '<span class="text-danger">Error: ' + detail + '</span>';
+          btn.disabled = false;
+        }
+      });
+    };
+
+    tryRequest(0);
+  }
+
+  function triggerSendUnsyncedKindle() {
+    const btn = document.getElementById('send-unsynced-btn');
+    const statusSpan = document.getElementById('send-unsynced-status');
+
+    if (!confirm("Send all books that are not recognized in Kindle library?")) return;
+
+    btn.disabled = true;
+    statusSpan.innerHTML = '<span class="text-muted"><i class="glyphicon glyphicon-refresh fast-spin"></i> Triggering...</span>';
+
+    const endpoints = [getPath() + "/cwa-send-unsynced-kindle", "/cwa-send-unsynced-kindle"];
+    const tryRequest = function (index) {
+      if (index >= endpoints.length) {
+        statusSpan.innerHTML = '<span class="text-danger">Error: Failed to queue send task (all endpoints)</span>';
         btn.disabled = false;
         return;
       }
