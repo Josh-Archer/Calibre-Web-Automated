@@ -972,6 +972,8 @@ class EPUBFixer:
     def remove_javascript(self):
         """Remove JavaScript code for Kindle compatibility (not supported)"""
         script_pattern = re.compile(r'<script[^>]*>.*?</script>', re.IGNORECASE | re.DOTALL)
+        js_extensions = ('.js', '.jse')
+        removed_js_files = []
         
         for filename in list(self.files.keys()):
             ext = filename.split('.')[-1]
@@ -982,6 +984,49 @@ class EPUBFixer:
                 if cleaned_content != original_content:
                     self.files[filename] = cleaned_content
                     self.fixed_problems.append(f"Removed JavaScript from {filename}")
+
+        for filename in list(self.binary_files.keys()):
+            if filename.lower().endswith(js_extensions):
+                del self.binary_files[filename]
+                removed_js_files.append(filename)
+
+        for filename in list(self.files.keys()):
+            if filename.lower().endswith(js_extensions):
+                del self.files[filename]
+                removed_js_files.append(filename)
+
+        if removed_js_files:
+            unique_js_files = sorted(set(removed_js_files))
+            self.fixed_problems.append(f"Removed {len(unique_js_files)} JavaScript file(s) from EPUB package")
+
+            opf_candidates = [name for name in self.files.keys() if name.lower().endswith('.opf')]
+            for opf_path in opf_candidates:
+                opf_content = self._get_text_content(opf_path)
+                if opf_content is None:
+                    continue
+
+                updated_opf = opf_content
+                for js_file in unique_js_files:
+                    href_pattern = re.compile(
+                        r'<item[^>]*href=["\']' + re.escape(js_file) + r'["\'][^>]*/?>',
+                        re.IGNORECASE
+                    )
+                    updated_opf = href_pattern.sub('', updated_opf)
+
+                if updated_opf != opf_content:
+                    self.files[opf_path] = updated_opf
+                    self.fixed_problems.append(f"Removed JavaScript manifest item(s) from {opf_path}")
+
+            js_ref_pattern = re.compile(r'<script\b[^>]*\bsrc\s*=\s*["\"][^"\"]+\.js(?:\?[^"\"]*)?["\"][^>]*>\s*</script>', re.IGNORECASE)
+            for filename in list(self.files.keys()):
+                if filename.lower().endswith(('.html', '.xhtml', '.htm')):
+                    content = self._get_text_content(filename)
+                    if content is None:
+                        continue
+                    cleaned = js_ref_pattern.sub('', content)
+                    if cleaned != content:
+                        self.files[filename] = cleaned
+                        self.fixed_problems.append(f"Removed JavaScript src reference(s) from {filename}")
     
     def validate_images(self):
         """Validate images for Kindle compatibility and report issues"""
@@ -1250,6 +1295,8 @@ class EPUBFixer:
             self.fix_book_language(default_language, input_path)
             print_and_log("[cwa-kindle-epub-fixer] Checking for stray images...", log=self.manually_triggered)
             self.fix_stray_img()
+            print_and_log("[cwa-kindle-epub-fixer] Removing embedded JavaScript for Kindle/email compatibility...", log=self.manually_triggered)
+            self.remove_javascript()
 
             # Notify user and/or write to log
             self.export_issue_summary(input_path)
