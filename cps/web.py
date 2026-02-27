@@ -473,10 +473,10 @@ def render_books_list(data, sort_param, book_id, page):
     elif data == "aws_unsynced":
         from scripts.cwa_db import CWA_DB
         cwa_db_inst = CWA_DB()
-            if current_user.role_admin():
-                synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed_any_user()
-            else:
-                synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
+        if current_user.role_admin():
+            synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed_any_user()
+        else:
+            synced_ids = cwa_db_inst.kindle_sync_get_all_confirmed(current_user.id)
         
         if synced_ids:
             db_filter = ~db.Books.id.in_(synced_ids)
