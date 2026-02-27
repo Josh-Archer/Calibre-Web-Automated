@@ -2314,47 +2314,9 @@ def cwa_kindle_sync():
 @csrf.exempt
 @user_login_required
 def cwa_mass_kindle_sync():
-    """Schedules a near-term background task to bulk sync all books with Amazon."""
+    """Queues a background task to bulk sync all books with Amazon immediately."""
     from .tasks.mass_kindle_sync import TaskMassKindleSync
-    scheduler = BackgroundScheduler()
-
-    # Prefer persisted scheduling so it appears in Upcoming Scheduled Operations
-    if scheduler:
-        run_at_local = datetime.now() + timedelta(minutes=1)
-        try:
-            from datetime import timezone
-            run_at_utc_iso = run_at_local.astimezone(timezone.utc).replace(tzinfo=timezone.utc).isoformat().replace('+00:00', 'Z')
-        except Exception:
-            run_at_utc_iso = run_at_local.isoformat()
-
-        row_id = None
-        try:
-            db = CWA_DB()
-            row_id = db.scheduled_add_job('mass_kindle_sync', run_at_utc_iso, username=current_user.name, title='Mass Kindle Library Sync')
-        except Exception as e:
-            log.error(f"Failed to record scheduled mass kindle sync in cwa.db: {e}")
-
-        def _trigger_mass_kindle_sync(sid=row_id, u=current_user.name, uid=current_user.id):
-            should_run = True
-            try:
-                if sid is not None:
-                    should_run = bool(CWA_DB().scheduled_mark_dispatched(int(sid)))
-            except Exception:
-                pass
-            if not should_run:
-                return
-            WorkerThread.add(u, TaskMassKindleSync("Mass Kindle Library Sync", uid), hidden=False)
-
-        job = scheduler.schedule(func=_trigger_mass_kindle_sync, trigger=DateTrigger(run_date=run_at_local), name="Mass Kindle Library Sync (scheduled)")
-        try:
-            if row_id is not None and job is not None:
-                CWA_DB().scheduled_update_job_id(int(row_id), str(job.id))
-        except Exception:
-            pass
-
-        return jsonify({"success": True, "message": "Mass sync scheduled to start in about 1 minute.", "run_at": run_at_local.isoformat(), "schedule_id": row_id})
-
-    # Fallback if scheduler unavailable
+    # Immediate queue (explicitly not scheduled)
     WorkerThread.add(current_user.name, TaskMassKindleSync("Mass Kindle Library Sync", current_user.id))
     return jsonify({"success": True, "message": "Mass sync task queued."})
 
@@ -2367,6 +2329,7 @@ def cwa_mass_kindle_sync():
 @user_login_required
 def cwa_send_unsynced_kindle():
     from .tasks.send_unsynced_kindle import TaskSendUnsyncedToKindle
+    from .tasks.mass_kindle_sync import TaskMassKindleSync
 
     if not current_user.role_admin():
         abort(403)
@@ -2377,5 +2340,53 @@ def cwa_send_unsynced_kindle():
     if not current_user.kindle_mail:
         return jsonify({"success": False, "error": _("Oops! Please update your profile with a valid eReader Email.")}), 400
 
-    WorkerThread.add(current_user.name, TaskSendUnsyncedToKindle("Send books missing from Kindle", current_user.id))
+    username = current_user.name
+    user_id = current_user.id
+
+    WorkerThread.add(username, TaskSendUnsyncedToKindle("Send books missing from Kindle", user_id))
+
+    # Schedule a delayed Kindle library re-check (5 min) so confirms appear after Send-to-Kindle processing latency.
+    scheduler = BackgroundScheduler()
+    if scheduler:
+        run_at_local = datetime.now() + timedelta(minutes=5)
+        try:
+            from datetime import timezone
+            run_at_utc_iso = run_at_local.astimezone(timezone.utc).replace(tzinfo=timezone.utc).isoformat().replace('+00:00', 'Z')
+        except Exception:
+            run_at_utc_iso = run_at_local.isoformat()
+
+        row_id = None
+        try:
+            row_id = CWA_DB().scheduled_add_job(
+                'kindle_sync_check',
+                run_at_utc_iso,
+                username=username,
+                title='Kindle sync check after mass send',
+                user_id=int(user_id)
+            )
+        except Exception as e:
+            log.error(f"Failed to record scheduled kindle sync check after mass send: {e}")
+
+        def _trigger_mass_send_check(sid=row_id, u=username, uid=user_id):
+            should_run = True
+            try:
+                if sid is not None:
+                    should_run = bool(CWA_DB().scheduled_mark_dispatched(int(sid)))
+            except Exception:
+                pass
+            if not should_run:
+                return
+            WorkerThread.add(u, TaskMassKindleSync("Kindle Library Sync (Auto - Delayed)", uid), hidden=False)
+
+        job = scheduler.schedule(func=_trigger_mass_send_check,
+                                 trigger=DateTrigger(run_date=run_at_local),
+                                 name="Kindle sync check after mass send")
+        try:
+            if row_id is not None and job is not None:
+                CWA_DB().scheduled_update_job_id(int(row_id), str(job.id))
+        except Exception:
+            pass
+
+        return jsonify({"success": True, "message": _("Send books missing from Kindle task queued. Auto-check will run in 5 minutes.")})
+
     return jsonify({"success": True, "message": _("Send books missing from Kindle task queued. Check Tasks page.")})
