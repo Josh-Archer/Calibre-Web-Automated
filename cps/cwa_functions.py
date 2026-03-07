@@ -23,7 +23,7 @@ from threading import Thread, Lock, Timer
 import queue
 import os
 import tempfile
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import re
 import shutil
 import base64
@@ -409,6 +409,108 @@ def cwa_internal_schedule_auto_send():
 
 
 @csrf.exempt
+@cwa_internal.route('/cwa-internal/assign-book-to-user-shelf', methods=["POST"])
+def cwa_internal_assign_book_to_user_shelf():
+    """Assign a book to a private shelf for the specified user.
+
+    Security: Limited to localhost callers (within container/host).
+    Payload JSON: {book_id:int, user_id:int, shelf_name:str}
+    """
+    try:
+        remote = request.headers.get('X-Forwarded-For', request.remote_addr)
+        if remote not in (None, '127.0.0.1', '::1'):
+            abort(403)
+
+        data = request.get_json(force=True, silent=True) or {}
+        book_id = int(data.get('book_id'))
+        user_id = int(data.get('user_id'))
+        shelf_name = str(data.get('shelf_name') or 'Auto Imports').strip()
+        if not shelf_name:
+            shelf_name = 'Auto Imports'
+
+        user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).one_or_none()
+        if not book:
+            return jsonify({"error": "Book not found"}), 404
+
+        target_shelf = (
+            ub.session.query(ub.Shelf)
+            .filter(ub.Shelf.user_id == user_id)
+            .filter(ub.Shelf.is_public == 0)
+            .filter(ub.Shelf.name == shelf_name)
+            .first()
+        )
+
+        if target_shelf is None:
+            target_shelf = ub.Shelf(
+                name=shelf_name,
+                user_id=user_id,
+                is_public=0,
+                kobo_sync=False,
+            )
+            ub.session.add(target_shelf)
+            ub.session.flush()
+
+        existing = (
+            ub.session.query(ub.BookShelf)
+            .filter(ub.BookShelf.shelf == target_shelf.id)
+            .filter(ub.BookShelf.book_id == book_id)
+            .first()
+        )
+        if existing:
+            return jsonify({
+                "status": "already_present",
+                "shelf_id": target_shelf.id,
+                "shelf_name": target_shelf.name,
+                "book_id": book_id,
+                "user_id": user_id,
+            }), 200
+
+        last_order = (
+            ub.session.query(ub.BookShelf.order)
+            .filter(ub.BookShelf.shelf == target_shelf.id)
+            .order_by(ub.BookShelf.order.desc())
+            .first()
+        )
+        next_order = (last_order[0] if last_order and last_order[0] is not None else 0) + 1
+
+        target_shelf.books.append(ub.BookShelf(shelf=target_shelf.id, book_id=book_id, order=next_order))
+        target_shelf.last_modified = datetime.now(timezone.utc)
+        ub.session.merge(target_shelf)
+        ub.session.commit()
+
+        try:
+            CWA_DB().log_activity(
+                user_id=int(user.id),
+                user_name=user.name,
+                event_type='SHELF_ADD',
+                item_id=book_id,
+                item_title=book.title if book else None,
+                extra_data=json.dumps({'shelf_name': target_shelf.name, 'source': 'ingest_user_routing'})
+            )
+        except Exception as e:
+            log.debug(f"Failed to log internal shelf assignment activity: {e}")
+
+        return jsonify({
+            "status": "assigned",
+            "shelf_id": target_shelf.id,
+            "shelf_name": target_shelf.name,
+            "book_id": book_id,
+            "user_id": user_id,
+        }), 200
+    except Exception as e:
+        try:
+            ub.session.rollback()
+        except Exception:
+            pass
+        log.error(f"Internal shelf assignment failed: {e}")
+        return jsonify({"error": str(e)}), 400
+
+
+@csrf.exempt
 @cwa_internal.route('/cwa-internal/queue-duplicate-scan', methods=["POST"])
 def cwa_internal_queue_duplicate_scan():
     """Debounce and queue an incremental duplicate scan in the web process.
@@ -679,8 +781,9 @@ def set_cwa_settings():
     list_settings = []
     integer_settings = ['ingest_timeout_minutes', 'ingest_stale_temp_minutes', 'ingest_stale_temp_interval', 'auto_send_delay_minutes', 'hardcover_auto_fetch_batch_size', 'hardcover_auto_fetch_schedule_hour', 'duplicate_scan_hour', 'duplicate_scan_chunk_size', 'duplicate_scan_debounce_seconds', 'duplicate_auto_resolve_cooldown_minutes', 'archived_cleanup_schedule_hour', 'cover_download_max_mb']  # Special handling for integer settings
     float_settings = ['hardcover_auto_fetch_min_confidence', 'hardcover_auto_fetch_rate_limit']  # Special handling for float settings
-    json_settings = ['metadata_provider_hierarchy', 'metadata_providers_enabled', 'duplicate_format_priority']  # Special handling for JSON settings
+    json_settings = ['metadata_provider_hierarchy', 'metadata_providers_enabled', 'duplicate_format_priority', 'user_routed_ingest_user_map']  # Special handling for JSON settings
     string_settings.append('amazon_session_cookies')
+    string_settings.append('user_routed_ingest_shelf_name')
     boolean_settings.append('amazon_sync_enabled')
     skip_settings = ['auto_convert_ignored_formats', 'auto_ingest_ignored_formats', 'auto_convert_retained_formats']  # Handled through individual format checkboxes
     
@@ -889,6 +992,26 @@ def set_cwa_settings():
                                 result[setting] = json.dumps(cleaned_map)
                             else:
                                 result[setting] = cwa_db.cwa_settings.get(setting, '{}')
+                        elif setting == 'user_routed_ingest_user_map':
+                            if isinstance(json_value, dict):
+                                cleaned_map = {}
+                                for k, v in json_value.items():
+                                    if not isinstance(k, str) or not k.strip():
+                                        continue
+
+                                    if isinstance(v, str):
+                                        target_names = [v.strip()] if v.strip() else []
+                                    elif isinstance(v, list):
+                                        target_names = [item.strip() for item in v if isinstance(item, str) and item.strip()]
+                                    else:
+                                        target_names = []
+
+                                    if target_names:
+                                        cleaned_map[k.strip()] = target_names[0] if len(target_names) == 1 else target_names
+
+                                result[setting] = json.dumps(cleaned_map)
+                            else:
+                                result[setting] = cwa_db.cwa_settings.get(setting, '{}')
                         else:
                             result[setting] = json.dumps(json_value)
                     except (json.JSONDecodeError, ValueError, TypeError):
@@ -897,6 +1020,8 @@ def set_cwa_settings():
                             result[setting] = cwa_db.cwa_settings.get(setting, '["ibdb","google","dnb"]')
                         elif setting == 'metadata_providers_enabled':
                             result[setting] = cwa_db.cwa_settings.get(setting, '{}')
+                        elif setting == 'user_routed_ingest_user_map':
+                            result[setting] = cwa_db.cwa_settings.get(setting, '{}')
                         else:
                             result[setting] = cwa_db.cwa_settings.get(setting, '[]')
                 else:
@@ -904,6 +1029,8 @@ def set_cwa_settings():
                     if setting == 'metadata_provider_hierarchy':
                         result[setting] = cwa_db.cwa_settings.get(setting, '["ibdb","google","dnb"]')
                     elif setting == 'metadata_providers_enabled':
+                        result[setting] = cwa_db.cwa_settings.get(setting, '{}')
+                    elif setting == 'user_routed_ingest_user_map':
                         result[setting] = cwa_db.cwa_settings.get(setting, '{}')
                     else:
                         result[setting] = cwa_db.cwa_settings.get(setting, '[]')

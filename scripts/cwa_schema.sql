@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS cwa_settings(
     metadata_provider_hierarchy TEXT DEFAULT '["ibdb","google","dnb"]' NOT NULL,
     metadata_providers_enabled TEXT DEFAULT '{}' NOT NULL,
     auto_send_delay_minutes INTEGER DEFAULT 5 NOT NULL,
+    user_routed_ingest_shelf_name TEXT DEFAULT 'Auto Imports' NOT NULL,
+    user_routed_ingest_user_map TEXT DEFAULT '{}' NOT NULL,
     duplicate_detection_title SMALLINT DEFAULT 1 NOT NULL,
     duplicate_detection_author SMALLINT DEFAULT 1 NOT NULL,
     duplicate_detection_language SMALLINT DEFAULT 1 NOT NULL,

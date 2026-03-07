@@ -410,6 +410,26 @@ class NewBookProcessor:
         # Current file
         self.filepath = filepath
         self.filename = os.path.basename(filepath)
+        self.target_route_key = self._resolve_target_route_key_from_path(filepath)
+        self.user_routed_ingest_user_map = self._parse_user_routed_ingest_user_map()
+        self.target_usernames = self._resolve_target_usernames(self.target_route_key)
+        self.target_user_ids = self._resolve_target_user_ids(self.target_usernames)
+        self.target_username = self.target_usernames[0] if self.target_usernames else None
+        self.target_user_id = self.target_user_ids[0] if self.target_user_ids else None
+        self.target_shelf_name = self._resolve_target_shelf_name(self.target_route_key)
+
+        if self.target_route_key:
+            if self.target_user_ids:
+                print(
+                    f"[ingest-processor] User-routed ingest detected: '{self.filename}' -> route '{self.target_route_key}' -> users {self.target_usernames} (ids={self.target_user_ids})",
+                    flush=True,
+                )
+            else:
+                print(
+                    f"[ingest-processor] WARN: User-routed ingest folder '{self.target_route_key}' resolved to {self.target_usernames or [self.target_route_key]} but no matching account was found. Book will import without user routing.",
+                    flush=True,
+                )
+
         self.can_convert, self.input_format = self.can_convert_check()
         # Determine if the file is already in the desired target format using normalized extensions
         self.is_target_format = (self.input_format.lower() == str(self.target_format).lower())
@@ -429,6 +449,121 @@ class NewBookProcessor:
         self.last_added_book_id: int | None = None
         self.last_added_book_ids: list[int] = []
         self._title_sort_regex = self._get_title_sort_regex()
+
+    def _resolve_target_route_key_from_path(self, filepath: str) -> str | None:
+        """Resolve routing key from ingest subfolder convention:
+
+        /cwa-book-ingest/<username>/<book-file>
+        """
+        try:
+            ingest_root = os.path.normpath(self.ingest_folder)
+            file_path = os.path.normpath(filepath)
+            rel = os.path.relpath(file_path, ingest_root)
+
+            if rel.startswith(".."):
+                return None
+
+            parts = [p.strip() for p in Path(rel).parts if p and p.strip() not in ("", ".")]
+            if len(parts) < 2:
+                return None
+
+            route_key = parts[0]
+            if route_key in ("..",):
+                return None
+            return route_key
+        except Exception:
+            return None
+
+    def _parse_user_routed_ingest_user_map(self) -> dict[str, list[str]]:
+        raw_value = self.cwa_settings.get('user_routed_ingest_user_map', '{}')
+        try:
+            if raw_value is None:
+                return {}
+            if isinstance(raw_value, str):
+                raw_value = raw_value.strip()
+                if not raw_value:
+                    return {}
+                parsed = json.loads(raw_value)
+            elif isinstance(raw_value, dict):
+                parsed = raw_value
+            else:
+                return {}
+        except Exception as e:
+            print(f"[ingest-processor] WARN: Failed parsing user_routed_ingest_user_map: {e}", flush=True)
+            return {}
+
+        cleaned: dict[str, list[str]] = {}
+        for key, value in parsed.items():
+            route_key = str(key).strip()
+            if not route_key:
+                continue
+
+            if isinstance(value, str):
+                usernames = [value.strip()] if value.strip() else []
+            elif isinstance(value, (list, tuple, set)):
+                usernames = [str(item).strip() for item in value if str(item).strip()]
+            else:
+                continue
+
+            deduped: list[str] = []
+            seen: set[str] = set()
+            for username in usernames:
+                normalized = username.casefold()
+                if normalized in seen:
+                    continue
+                seen.add(normalized)
+                deduped.append(username)
+
+            if deduped:
+                cleaned[route_key.casefold()] = deduped
+
+        return cleaned
+
+    def _resolve_target_usernames(self, route_key: str | None) -> list[str]:
+        if not route_key:
+            return []
+
+        mapped_usernames = self.user_routed_ingest_user_map.get(route_key.casefold())
+        if mapped_usernames:
+            return mapped_usernames
+
+        return [route_key]
+
+    def _resolve_target_user_ids(self, usernames: list[str]) -> list[int]:
+        if not usernames:
+            return []
+        try:
+            app_db_path = get_app_db_path()
+            with sqlite3.connect(app_db_path, timeout=30) as con:
+                cur = con.cursor()
+                placeholders = ",".join("?" for _ in usernames)
+                rows = cur.execute(
+                    f"SELECT id, name FROM user WHERE lower(name) IN ({placeholders})",
+                    tuple(username.lower() for username in usernames),
+                ).fetchall()
+
+                if not rows:
+                    return []
+
+                user_id_by_name = {
+                    str(name).casefold(): int(user_id)
+                    for user_id, name in rows
+                    if name is not None
+                }
+                return [
+                    user_id_by_name[username.casefold()]
+                    for username in usernames
+                    if username.casefold() in user_id_by_name
+                ]
+        except Exception as e:
+            print(f"[ingest-processor] WARN: Failed resolving users {usernames} from app.db: {e}", flush=True)
+            return []
+
+    def _resolve_target_shelf_name(self, username: str | None) -> str:
+        base_name = str(self.cwa_settings.get('user_routed_ingest_shelf_name', 'Auto Imports')).strip()
+        if not base_name:
+            base_name = 'Auto Imports'
+        return base_name
 
     @staticmethod
     def _get_title_sort_regex() -> str:
@@ -820,11 +955,18 @@ class NewBookProcessor:
             else:
                 self.fetch_metadata_if_enabled(staged_path.stem)
 
-            # Trigger auto-send for users who have it enabled
+            # If user-routed ingest is active, add the imported book to that user's private shelf
             if self.last_added_book_id is not None:
-                self.trigger_auto_send_if_enabled(book_id=self.last_added_book_id, book_path=book_path)
+                self.assign_book_to_target_user_shelves(book_id=self.last_added_book_id, title=staged_path.stem)
+
+            # Trigger auto-send for users who have it enabled
+            if self.target_route_key and not self.target_user_ids:
+                print("[ingest-processor] Skipping auto-send for user-routed ingest due to unresolved target username", flush=True)
             else:
-                self.trigger_auto_send_if_enabled(staged_path.stem, book_path)
+                if self.last_added_book_id is not None:
+                    self.trigger_auto_send_if_enabled(book_id=self.last_added_book_id, book_path=book_path, target_user_ids=self.target_user_ids)
+                else:
+                    self.trigger_auto_send_if_enabled(staged_path.stem, book_path, target_user_ids=self.target_user_ids)
 
             # CRITICAL FIX: Refresh Calibre-Web's database session to make new books visible
             # This solves the issue where multiple books don't appear until container restart
@@ -972,7 +1114,7 @@ class NewBookProcessor:
             print(f"[ingest-processor] Error fetching metadata: {e}", flush=True)
 
 
-    def trigger_auto_send_if_enabled(self, book_title: str | None = None, book_path: str | None = None, book_id: int | None = None) -> None:
+    def trigger_auto_send_if_enabled(self, book_title: str | None = None, book_path: str | None = None, book_id: int | None = None, target_user_ids: list[int] | None = None) -> None:
         """Trigger auto-send for users who have it enabled"""
         if not _CPS_AVAILABLE:
             print("[ingest-processor] CPS modules not available, skipping auto-send", flush=True)
@@ -1002,17 +1144,34 @@ class NewBookProcessor:
             app_db_path = get_app_db_path()
             with sqlite3.connect(app_db_path, timeout=30) as con:
                 cur = con.cursor()
-                cur.execute("""
-                    SELECT id, name, kindle_mail
-                    FROM user
-                    WHERE auto_send_enabled = 1
-                    AND kindle_mail IS NOT NULL
-                    AND kindle_mail != ''
-                """)
+                if target_user_ids:
+                    placeholders = ",".join("?" for _ in target_user_ids)
+                    cur.execute(
+                        f"""
+                        SELECT id, name, kindle_mail
+                        FROM user
+                        WHERE auto_send_enabled = 1
+                        AND kindle_mail IS NOT NULL
+                        AND kindle_mail != ''
+                        AND id IN ({placeholders})
+                        """,
+                        tuple(int(user_id) for user_id in target_user_ids),
+                    )
+                else:
+                    cur.execute("""
+                        SELECT id, name, kindle_mail
+                        FROM user
+                        WHERE auto_send_enabled = 1
+                        AND kindle_mail IS NOT NULL
+                        AND kindle_mail != ''
+                    """)
                 auto_send_users = cur.fetchall()
 
             if not auto_send_users:
-                print(f"[ingest-processor] No users with auto-send enabled found", flush=True)
+                if target_user_ids:
+                    print(f"[ingest-processor] No auto-send enabled user found for target user_ids={target_user_ids}", flush=True)
+                else:
+                    print(f"[ingest-processor] No users with auto-send enabled found", flush=True)
                 return
                 
             # Queue or schedule auto-send tasks for each user
@@ -1061,6 +1220,41 @@ class NewBookProcessor:
 
         except Exception as e:
             print(f"[ingest-processor] Error in auto-send trigger: {e}", flush=True)
+
+    def assign_book_to_target_user_shelves(self, book_id: int, title: str | None = None) -> None:
+        """Assign imported book to private shelves for any users resolved from user-routed ingest."""
+        if not self.target_user_ids:
+            return
+
+        url = get_internal_api_url("/cwa-internal/assign-book-to-user-shelf")
+        for target_user_id, target_username in zip(self.target_user_ids, self.target_usernames):
+            try:
+                payload = {
+                    'book_id': int(book_id),
+                    'user_id': int(target_user_id),
+                    'username': target_username,
+                    'title': title or self.filename,
+                    'shelf_name': self.target_shelf_name,
+                }
+                resp = requests.post(
+                    url,
+                    json=payload,
+                    headers=get_internal_api_headers(),
+                    timeout=5,
+                    verify=False,
+                )
+                if resp.status_code == 200:
+                    try:
+                        body = resp.json()
+                        shelf_name = body.get('shelf_name', self.target_shelf_name)
+                        status = body.get('status', 'ok')
+                        print(f"[ingest-processor] Assigned imported book id {book_id} to user '{target_username}' shelf '{shelf_name}' ({status})", flush=True)
+                    except Exception:
+                        print(f"[ingest-processor] Assigned imported book id {book_id} to target user '{target_username}' shelf", flush=True)
+                else:
+                    print(f"[ingest-processor] WARN: Assign-to-shelf endpoint returned {resp.status_code} for user '{target_username}'", flush=True)
+            except Exception as e:
+                print(f"[ingest-processor] WARN: Failed assigning imported book to target user '{target_username}' shelf: {e}", flush=True)
 
 
     def generate_book_checksums(self, book_title: str, book_id: int | None = None) -> None:

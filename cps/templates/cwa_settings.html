@@ -695,6 +695,30 @@
         <small style="color: #bbbbbb; margin-left: 10px;">{{_('Range: 1-60 minutes (default: 5)')}}</small>
       </div>
 
+      <div class="form-group">
+        <h4 class="settings-section-header">{{_('User-Routed Ingest')}}</h4>
+        <p class="settings-description">
+          {{_('Route books from ingest subfolders to specific CWA users after import. The first folder under /cwa-book-ingest is treated as the routing key.')}}
+        </p>
+
+        <label for="user_routed_ingest_shelf_name" class="settings-section-header"
+          style="padding-right: 10px; margin-bottom: 8px !important; padding-bottom: 0px !important;">{{_('Private shelf name:')}}</label>
+        <input type="text" name="user_routed_ingest_shelf_name" id="user_routed_ingest_shelf_name"
+          value="{{ cwa_settings.get('user_routed_ingest_shelf_name', 'Auto Imports') }}"
+          style="width: 220px; padding: 5px; border: 1px solid transparent; border-radius: 4px; background-color: #151e2680;">
+        <small style="color: #bbbbbb; margin-left: 10px;">{{_('Imported books are added to this private shelf for each resolved user.')}}</small>
+
+        <div style="margin-top: 12px;">
+          <label for="user_routed_ingest_user_map" class="settings-section-header"
+            style="display: block; margin-bottom: 8px !important; padding-bottom: 0px !important;">{{_('Folder-to-user map (JSON):')}}</label>
+          <textarea name="user_routed_ingest_user_map" id="user_routed_ingest_user_map" rows="5"
+            style="width: 100%; max-width: 720px; padding: 8px; border: 1px solid transparent; border-radius: 4px; background-color: #151e2680;">{{ cwa_settings.get('user_routed_ingest_user_map', '{}') }}</textarea>
+          <small style="color: #bbbbbb; display: block; margin-top: 8px;">
+            {{_('Example: {"erin":"erin","mine":"josh","shared":["erin","josh"]}. If a folder is not listed here, CWA falls back to matching the folder name directly to a username.')}}
+          </small>
+        </div>
+      </div>
+
       <!-- Metadata Provider Hierarchy Setting -->
       <div class="form-group">
         <h4 class="settings-section-header">{{_('Auto Metadata Fetch Provider Hierarchy')}}</h4>

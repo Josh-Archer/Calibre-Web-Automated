@@ -439,6 +439,14 @@ And just like that, Calibre-Web Automated should be up and running! **HOWEVER** 
 
 - Simply move your newly downloaded or existing eBook files to the ingest folder which is `/cwa-book-ingest`
 - Anything you place in this folder will be automatically analysed, converted if necessary and then imported into your Calibre-Web library if not in a format you have told CWA to ignore in the CWA Settings Panel
+  - **User-routed ingest (multi-user automation):** You can optionally place books under a routing subfolder, e.g. `/cwa-book-ingest/alice/new-book.epub`.
+    - By default, CWA treats that first subfolder as a username and looks for a matching CWA account.
+    - You can also define explicit folder-to-user mappings in `CWA Settings -> User-Routed Ingest`, for example `{"erin":"erin","mine":"josh","shared":["erin","josh"]}`.
+    - If the resolved username matches an existing CWA user, CWA will route post-import actions to that user:
+      - Auto-Send targets only that user (instead of broadcasting to all Auto-Send enabled users)
+      - The book is added to that user's private `Auto Imports` shelf (created automatically if missing)
+    - If a mapping resolves to multiple users, CWA adds the imported book to each user's private shelf and limits Auto-Send to those matched users.
+    - If the subfolder name does not match a user and no folder mapping exists, the book is still imported normally but user-specific routing is skipped.
   - **⚠️ ATTENTION ⚠️**
     - _Downloading files directly into `/cwa-book-ingest` is not supported. It can cause duplicate imports and potentially a corrupt database. It is recommended to first download the books completely, then transfer them to `/cwa-book-ingest` to avoid any issues_
     - Be sure that the books you are transferring to `/cwa-book-ingest` are owned by your user rather than root. Otherwise, permission errors may occur and may result in incomplete importing.
