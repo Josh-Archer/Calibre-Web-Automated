@@ -511,6 +511,71 @@ def cwa_internal_assign_book_to_user_shelf():
 
 
 @csrf.exempt
+@cwa_internal.route('/cwa-internal/apply-book-tags', methods=["POST"])
+def cwa_internal_apply_book_tags():
+    """Apply tags to a Calibre book from internal ingest workflows."""
+    try:
+        remote = request.headers.get('X-Forwarded-For', request.remote_addr)
+        if remote not in (None, '127.0.0.1', '::1'):
+            abort(403)
+
+        data = request.get_json(force=True, silent=True) or {}
+        book_id = int(data.get('book_id'))
+        raw_tags = data.get('tags') or []
+
+        if isinstance(raw_tags, str):
+            requested_tags = [raw_tags]
+        elif isinstance(raw_tags, (list, tuple, set)):
+            requested_tags = [str(tag).strip() for tag in raw_tags if str(tag).strip()]
+        else:
+            requested_tags = []
+
+        if not requested_tags:
+            return jsonify({"status": "noop", "book_id": book_id, "tags": []}), 200
+
+        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).one_or_none()
+        if not book:
+            return jsonify({"error": "Book not found"}), 404
+
+        existing = {tag.name.casefold(): tag for tag in book.tags if getattr(tag, "name", None)}
+        added_tags = []
+        for tag_name in requested_tags:
+            folded = tag_name.casefold()
+            tag = existing.get(folded)
+            if tag is None:
+                tag = calibre_db.session.query(db.Tags).filter(db.Tags.name == tag_name).one_or_none()
+                if tag is None:
+                    tag = db.Tags(tag_name)
+                    calibre_db.session.add(tag)
+                    calibre_db.session.flush()
+                book.tags.append(tag)
+                existing[folded] = tag
+                added_tags.append(tag.name)
+
+        if added_tags:
+            calibre_db.set_metadata_dirty(book.id)
+            calibre_db.session.add(book)
+            calibre_db.session.commit()
+            status = "updated"
+        else:
+            status = "already_present"
+
+        return jsonify({
+            "status": status,
+            "book_id": book.id,
+            "tags": [tag.name for tag in book.tags],
+            "added_tags": added_tags,
+        }), 200
+    except Exception as e:
+        try:
+            calibre_db.session.rollback()
+        except Exception:
+            pass
+        log.error(f"Internal tag application failed: {e}")
+        return jsonify({"error": str(e)}), 400
+
+
+@csrf.exempt
 @cwa_internal.route('/cwa-internal/queue-duplicate-scan', methods=["POST"])
 def cwa_internal_queue_duplicate_scan():
     """Debounce and queue an incremental duplicate scan in the web process.

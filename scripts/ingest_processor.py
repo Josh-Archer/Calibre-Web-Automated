@@ -417,6 +417,7 @@ class NewBookProcessor:
         self.target_username = self.target_usernames[0] if self.target_usernames else None
         self.target_user_id = self.target_user_ids[0] if self.target_user_ids else None
         self.target_shelf_name = self._resolve_target_shelf_name(self.target_route_key)
+        self.target_visibility_tags = self._build_target_visibility_tags(self.target_usernames)
 
         if self.target_route_key:
             if self.target_user_ids:
@@ -564,6 +565,39 @@ class NewBookProcessor:
         if not base_name:
             base_name = 'Auto Imports'
         return base_name
+
+    @staticmethod
+    def _build_visibility_tag(username: str) -> str | None:
+        normalized = str(username or "").strip().casefold()
+        if not normalized:
+            return None
+        return f"cwa-user:{normalized}"
+
+    def _build_target_visibility_tags(self, usernames: list[str]) -> list[str]:
+        tags: list[str] = []
+        seen: set[str] = set()
+        for username in usernames:
+            tag = self._build_visibility_tag(username)
+            if not tag or tag in seen:
+                continue
+            seen.add(tag)
+            tags.append(tag)
+        return tags
+
+    @staticmethod
+    def _merge_tags(existing_tags: str, extra_tags: list[str]) -> str:
+        merged: list[str] = []
+        seen: set[str] = set()
+        for tag in [*(existing_tags or "").split(","), *extra_tags]:
+            normalized = str(tag or "").strip()
+            if not normalized:
+                continue
+            folded = normalized.casefold()
+            if folded in seen:
+                continue
+            seen.add(folded)
+            merged.append(normalized)
+        return ",".join(merged)
 
     @staticmethod
     def _get_title_sort_regex() -> str:
@@ -898,6 +932,7 @@ class NewBookProcessor:
                 _title = str(meta[2]) if meta[2] else Path(staged_path).stem
                 _authors = str(meta[3]) if meta[3] else ""
                 _tags = str(meta[6]) if meta[6] else ""
+                _tags = self._merge_tags(_tags, self.target_visibility_tags)
                 _series = str(meta[7]) if meta[7] else ""
                 _series_index = str(meta[8]) if meta[8] is not None and meta[8] != "" else None
                 _languages = str(meta[9]) if meta[9] else ""
@@ -954,6 +989,9 @@ class NewBookProcessor:
                 self.fetch_metadata_if_enabled(book_id=self.last_added_book_id)
             else:
                 self.fetch_metadata_if_enabled(staged_path.stem)
+
+            if self.last_added_book_id is not None:
+                self.apply_visibility_tags_to_book(book_id=self.last_added_book_id)
 
             # If user-routed ingest is active, add the imported book to that user's private shelf
             if self.last_added_book_id is not None:
@@ -1255,6 +1293,37 @@ class NewBookProcessor:
                     print(f"[ingest-processor] WARN: Assign-to-shelf endpoint returned {resp.status_code} for user '{target_username}'", flush=True)
             except Exception as e:
                 print(f"[ingest-processor] WARN: Failed assigning imported book to target user '{target_username}' shelf: {e}", flush=True)
+
+    def apply_visibility_tags_to_book(self, book_id: int) -> None:
+        """Apply deterministic per-user visibility tags after import."""
+        if not self.target_visibility_tags:
+            return
+
+        url = get_internal_api_url("/cwa-internal/apply-book-tags")
+        try:
+            resp = requests.post(
+                url,
+                json={
+                    "book_id": int(book_id),
+                    "tags": self.target_visibility_tags,
+                },
+                headers=get_internal_api_headers(),
+                timeout=5,
+                verify=False,
+            )
+            if resp.status_code == 200:
+                try:
+                    body = resp.json()
+                    print(
+                        f"[ingest-processor] Applied visibility tags to book id {book_id}: {body.get('tags', self.target_visibility_tags)}",
+                        flush=True,
+                    )
+                except Exception:
+                    print(f"[ingest-processor] Applied visibility tags to book id {book_id}", flush=True)
+            else:
+                print(f"[ingest-processor] WARN: Apply-book-tags endpoint returned {resp.status_code} for book id {book_id}", flush=True)
+        except Exception as e:
+            print(f"[ingest-processor] WARN: Failed applying visibility tags to book id {book_id}: {e}", flush=True)
 
 
     def generate_book_checksums(self, book_title: str, book_id: int | None = None) -> None:

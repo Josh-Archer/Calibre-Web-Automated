@@ -59,3 +59,25 @@ def test_resolve_target_usernames_prefers_alias_map_over_raw_folder_name():
     assert processor._resolve_target_usernames("mine") == ["josh"]
     assert processor._resolve_target_usernames("shared") == ["erin", "josh"]
     assert processor._resolve_target_usernames("erin") == ["erin"]
+
+
+def test_build_target_visibility_tags_uses_normalized_usernames():
+    processor = _make_processor()
+
+    tags = processor._build_target_visibility_tags(["Josh@ArcherFamily.io", "erin@archerfamily.io", "josh@archerfamily.io"])
+
+    assert tags == [
+        "cwa-user:josh@archerfamily.io",
+        "cwa-user:erin@archerfamily.io",
+    ]
+
+
+def test_merge_tags_preserves_existing_and_appends_visibility_tags_without_duplicates():
+    processor = _make_processor()
+
+    merged = processor._merge_tags("fantasy, cwa-user:josh@archerfamily.io", [
+        "cwa-user:erin@archerfamily.io",
+        "cwa-user:josh@archerfamily.io",
+    ])
+
+    assert merged == "fantasy,cwa-user:josh@archerfamily.io,cwa-user:erin@archerfamily.io"
