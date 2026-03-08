@@ -451,6 +451,11 @@ And just like that, Calibre-Web Automated should be up and running! **HOWEVER** 
     - _Downloading files directly into `/cwa-book-ingest` is not supported. It can cause duplicate imports and potentially a corrupt database. It is recommended to first download the books completely, then transfer them to `/cwa-book-ingest` to avoid any issues_
     - Be sure that the books you are transferring to `/cwa-book-ingest` are owned by your user rather than root. Otherwise, permission errors may occur and may result in incomplete importing.
     - In the event you're expecting a book to be ingested and it hasn't been, use the "Library Refresh" button on the Upper Navbar to manually trigger the ingest process
+  - **Readarr upgrade-import troubleshooting:**
+    - If your Readarr integration keeps retrying books that already exist, the failure may be upstream in Readarr's upgrade/replace path rather than in CWA ingest itself.
+    - Older custom `bookshelf` builds could crash with a `NullReferenceException` when an existing author path no longer resolved to a Readarr root folder during upgrade import.
+    - Current patched builds surface that condition as a root-folder error instead, which is easier to diagnose from Readarr logs.
+    - If retries continue, inspect Readarr for duplicate authors or author paths that no longer live under the configured root folders.
 
 ## KOReader Syncing (KOSync) 📖⚡
 
