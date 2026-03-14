@@ -46,29 +46,39 @@ def _author_names_match(book_authors, metadata_authors) -> bool:
     )
 
 
-def _metadata_candidate_matches(book, metadata) -> bool:
+def _metadata_candidate_score(book, metadata) -> float:
     expected_title = _normalize_text(getattr(book, "title", ""))
     candidate_title = _normalize_text(getattr(metadata, "title", ""))
     if not expected_title or not candidate_title:
-        return False
+        return 0.0
 
     expected_base = _base_title(getattr(book, "title", ""))
     candidate_base = _base_title(getattr(metadata, "title", ""))
+    if not _author_names_match(getattr(book, "authors", []), getattr(metadata, "authors", [])):
+        return 0.0
+
     full_ratio = SequenceMatcher(None, expected_title, candidate_title).ratio()
     base_ratio = SequenceMatcher(None, expected_base, candidate_base).ratio()
+    score = max(full_ratio, base_ratio) * 100
 
-    title_match = any((
-        expected_title == candidate_title,
-        expected_base == candidate_base,
-        candidate_title.startswith(expected_title),
-        candidate_base.startswith(expected_base),
-        expected_title.startswith(candidate_title),
-        expected_base.startswith(candidate_base),
-        full_ratio >= 0.88,
-        base_ratio >= 0.88,
-    ))
+    if expected_title == candidate_title:
+        score = max(score, 125)
+    if expected_base == candidate_base:
+        score = max(score, 120)
+    elif candidate_title.startswith(expected_title):
+        score = max(score, 100)
+    elif expected_title.startswith(candidate_title):
+        score = max(score, 95)
+    elif candidate_base.startswith(expected_base):
+        score = max(score, 85)
+    elif expected_base.startswith(candidate_base):
+        score = max(score, 80)
 
-    return title_match and _author_names_match(getattr(book, "authors", []), getattr(metadata, "authors", []))
+    return score
+
+
+def _metadata_candidate_matches(book, metadata) -> bool:
+    return _metadata_candidate_score(book, metadata) >= 88
 
 
 def fetch_and_apply_metadata(book_id: int, user_enabled: bool = False) -> bool:
@@ -148,19 +158,28 @@ def fetch_and_apply_metadata(book_id: int, user_enabled: bool = False) -> bool:
                     continue
                     
                 metadata = None
+                best_score = 0.0
                 for candidate in results:
-                    if _metadata_candidate_matches(book, candidate):
+                    score = _metadata_candidate_score(book, candidate)
+                    if score > best_score:
                         metadata = candidate
-                        break
-                    log.debug(
-                        "Rejecting metadata candidate '%s' for '%s' due to weak title/author match",
-                        getattr(candidate, 'title', ''),
-                        book.title,
-                    )
+                        best_score = score
+                    else:
+                        log.debug(
+                            "Rejecting metadata candidate '%s' for '%s' due to weaker title/author match",
+                            getattr(candidate, 'title', ''),
+                            book.title,
+                        )
 
-                if metadata is None:
+                if metadata is None or best_score < 88:
                     log.debug(f"No acceptable metadata candidate from {provider.__name__} for book: {book.title}")
                     continue
+                log.debug(
+                    "Selected metadata candidate '%s' for '%s' with score %.2f",
+                    getattr(metadata, 'title', ''),
+                    book.title,
+                    best_score,
+                )
                 
                 # Apply metadata to book
                 if _apply_metadata_to_book(book, metadata, calibre_db_instance):
