@@ -6,6 +6,8 @@
 # See CONTRIBUTORS for full list of authors.
 
 import json
+import re
+from difflib import SequenceMatcher
 
 from cps import logger, db
 from cps.search_metadata import cl as metadata_providers
@@ -14,6 +16,60 @@ sys.path.insert(1, '/app/calibre-web-automated/scripts/')
 from cwa_db import CWA_DB
 
 log = logger.create()
+
+
+def _normalize_text(value: str) -> str:
+    text = re.sub(r"[^a-z0-9]+", " ", (value or "").lower())
+    return " ".join(text.split())
+
+
+def _base_title(value: str) -> str:
+    normalized = _normalize_text(value)
+    if not normalized:
+        return ""
+    raw = value or ""
+    for marker in ("(", "[", ":", " - "):
+        if marker in raw:
+            raw = raw.split(marker, 1)[0]
+    return _normalize_text(raw) or normalized
+
+
+def _author_names_match(book_authors, metadata_authors) -> bool:
+    expected = [_normalize_text(author.name) for author in (book_authors or []) if getattr(author, "name", None)]
+    actual = [_normalize_text(author) for author in (metadata_authors or []) if author]
+    if not expected or not actual:
+        return True
+    return any(
+        exp == act or exp in act or act in exp
+        for exp in expected
+        for act in actual
+    )
+
+
+def _metadata_candidate_matches(book, metadata) -> bool:
+    expected_title = _normalize_text(getattr(book, "title", ""))
+    candidate_title = _normalize_text(getattr(metadata, "title", ""))
+    if not expected_title or not candidate_title:
+        return False
+
+    expected_base = _base_title(getattr(book, "title", ""))
+    candidate_base = _base_title(getattr(metadata, "title", ""))
+    full_ratio = SequenceMatcher(None, expected_title, candidate_title).ratio()
+    base_ratio = SequenceMatcher(None, expected_base, candidate_base).ratio()
+
+    title_match = any((
+        expected_title == candidate_title,
+        expected_base == candidate_base,
+        candidate_title.startswith(expected_title),
+        candidate_base.startswith(expected_base),
+        expected_title.startswith(candidate_title),
+        expected_base.startswith(candidate_base),
+        full_ratio >= 0.88,
+        base_ratio >= 0.88,
+    ))
+
+    return title_match and _author_names_match(getattr(book, "authors", []), getattr(metadata, "authors", []))
+
 
 def fetch_and_apply_metadata(book_id: int, user_enabled: bool = False) -> bool:
     """
@@ -91,8 +147,20 @@ def fetch_and_apply_metadata(book_id: int, user_enabled: bool = False) -> bool:
                 if not results or len(results) == 0:
                     continue
                     
-                # Use the first result
-                metadata = results[0]
+                metadata = None
+                for candidate in results:
+                    if _metadata_candidate_matches(book, candidate):
+                        metadata = candidate
+                        break
+                    log.debug(
+                        "Rejecting metadata candidate '%s' for '%s' due to weak title/author match",
+                        getattr(candidate, 'title', ''),
+                        book.title,
+                    )
+
+                if metadata is None:
+                    log.debug(f"No acceptable metadata candidate from {provider.__name__} for book: {book.title}")
+                    continue
                 
                 # Apply metadata to book
                 if _apply_metadata_to_book(book, metadata, calibre_db_instance):
