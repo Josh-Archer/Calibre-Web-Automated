@@ -186,6 +186,32 @@ process_retry_queue() {
         fi
 }
 
+ignored_marker_matches() {
+        local filepath="$1"
+        local marker="${filepath}.cwa.ignored.json"
+        [ -f "$filepath" ] || return 1
+        [ -f "$marker" ] || return 1
+
+        python3 - "$filepath" "$marker" <<'PY'
+import json
+import os
+import sys
+
+filepath, marker = sys.argv[1], sys.argv[2]
+try:
+    with open(marker, "r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    stat_result = os.stat(filepath)
+    current_size = stat_result.st_size
+    current_mtime_ns = getattr(stat_result, "st_mtime_ns", int(stat_result.st_mtime * 1e9))
+    if data.get("size") == current_size and data.get("mtime_ns") == current_mtime_ns:
+        raise SystemExit(0)
+except Exception:
+    pass
+raise SystemExit(1)
+PY
+}
+
 handle_event() {
         local filepath="$1"
         local configured_timeout=$(get_timeout_from_db)  # Get configured timeout from database
@@ -203,6 +229,10 @@ handle_event() {
         fi
         # extension filter
         if ! [[ "$filepath" =~ $SUPPORTED_EXT_REGEX ]]; then
+                return 0
+        fi
+
+        if ignored_marker_matches "$filepath"; then
                 return 0
         fi
 
@@ -291,4 +321,3 @@ fi
                 handle_event "$filepath"
         done
 ) || run_fallback
-

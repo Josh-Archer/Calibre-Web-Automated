@@ -36,6 +36,14 @@ _ub = None
 _duplicate_scan_timer = None
 _duplicate_scan_lock = threading.Lock()
 
+
+class BusyLibraryError(RuntimeError):
+    """Raised when Calibre's metadata DB is temporarily locked."""
+
+
+class ImportFailedError(RuntimeError):
+    """Raised when an ingest import fails and should not be reported as success."""
+
 class ProcessLock:
     """Robust process lock using both file locking and PID tracking"""
 
@@ -303,6 +311,21 @@ except FileNotFoundError:
 except Exception as e:
     print(f"[ingest-processor] WARN: Could not scan processed_books: {e}", flush=True)
     backup_destinations = {}
+
+IGNORED_MARKER_SUFFIX = ".cwa.ignored.json"
+
+
+def write_ignored_marker(filepath, reason):
+    """Persist ignored-file state so unchanged files are skipped by the polling watcher."""
+    stat_result = os.stat(filepath)
+    marker_path = filepath + IGNORED_MARKER_SUFFIX
+    payload = {
+        "reason": reason,
+        "size": stat_result.st_size,
+        "mtime_ns": getattr(stat_result, "st_mtime_ns", int(stat_result.st_mtime * 1e9)),
+    }
+    with open(marker_path, "w", encoding="utf-8") as handle:
+        json.dump(payload, handle)
 
 def get_internal_api_url(path):
     """Construct internal API URL, respecting SSL configuration"""
@@ -916,9 +939,9 @@ class NewBookProcessor:
 
         try:
             if text:
-                result = subprocess.run([
+                result = self._run_calibredb_add_with_retry([
                     "calibredb", "add", str(staged_path), "--automerge", self.cwa_settings['auto_ingest_automerge'], f"--library-path={self.library_dir}"
-                ], env=self.calibre_env, check=True, capture_output=True, text=True)
+                ])
                 added_ids = self._parse_added_book_ids((result.stdout or '') + '\n' + (result.stderr or ''))
                 if added_ids:
                     self.last_added_book_ids = added_ids
@@ -966,7 +989,7 @@ class NewBookProcessor:
                     if isinstance(ident, str) and ":" in ident and ident.strip():
                         add_command.extend(["--identifier", ident.strip()])
 
-                result = subprocess.run(add_command, env=self.calibre_env, check=True, capture_output=True, text=True)
+                result = self._run_calibredb_add_with_retry(add_command)
                 added_ids = self._parse_added_book_ids((result.stdout or '') + '\n' + (result.stderr or ''))
                 if added_ids:
                     self.last_added_book_ids = added_ids
@@ -1042,14 +1065,51 @@ class NewBookProcessor:
                 except Exception as e:
                     print(f"[ingest-processor] WARN: Failed to adjust timestamps after overwrite import: {e}", flush=True)
 
+        except BusyLibraryError:
+            raise
         except subprocess.CalledProcessError as e:
             print(f"[ingest-processor] {staged_path.stem} was not able to be added to the Calibre Library due to the following error:\nCALIBREDB EXIT/ERROR CODE: {e.returncode}\n{e.stderr}", flush=True)
             self.backup(str(staged_path), backup_type="failed")
+            raise ImportFailedError(staged_path.stem) from e
         except Exception as e:
             print(f"[ingest-processor] ingest-processor ran into the following error:\n{e}", flush=True)
+            self.backup(str(staged_path), backup_type="failed")
+            raise ImportFailedError(staged_path.stem) from e
         finally:
             if staged_path.exists():
                 os.remove(staged_path)
+
+    def _run_calibredb_add_with_retry(self, add_command, max_retries: int = 3) -> subprocess.CompletedProcess:
+        """Retry transient DB-lock failures before giving up."""
+        for attempt in range(max_retries):
+            if attempt == 0:
+                time.sleep(0.5)
+            else:
+                delay = 2 ** attempt
+                print(
+                    f"[ingest-processor] Retrying calibredb add (attempt {attempt + 1}/{max_retries}) after {delay}s delay...",
+                    flush=True,
+                )
+                time.sleep(delay)
+
+            result = subprocess.run(
+                add_command,
+                env=self.calibre_env,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode == 0:
+                return result
+
+            stderr = (result.stderr or "").lower()
+            if "database is locked" in stderr and attempt < max_retries - 1:
+                continue
+            if "database is locked" in stderr:
+                raise BusyLibraryError("Calibre database remained locked after retries")
+            raise subprocess.CalledProcessError(result.returncode, result.args, result.stdout, result.stderr)
+
+        raise BusyLibraryError("Calibre database remained locked after retries")
 
     def _validate_book_exists(self, book_id: int) -> bool:
         """Check if a book with the given ID exists in the Calibre library"""
@@ -1619,7 +1679,13 @@ def main(filepath=None):
         # Remove . (dot), check is against exclude whitout dot
         ext = Path(nbp.filename).suffix.replace('.', '')
         if ext in nbp.ingest_ignored_formats:
-            # Do NOT delete ignored temporary files; they may be renamed shortly (e.g. .uploading -> .epub)
+            # Temporary partial files should be left untouched so the uploader can rename them later.
+            # Persistent ignored formats keep a marker so the polling watcher won't requeue them forever.
+            if ext not in {"crdownload", "download", "part", "uploading", "temp"}:
+                try:
+                    write_ignored_marker(filepath, "ignored_format")
+                except Exception as e:
+                    print(f"[ingest-processor] WARN: Failed to persist ignored marker for {nbp.filename}: {e}", flush=True)
             print(f"[ingest-processor] Skipping ignored/temporary file (no action taken): {nbp.filename}", flush=True)
             skip_delete = True
             return
@@ -1676,6 +1742,13 @@ def main(filepath=None):
             else:
                 print(f"[ingest-processor]: Cannot convert {nbp.filepath}. {nbp.input_format} is currently unsupported / is not a known ebook format.", flush=True)
 
+    except BusyLibraryError as e:
+        skip_delete = True
+        print(f"[ingest-processor] Retrying later because Calibre is busy: {e}", flush=True)
+        sys.exit(2)
+    except ImportFailedError as e:
+        print(f"[ingest-processor] Import failed: {e}", flush=True)
+        sys.exit(1)
     except Exception as e:
         print(f"[ingest-processor] Unexpected error during processing: {e}", flush=True)
         raise
