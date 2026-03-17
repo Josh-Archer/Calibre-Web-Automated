@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from functools import wraps
 import hashlib
 import os
+import re
 import time
 from shutil import copyfile
 
@@ -88,12 +89,111 @@ def normalize_title_for_duplicates(title, primary_author=None):
     strip the leading author prefix to avoid false negatives.
     """
     normalized = (title or "untitled").lower().strip()
+    normalized = re.sub(r",\s*(the|a|an)$", "", normalized)
     if primary_author:
         author_norm = str(primary_author).lower().strip()
-        author_prefix = f"{author_norm}, "
-        if normalized.startswith(author_prefix):
-            normalized = normalized[len(author_prefix):].strip()
+        for author_prefix in (f"{author_norm}, ", f"{author_norm} - ", f"{author_norm}: "):
+            if normalized.startswith(author_prefix):
+                normalized = normalized[len(author_prefix):].strip()
+                break
+    for separator in (" : ", ": ", " - ", " — ", " – "):
+        if separator in normalized:
+            normalized = normalized.split(separator, 1)[0].strip()
+            break
+    normalized = re.sub(r"\s*[\(\[].*?[\)\]]\s*$", "", normalized).strip()
+    normalized = re.sub(r"[^a-z0-9]+", " ", normalized)
+    return " ".join(normalized.split()) or "untitled"
+
+
+def _normalize_duplicate_value(value, default="unknown"):
+    normalized = re.sub(r"[^a-z0-9]+", " ", str(value or "").lower()).strip()
+    return " ".join(normalized.split()) or default
+
+
+def _normalize_optional_duplicate_value(value, empty_markers=None):
+    normalized = _normalize_duplicate_value(value, default="")
+    if not normalized:
+        return ""
+    empty_markers = {marker.lower() for marker in (empty_markers or set())}
+    if normalized in empty_markers:
+        return ""
     return normalized
+
+
+def _get_primary_author_name(book):
+    if not getattr(book, 'authors', None):
+        return "unknown"
+    book.ordered_authors = calibre_db.order_authors([book])
+    if book.ordered_authors and len(book.ordered_authors) > 0 and getattr(book.ordered_authors[0], 'name', None):
+        return book.ordered_authors[0].name
+    return "unknown"
+
+
+def _extract_duplicate_components(book, use_title, use_author, use_language, use_series, use_publisher, use_format):
+    primary_author = _get_primary_author_name(book) if use_author else None
+    components = {
+        'title': normalize_title_for_duplicates(book.title if getattr(book, 'title', None) else "untitled", primary_author) if use_title else "",
+        'author': _normalize_duplicate_value(primary_author, default="unknown") if use_author else "",
+        'language': "",
+        'series': "",
+        'publisher': "",
+        'format': "",
+    }
+
+    if use_language:
+        languages = sorted({
+            normalized for normalized in (
+                _normalize_optional_duplicate_value(getattr(language, 'lang_code', None), {"unknown"})
+                for language in (getattr(book, 'languages', None) or [])
+            ) if normalized
+        })
+        components['language'] = ",".join(languages)
+
+    if use_series:
+        series_names = sorted({
+            normalized for normalized in (
+                _normalize_optional_duplicate_value(getattr(series, 'name', None), {"no series"})
+                for series in (getattr(book, 'series', None) or [])
+            ) if normalized
+        })
+        components['series'] = ",".join(series_names)
+
+    if use_publisher:
+        publisher_names = sorted({
+            normalized for normalized in (
+                _normalize_optional_duplicate_value(getattr(publisher, 'name', None), {"unknown publisher"})
+                for publisher in (getattr(book, 'publishers', None) or [])
+            ) if normalized
+        })
+        components['publisher'] = ",".join(publisher_names)
+
+    if use_format:
+        formats = sorted({
+            normalized for normalized in (
+                _normalize_optional_duplicate_value(getattr(data, 'format', None), {"no format"})
+                for data in (getattr(book, 'data', None) or [])
+            ) if normalized
+        })
+        components['format'] = ",".join(formats)
+
+    return components
+
+
+def _duplicate_components_compatible(group_components, book_components, optional_fields):
+    for field in optional_fields:
+        group_value = group_components.get(field, "")
+        book_value = book_components.get(field, "")
+        if group_value and book_value and group_value != book_value:
+            return False
+    return True
+
+
+def _merge_duplicate_components(group_components, book_components, optional_fields):
+    merged = dict(group_components)
+    for field in optional_fields:
+        if not merged.get(field) and book_components.get(field):
+            merged[field] = book_components[field]
+    return merged
 
 
 def validate_resolution_strategy(strategy):
@@ -800,77 +900,57 @@ def find_duplicate_books_python(use_title, use_author, use_language, use_series,
         print(f"[cwa-duplicates] Warning: Processing {len(all_books)} books may take some time", flush=True)
         log.warning("[cwa-duplicates] Processing large library: %s books", len(all_books))
     
-    # Group books by configurable criteria combination (case-insensitive)
     grouped_books = {}
-    
+    optional_fields = []
+    if use_language:
+        optional_fields.append('language')
+    if use_series:
+        optional_fields.append('series')
+    if use_publisher:
+        optional_fields.append('publisher')
+    if use_format:
+        optional_fields.append('format')
+
     for book in all_books:
-        # Build key based on selected criteria
-        key_parts = []
-
-        primary_author = None
-        if use_author:
-            # Ensure authors are loaded and not empty
-            if book.authors and len(book.authors) > 0:
-                # Get primary author (use Calibre-Web's standard approach)
-                book.ordered_authors = calibre_db.order_authors([book])
-                primary_author = book.ordered_authors[0].name if book.ordered_authors and len(book.ordered_authors) > 0 else "unknown"
-            else:
-                primary_author = "unknown"
-        
+        components = _extract_duplicate_components(
+            book, use_title, use_author, use_language, use_series, use_publisher, use_format
+        )
+        base_key_parts = []
         if use_title:
-            # Handle potential None title
-            title = book.title if book.title else "untitled"
-            key_parts.append(normalize_title_for_duplicates(title, primary_author))
-
+            base_key_parts.append(components['title'])
         if use_author:
-            key_parts.append(primary_author.lower().strip() if primary_author else "unknown")
-        
-        if use_language:
-            # Get primary language code
-            if book.languages and len(book.languages) > 0:
-                primary_language = book.languages[0].lang_code if book.languages[0].lang_code else "unknown"
-                key_parts.append(primary_language.lower().strip())
-            else:
-                key_parts.append("unknown")
-        
-        if use_series:
-            # Get series name
-            if book.series and len(book.series) > 0:
-                series_name = book.series[0].name if book.series[0].name else "no_series"
-                key_parts.append(series_name.lower().strip())
-            else:
-                key_parts.append("no_series")
-        
-        if use_publisher:
-            # Get publisher name
-            if book.publishers and len(book.publishers) > 0:
-                publisher_name = book.publishers[0].name if book.publishers[0].name else "unknown_publisher"
-                key_parts.append(publisher_name.lower().strip())
-            else:
-                key_parts.append("unknown_publisher")
-        
-        if use_format:
-            # Get file formats (consider books with same formats as potentially duplicate)
-            if book.data and len(book.data) > 0:
-                formats = sorted([data.format.lower() for data in book.data if data.format])
-                format_str = ",".join(formats) if formats else "no_format"
-                key_parts.append(format_str)
-            else:
-                key_parts.append("no_format")
-        
-        # Create composite key
-        key = tuple(key_parts)
-        
-        if key not in grouped_books:
-            grouped_books[key] = []
-        grouped_books[key].append(book)
-    
-    print(f"[cwa-duplicates] Grouped books into {len(grouped_books)} unique combinations based on selected criteria", flush=True)
+            base_key_parts.append(components['author'])
+        if not base_key_parts:
+            for field in optional_fields:
+                base_key_parts.append(components[field])
+
+        base_key = tuple(base_key_parts)
+        subgroups = grouped_books.setdefault(base_key, [])
+        matched = False
+
+        for subgroup in subgroups:
+            if _duplicate_components_compatible(subgroup['components'], components, optional_fields):
+                subgroup['books'].append(book)
+                subgroup['components'] = _merge_duplicate_components(subgroup['components'], components, optional_fields)
+                matched = True
+                break
+
+        if not matched:
+            subgroups.append({
+                'components': components,
+                'books': [book],
+            })
+
+    subgroup_count = sum(len(subgroups) for subgroups in grouped_books.values())
+    print(f"[cwa-duplicates] Grouped books into {subgroup_count} unique combinations based on selected criteria", flush=True)
     
     # Filter to only groups with duplicates and prepare display data
     duplicate_groups = []
-    for key, books in grouped_books.items():
-        if len(books) > 1:
+    for subgroups in grouped_books.values():
+        for subgroup in subgroups:
+            books = subgroup['books']
+            if len(books) <= 1:
+                continue
             # Sort books by timestamp (newest first)
             books.sort(key=lambda x: _timestamp_or_default(x.timestamp, _AWARE_MIN), reverse=True)
             
@@ -908,10 +988,10 @@ def find_duplicate_books_python(use_title, use_author, use_language, use_series,
                 'books': books,
                 'group_hash': group_hash
             })
-            
+
             book_ids = [book.id for book in books]
             print(f"[cwa-duplicates] Found duplicate group: '{display_title}' by {display_author} ({len(books)} copies) - IDs: {book_ids}", flush=True)
-            log.info("[cwa-duplicates] Found duplicate group: '%s' by %s (%s copies) - IDs: %s", 
+            log.info("[cwa-duplicates] Found duplicate group: '%s' by %s (%s copies) - IDs: %s",
                     display_title, display_author, len(books), book_ids)
     
     # Filter out dismissed groups if requested

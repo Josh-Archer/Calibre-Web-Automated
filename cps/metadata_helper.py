@@ -9,7 +9,7 @@ import json
 import re
 from difflib import SequenceMatcher
 
-from cps import logger, db
+from cps import logger, db, helper
 from cps.search_metadata import cl as metadata_providers
 import sys
 sys.path.insert(1, '/app/calibre-web-automated/scripts/')
@@ -375,11 +375,26 @@ def _apply_metadata_to_book(book, metadata, calibre_db_instance) -> bool:
         # Handle cover image - only if enabled in settings
         if (cwa_settings.get('auto_metadata_update_cover', True) and 
             hasattr(metadata, 'cover') and metadata.cover):
-            # TODO: Implement cover resolution checking for smart mode
-            # For now, just apply the cover in normal mode
             if not use_smart_application:
-                # Apply cover (implementation depends on how covers are handled in Calibre-Web)
-                pass
+                try:
+                    result, error = helper.save_cover_from_url(str(metadata.cover).strip(), book.path)
+                    if result:
+                        book.has_cover = 1
+                        helper.replace_cover_thumbnail_cache(book.id)
+                        updated = True
+                    else:
+                        log.warning(
+                            "Failed to save fetched cover for book %s from %s: %s",
+                            getattr(book, 'id', 'unknown'),
+                            getattr(metadata, 'cover', ''),
+                            error,
+                        )
+                except Exception as cover_ex:
+                    log.warning(
+                        "Error applying fetched cover for book %s: %s",
+                        getattr(book, 'id', 'unknown'),
+                        cover_ex,
+                    )
         
         if updated:
             calibre_db_instance.session.commit()
