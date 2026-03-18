@@ -255,7 +255,7 @@ class TaskEmail(CalibreTask):
                 data = file_.read()
             os.remove(datafile)
         else:
-            datafile = os.path.join(calibre_path, book_path, filename)
+            datafile = self._resolve_attachment_path(calibre_path, book_path, filename)
             try:
                 if config.config_binariesdir and config.config_embed_metadata:
                     data_path, data_file = do_calibre_export(self.book_id, extension)
@@ -269,6 +269,57 @@ class TaskEmail(CalibreTask):
                 log.error('The requested file could not be read. Maybe wrong permissions?')
                 return None
         return data
+
+    def _resolve_attachment_path(self, calibre_path, book_path, filename):
+        """Resolve the requested attachment path, with a format-based fallback.
+
+        Some ingest/update paths can leave the database basename out of sync with the
+        actual file stored in the book directory. Calibre keeps a single file per
+        format, so when the exact filename is missing we can safely fall back to the
+        lone file matching the requested extension.
+        """
+        datafile = os.path.join(calibre_path, book_path, filename)
+        if os.path.exists(datafile):
+            return datafile
+
+        book_dir = os.path.dirname(datafile)
+        if not os.path.isdir(book_dir):
+            return datafile
+
+        requested_base, requested_ext = os.path.splitext(filename)
+        if not requested_ext:
+            return datafile
+
+        try:
+            candidates = [
+                os.path.join(book_dir, entry)
+                for entry in os.listdir(book_dir)
+                if os.path.isfile(os.path.join(book_dir, entry))
+                and os.path.splitext(entry)[1].lower() == requested_ext.lower()
+            ]
+        except OSError:
+            return datafile
+
+        if not candidates:
+            return datafile
+
+        # First, allow case-only mismatches in the stored basename.
+        for candidate in candidates:
+            candidate_base = os.path.splitext(os.path.basename(candidate))[0]
+            if candidate_base.lower() == requested_base.lower():
+                return candidate
+
+        if len(candidates) == 1:
+            resolved = candidates[0]
+            log.warning(
+                "Attachment filename mismatch for book path '%s': requested '%s', using '%s' instead",
+                book_path,
+                filename,
+                os.path.basename(resolved),
+            )
+            return resolved
+
+        return datafile
 
     @property
     def name(self):
