@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version:  Calibre-Web Automated\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-02-05 00:15+0100\n"
+"POT-Creation-Date: 2026-03-19 18:10+0000\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
@@ -57,690 +57,690 @@ msgid ""
 "variable or configure in Basic Configuration."
 msgstr ""
 
-#: cps/admin.py:252
+#: cps/admin.py:260
 msgid ""
 "Success! Hardcover auto-fetch task started. Check Tasks panel for progress."
 msgstr ""
 
-#: cps/admin.py:257
+#: cps/admin.py:265
 #, python-format
 msgid "Error starting Hardcover auto-fetch task: %(error)s"
 msgstr ""
 
-#: cps/admin.py:296 cps/templates/admin.html:223
+#: cps/admin.py:304 cps/templates/admin.html:223
 msgid "Review Hardcover Matches"
 msgstr ""
 
-#: cps/admin.py:303
+#: cps/admin.py:311
 #, python-format
 msgid "Error loading review queue: %(error)s"
 msgstr ""
 
-#: cps/admin.py:384
+#: cps/admin.py:392
 #, fuzzy
 msgid "Hardcover ID applied successfully"
 msgstr "成功刪除 {} 個用戶"
 
-#: cps/admin.py:401
+#: cps/admin.py:409
 #, python-format
 msgid "Match %(action)s"
 msgstr ""
 
-#: cps/admin.py:439
+#: cps/admin.py:447
 msgid "No pending matches to reject"
 msgstr ""
 
-#: cps/admin.py:445
+#: cps/admin.py:453
 #, python-format
 msgid "Rejected %(count)s match(es)"
 msgstr ""
 
-#: cps/admin.py:482
+#: cps/admin.py:490
 #, python-brace-format
 msgid ""
 "Thumbnail cache refresh started for {} book(s). This may take a few minutes."
 msgstr ""
 
-#: cps/admin.py:484
+#: cps/admin.py:492
 msgid "No books with covers found to process."
 msgstr ""
 
-#: cps/admin.py:496
+#: cps/admin.py:504
 #, python-brace-format
 msgid "Failed to start thumbnail refresh: {}"
 msgstr ""
 
-#: cps/admin.py:538
+#: cps/admin.py:546
 msgid "Admin page"
 msgstr "管理頁"
 
-#: cps/admin.py:558
+#: cps/admin.py:566
 msgid "Basic Configuration"
 msgstr "基本配置"
 
-#: cps/admin.py:596
+#: cps/admin.py:604
 msgid "UI Configuration"
 msgstr "界面配置"
 
-#: cps/admin.py:620 cps/admin.py:1302 cps/db.py:967 cps/search.py:153
-#: cps/web.py:832
+#: cps/admin.py:628 cps/admin.py:1310 cps/db.py:967 cps/search.py:153
+#: cps/web.py:910
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "自定義列號：%(column)d在Calibre數據庫中不存在"
 
-#: cps/admin.py:638 cps/templates/admin.html:55
+#: cps/admin.py:646 cps/templates/admin.html:55
 msgid "Edit Users"
 msgstr "管理用戶"
 
-#: cps/admin.py:682 cps/opds.py:798 cps/templates/grid.html:14
+#: cps/admin.py:690 cps/opds.py:798 cps/templates/grid.html:14
 #: cps/templates/list.html:19
 msgid "All"
 msgstr "全部"
 
-#: cps/admin.py:709 cps/admin.py:1893
+#: cps/admin.py:717 cps/admin.py:1901
 msgid "User not found"
 msgstr "找不到用戶"
 
-#: cps/admin.py:723
+#: cps/admin.py:731
 #, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "成功刪除 {} 個用戶"
 
-#: cps/admin.py:746 cps/templates/config_view_edit.html:169
+#: cps/admin.py:754 cps/templates/config_view_edit.html:169
 #: cps/templates/user_edit.html:263 cps/templates/user_edit.html:285
 #: cps/templates/user_table.html:81
 msgid "Show All"
 msgstr "顯示全部"
 
-#: cps/admin.py:767 cps/admin.py:773
+#: cps/admin.py:775 cps/admin.py:781
 msgid "Malformed request"
 msgstr "格式錯誤的請求"
 
-#: cps/admin.py:785 cps/admin.py:2786
+#: cps/admin.py:793 cps/admin.py:2794
 msgid "Guest Name can't be changed"
 msgstr "訪客名稱無法更改"
 
-#: cps/admin.py:799
+#: cps/admin.py:807
 msgid "Guest can't have this role"
 msgstr "遊客無法擁有此角色"
 
-#: cps/admin.py:811 cps/admin.py:2611
+#: cps/admin.py:819 cps/admin.py:2619
 msgid "No admin user remaining, can't remove admin role"
 msgstr "管理員賬戶不存在，無法刪除管理員角色"
 
-#: cps/admin.py:815 cps/admin.py:829
+#: cps/admin.py:823 cps/admin.py:837
 msgid "Value has to be true or false"
 msgstr "值必須是 true 或 false"
 
-#: cps/admin.py:817
+#: cps/admin.py:825
 msgid "Invalid role"
 msgstr "無效角色"
 
-#: cps/admin.py:821
+#: cps/admin.py:829
 msgid "Guest can't have this view"
 msgstr "遊客無法擁有此視圖"
 
-#: cps/admin.py:831
+#: cps/admin.py:839
 msgid "Invalid view"
 msgstr "無效視圖"
 
-#: cps/admin.py:834
+#: cps/admin.py:842
 msgid "Guest's Locale is determined automatically and can't be set"
 msgstr "訪客的本地化是自動偵測而無法設置的"
 
-#: cps/admin.py:838
+#: cps/admin.py:846
 msgid "No Valid Locale Given"
 msgstr "無可用本地化"
 
-#: cps/admin.py:849
+#: cps/admin.py:857
 msgid "No Valid Book Language Given"
 msgstr "無有效書籍語言"
 
-#: cps/admin.py:851 cps/editbooks.py:596
+#: cps/admin.py:859 cps/editbooks.py:596
 msgid "Parameter not found"
 msgstr "參數未找到"
 
-#: cps/admin.py:888
+#: cps/admin.py:896
 msgid "Invalid Read Column"
 msgstr "無效的閱讀列"
 
-#: cps/admin.py:894
+#: cps/admin.py:902
 msgid "Invalid Restricted Column"
 msgstr "無效的限制列"
 
-#: cps/admin.py:914 cps/admin.py:2459
+#: cps/admin.py:922 cps/admin.py:2467
 #, fuzzy
 msgid "Calibre-Web Automated configuration updated"
 msgstr "Calibre-Web配置已更新"
 
-#: cps/admin.py:926
+#: cps/admin.py:934
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "您確定刪除Kobo Token嗎？"
 
-#: cps/admin.py:928
+#: cps/admin.py:936
 msgid "Do you really want to delete this domain?"
 msgstr "您確定要刪除此網域嗎？"
 
-#: cps/admin.py:930
+#: cps/admin.py:938
 msgid "Do you really want to delete this user?"
 msgstr "您確定要刪除此用戶嗎？"
 
-#: cps/admin.py:932
+#: cps/admin.py:940
 msgid "Are you sure you want to delete this shelf?"
 msgstr "您確定要刪除此書架嗎？"
 
-#: cps/admin.py:934
+#: cps/admin.py:942
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "您確定要修改選定用戶的本地化設置嗎？"
 
-#: cps/admin.py:936
+#: cps/admin.py:944
 msgid ""
 "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr "您確定要修改選定用戶的可見書籍語言嗎？"
 
-#: cps/admin.py:938
+#: cps/admin.py:946
 msgid ""
 "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr "您確定要修改選定用戶的選定角色嗎？"
 
-#: cps/admin.py:940
+#: cps/admin.py:948
 msgid ""
 "Are you sure you want to change the selected restrictions for the selected "
 "user(s)?"
 msgstr "您確定要修改選定用戶的選定限制嗎？"
 
-#: cps/admin.py:942
+#: cps/admin.py:950
 msgid ""
 "Are you sure you want to change the selected visibility restrictions for the "
 "selected user(s)?"
 msgstr "您確定要修改選定用戶的選定可視化限制嗎？"
 
-#: cps/admin.py:945
+#: cps/admin.py:953
 msgid ""
 "Are you sure you want to change shelf sync behavior for the selected user(s)?"
 msgstr "您確定要更改所選用戶的書架同步行為嗎？"
 
-#: cps/admin.py:947
+#: cps/admin.py:955
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "您確定要更改 Calibre 庫位置嗎？"
 
-#: cps/admin.py:949
+#: cps/admin.py:957
 msgid ""
 "Calibre-Web Automated will search for updated Covers and update Cover "
 "Thumbnails, this may take a while?"
 msgstr ""
 
-#: cps/admin.py:952
+#: cps/admin.py:960
 msgid ""
 "Are you sure you want delete Calibre-Web Automated's sync database to force "
 "a full sync with your Kobo Reader?"
 msgstr ""
 
-#: cps/admin.py:1191 cps/admin.py:1197 cps/admin.py:1207 cps/admin.py:1217
+#: cps/admin.py:1199 cps/admin.py:1205 cps/admin.py:1215 cps/admin.py:1225
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr "拒絕"
 
-#: cps/admin.py:1193 cps/admin.py:1199 cps/admin.py:1209 cps/admin.py:1219
+#: cps/admin.py:1201 cps/admin.py:1207 cps/admin.py:1217 cps/admin.py:1227
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr "允許"
 
-#: cps/admin.py:1252
+#: cps/admin.py:1260
 #, python-brace-format
 msgid "{} sync entries deleted"
 msgstr ""
 
-#: cps/admin.py:1293
+#: cps/admin.py:1301
 msgid "Tag not found"
 msgstr "標籤未找到"
 
-#: cps/admin.py:1311
+#: cps/admin.py:1319
 msgid "Invalid Action"
 msgstr "無效的動作"
 
-#: cps/admin.py:1438
+#: cps/admin.py:1446
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr "client_secrets.json 未為 Web 應用程序配置"
 
-#: cps/admin.py:1577
+#: cps/admin.py:1585
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "日誌文件路徑無效，請輸入正確的路徑"
 
-#: cps/admin.py:1583
+#: cps/admin.py:1591
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "訪問日誌路徑無效，請輸入正確的路徑"
 
-#: cps/admin.py:1618
+#: cps/admin.py:1626
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr "請輸入LDAP主機、端口、DN和用戶對象標識符"
 
-#: cps/admin.py:1624
+#: cps/admin.py:1632
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr "請輸入一個LDAP服務賬號和密碼 "
 
-#: cps/admin.py:1627
+#: cps/admin.py:1635
 msgid "Please Enter a LDAP Service Account"
 msgstr "請輸入一個LDAP服務賬號"
 
-#: cps/admin.py:1632
+#: cps/admin.py:1640
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP群組對象過濾器需要一個具有“%s”格式標識符號"
 
-#: cps/admin.py:1634
+#: cps/admin.py:1642
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr "LDAP群組對象過濾器的括號不匹配"
 
-#: cps/admin.py:1638
+#: cps/admin.py:1646
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP用戶對象過濾器需要一個具有“%s”格式標識符"
 
-#: cps/admin.py:1640
+#: cps/admin.py:1648
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr "LDAP用戶對象過濾器的括號不匹配"
 
-#: cps/admin.py:1647
+#: cps/admin.py:1655
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP成員用戶過濾器需要有一個“%s”格式標識符號"
 
-#: cps/admin.py:1649
+#: cps/admin.py:1657
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "LDAP成員用戶過濾器中有不匹配的括號"
 
-#: cps/admin.py:1656
+#: cps/admin.py:1664
 msgid ""
 "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter "
 "Correct Path"
 msgstr "LDAP CA證書、證書或密鑰位置無效，請輸入正確的路徑"
 
-#: cps/admin.py:1689 cps/templates/admin.html:57
+#: cps/admin.py:1697 cps/templates/admin.html:57
 msgid "Add New User"
 msgstr "添加新用戶"
 
-#: cps/admin.py:1704 cps/templates/admin.html:105
+#: cps/admin.py:1712 cps/templates/admin.html:105
 msgid "Edit Email Server Settings"
 msgstr "編輯郵件服務器設置"
 
-#: cps/admin.py:1723
+#: cps/admin.py:1731
 msgid "Success! Gmail Account Verified."
 msgstr ""
 
-#: cps/admin.py:1743 cps/admin.py:1746 cps/admin.py:2232 cps/admin.py:2443
-#: cps/admin.py:2558 cps/admin.py:2829 cps/editbooks.py:1042
+#: cps/admin.py:1751 cps/admin.py:1754 cps/admin.py:2240 cps/admin.py:2451
+#: cps/admin.py:2566 cps/admin.py:2837 cps/editbooks.py:1042
 #: cps/editbooks.py:1808 cps/shelf.py:93 cps/shelf.py:167 cps/shelf.py:228
 #: cps/shelf.py:278 cps/shelf.py:315 cps/shelf.py:389 cps/shelf.py:511
-#: cps/tasks/convert.py:145 cps/web.py:2678
+#: cps/tasks/convert.py:145 cps/web.py:2803
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "數據庫錯誤：%(error)s。"
 
-#: cps/admin.py:1753
+#: cps/admin.py:1761
 #, python-format
 msgid ""
 "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr "發送給%(email)s的測試郵件已進入隊列。請檢查任務結果"
 
-#: cps/admin.py:1756
+#: cps/admin.py:1764
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "發送測試郵件時出錯：%(res)s"
 
-#: cps/admin.py:1758
+#: cps/admin.py:1766
 msgid "Please configure your e-mail address first..."
 msgstr "請先配置您的郵箱地址..."
 
-#: cps/admin.py:1760
+#: cps/admin.py:1768
 msgid "Email Server Settings updated"
 msgstr "郵件服務器設置已更新"
 
-#: cps/admin.py:1783 cps/templates/admin.html:201
+#: cps/admin.py:1791 cps/templates/admin.html:201
 msgid "Edit Scheduled Tasks Settings"
 msgstr ""
 
-#: cps/admin.py:1795
+#: cps/admin.py:1803
 msgid "Invalid start time for task specified"
 msgstr ""
 
-#: cps/admin.py:1800
+#: cps/admin.py:1808
 msgid "Invalid duration for task specified"
 msgstr ""
 
-#: cps/admin.py:1810
+#: cps/admin.py:1818
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1820 cps/admin.py:1964 cps/admin.py:2825 cps/web.py:2109
+#: cps/admin.py:1828 cps/admin.py:1972 cps/admin.py:2833 cps/web.py:2234
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "發生一個未知錯誤，請稍後再試。"
 
-#: cps/admin.py:1824
+#: cps/admin.py:1832
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1843 cps/opds.py:199 cps/web.py:2604 cps/web.py:2729
+#: cps/admin.py:1851 cps/opds.py:199 cps/web.py:2729 cps/web.py:2854
 #, fuzzy
 msgid "title"
 msgstr "標題"
 
-#: cps/admin.py:1949 cps/admin.py:2817
+#: cps/admin.py:1957 cps/admin.py:2825
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "編輯用戶 %(nick)s"
 
-#: cps/admin.py:1961
+#: cps/admin.py:1969
 #, fuzzy, python-format
 msgid "Success! Password for user %(user)s reset"
 msgstr "用戶 %(user)s 的密碼已重置"
 
-#: cps/admin.py:1967
+#: cps/admin.py:1975
 #, fuzzy
 msgid "Oops! Please configure the SMTP mail settings."
 msgstr "請先配置SMTP郵箱設置..."
 
-#: cps/admin.py:1978
+#: cps/admin.py:1986
 msgid "Logfile viewer"
 msgstr "日誌文件查看器"
 
-#: cps/admin.py:2044
+#: cps/admin.py:2052
 msgid "Requesting update package"
 msgstr "正在請求更新包"
 
-#: cps/admin.py:2045
+#: cps/admin.py:2053
 msgid "Downloading update package"
 msgstr "正在下載更新包"
 
-#: cps/admin.py:2046
+#: cps/admin.py:2054
 msgid "Unzipping update package"
 msgstr "正在解壓更新包"
 
-#: cps/admin.py:2047
+#: cps/admin.py:2055
 msgid "Replacing files"
 msgstr "正在替換文件"
 
-#: cps/admin.py:2048
+#: cps/admin.py:2056
 msgid "Database connections are closed"
 msgstr "數據庫連接已關閉"
 
-#: cps/admin.py:2049
+#: cps/admin.py:2057
 msgid "Stopping server"
 msgstr "正在停止服務器"
 
-#: cps/admin.py:2050
+#: cps/admin.py:2058
 msgid "Update finished, please press okay and reload page"
 msgstr "更新完成，請點擊確定並刷新頁面"
 
-#: cps/admin.py:2051 cps/admin.py:2052 cps/admin.py:2053 cps/admin.py:2054
-#: cps/admin.py:2055 cps/admin.py:2056
+#: cps/admin.py:2059 cps/admin.py:2060 cps/admin.py:2061 cps/admin.py:2062
+#: cps/admin.py:2063 cps/admin.py:2064
 msgid "Update failed:"
 msgstr "更新失敗："
 
-#: cps/admin.py:2051 cps/updater.py:394 cps/updater.py:629 cps/updater.py:631
+#: cps/admin.py:2059 cps/updater.py:394 cps/updater.py:629 cps/updater.py:631
 msgid "HTTP Error"
 msgstr "HTTP錯誤"
 
-#: cps/admin.py:2052 cps/updater.py:396 cps/updater.py:633
+#: cps/admin.py:2060 cps/updater.py:396 cps/updater.py:633
 msgid "Connection error"
 msgstr "連接錯誤"
 
-#: cps/admin.py:2053 cps/updater.py:398 cps/updater.py:635
+#: cps/admin.py:2061 cps/updater.py:398 cps/updater.py:635
 msgid "Timeout while establishing connection"
 msgstr "建立連接超時"
 
-#: cps/admin.py:2054 cps/updater.py:400 cps/updater.py:637
+#: cps/admin.py:2062 cps/updater.py:400 cps/updater.py:637
 msgid "General error"
 msgstr "一般錯誤"
 
-#: cps/admin.py:2055
+#: cps/admin.py:2063
 #, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "更新文件無法保存在臨時目錄中"
 
-#: cps/admin.py:2056
+#: cps/admin.py:2064
 msgid "Files could not be replaced during update"
 msgstr "更新時檔案無法替換變更"
 
-#: cps/admin.py:2080
+#: cps/admin.py:2088
 msgid "Failed to extract at least One LDAP User"
 msgstr "未能提取至少一個LDAP用戶"
 
-#: cps/admin.py:2125
+#: cps/admin.py:2133
 msgid "Failed to Create at Least One LDAP User"
 msgstr "未能創建至少一個LDAP用戶"
 
-#: cps/admin.py:2138
+#: cps/admin.py:2146
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "錯誤：%(ldaperror)s"
 
-#: cps/admin.py:2142
+#: cps/admin.py:2150
 msgid "Error: No user returned in response of LDAP server"
 msgstr "錯誤：在LDAP服務器的響應中沒有返回用戶"
 
-#: cps/admin.py:2178
+#: cps/admin.py:2186
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "數據庫中沒有找到至少一個LDAP用戶"
 
-#: cps/admin.py:2180
+#: cps/admin.py:2188
 #, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "{} 用戶被成功導入"
 
-#: cps/admin.py:2244
+#: cps/admin.py:2252
 msgid "Books path not valid"
 msgstr ""
 
-#: cps/admin.py:2251
+#: cps/admin.py:2259
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr "數據庫路徑無效，請輸入正確的路徑"
 
-#: cps/admin.py:2279
+#: cps/admin.py:2287
 msgid "DB is not Writeable"
 msgstr "數據庫不可寫入"
 
-#: cps/admin.py:2292
+#: cps/admin.py:2300
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr "密鑰文件路徑無效，請輸入正確的路徑"
 
-#: cps/admin.py:2296
+#: cps/admin.py:2304
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "證書文件路徑無效，請輸入正確的路徑"
 
-#: cps/admin.py:2365
+#: cps/admin.py:2373
 msgid ""
 "Auto-create users cannot be enabled without enabling reverse proxy "
 "authentication"
 msgstr ""
 
-#: cps/admin.py:2368
+#: cps/admin.py:2376
 msgid "Auto-create users requires a valid reverse proxy header name"
 msgstr ""
 
-#: cps/admin.py:2387 cps/admin.py:2394
+#: cps/admin.py:2395 cps/admin.py:2402
 msgid ""
 "Invalid OAuth Redirect Host format. Please include the full URL with "
 "protocol (e.g., https://your-domain.com)"
 msgstr ""
 
-#: cps/admin.py:2391
+#: cps/admin.py:2399
 msgid ""
 "OAuth Redirect Host should not include a path. Use only the base URL (e.g., "
 "https://your-domain.com)"
 msgstr ""
 
-#: cps/admin.py:2426
+#: cps/admin.py:2434
 msgid "Password length has to be between 1 and 40"
 msgstr ""
 
-#: cps/admin.py:2486
+#: cps/admin.py:2494
 #, fuzzy
 msgid "Database Settings updated"
 msgstr "郵件服務器設置已更新"
 
-#: cps/admin.py:2494
+#: cps/admin.py:2502
 msgid "Database Configuration"
 msgstr "數據庫配置"
 
-#: cps/admin.py:2514 cps/web.py:2078
+#: cps/admin.py:2522 cps/web.py:2203
 msgid "Oops! Please complete all fields."
 msgstr "請填寫所有欄位！"
 
-#: cps/admin.py:2523
+#: cps/admin.py:2531
 msgid "E-mail is not from valid domain"
 msgstr "郵箱不在有效網域中"
 
-#: cps/admin.py:2531
+#: cps/admin.py:2539
 msgid "Add new user"
 msgstr "添加新用戶"
 
-#: cps/admin.py:2548
+#: cps/admin.py:2556
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "用戶“%(user)s”已創建"
 
-#: cps/admin.py:2554
+#: cps/admin.py:2562
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "使用此郵箱或用戶名的賬號已經存在。"
 
-#: cps/admin.py:2584
+#: cps/admin.py:2592
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "用戶“%(nick)s”已刪除"
 
-#: cps/admin.py:2587
+#: cps/admin.py:2595
 msgid "Can't delete Guest User"
 msgstr "無法刪除訪客用戶"
 
-#: cps/admin.py:2590
+#: cps/admin.py:2598
 msgid "No admin user remaining, can't delete user"
 msgstr "管理員賬戶不存在，無法刪除用戶"
 
-#: cps/admin.py:2780 cps/web.py:2413
+#: cps/admin.py:2788 cps/web.py:2538
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
-#: cps/admin.py:2821
+#: cps/admin.py:2829
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "用戶“%(nick)s”已更新"
 
-#: cps/admin.py:2886
+#: cps/admin.py:2894
 #, python-format
 msgid ""
 "Connection successful! OIDC discovery endpoint is accessible.%(endpoints)s"
 msgstr ""
 
-#: cps/admin.py:2891
+#: cps/admin.py:2899
 msgid ""
 "Connection failed: OIDC discovery endpoint not found (404). Check if the "
 "base URL is correct."
 msgstr ""
 
-#: cps/admin.py:2893 cps/admin.py:2950
+#: cps/admin.py:2901 cps/admin.py:2958
 #, python-format
 msgid "Connection failed: Server returned status code %(code)s"
 msgstr ""
 
-#: cps/admin.py:2895
+#: cps/admin.py:2903
 msgid ""
 "Connection failed: Could not connect to server. Check the URL and network "
 "connectivity."
 msgstr ""
 
-#: cps/admin.py:2897
+#: cps/admin.py:2905
 msgid ""
 "Connection failed: Request timed out. The server may be slow or unreachable."
 msgstr ""
 
-#: cps/admin.py:2899
+#: cps/admin.py:2907
 msgid ""
 "Connection failed: Server returned invalid JSON. This may not be an OIDC "
 "endpoint."
 msgstr ""
 
-#: cps/admin.py:2902
+#: cps/admin.py:2910
 #, fuzzy, python-format
 msgid "Connection failed: %(error)s"
 msgstr "連接錯誤"
 
-#: cps/admin.py:2928
+#: cps/admin.py:2936
 #, python-format
 msgid ""
 "Metadata is missing required OIDC fields: %(fields)s. This may not be a "
 "valid OIDC metadata endpoint."
 msgstr ""
 
-#: cps/admin.py:2939
+#: cps/admin.py:2947
 #, python-format
 msgid "Metadata URL is valid! Found %(count)s OAuth endpoints."
 msgstr ""
 
-#: cps/admin.py:2941
+#: cps/admin.py:2949
 #, fuzzy
 msgid " User info endpoint is available."
 msgstr "無可用發佈信息"
 
-#: cps/admin.py:2943
+#: cps/admin.py:2951
 msgid ""
 " Note: User info endpoint not found - this may cause authentication issues."
 msgstr ""
 
-#: cps/admin.py:2948
+#: cps/admin.py:2956
 msgid "Metadata URL not found (404). Please check the URL is correct."
 msgstr ""
 
-#: cps/admin.py:2952
+#: cps/admin.py:2960
 msgid ""
 "Connection failed: Could not connect to metadata URL. Check the URL and "
 "network connectivity."
 msgstr ""
 
-#: cps/admin.py:2954
+#: cps/admin.py:2962
 msgid "Connection failed: Request timed out."
 msgstr ""
 
-#: cps/admin.py:2956
+#: cps/admin.py:2964
 msgid "Connection failed: Invalid JSON in response."
 msgstr ""
 
-#: cps/admin.py:2959
+#: cps/admin.py:2967
 #, fuzzy
 msgid "An unknown error occurred."
 msgstr "發生一個未知錯誤，請稍後再試。"
 
-#: cps/admin.py:2971
+#: cps/admin.py:2979
 #, fuzzy
 msgid "Restore already in progress."
 msgstr "連接錯誤"
 
-#: cps/admin.py:2975
+#: cps/admin.py:2983
 msgid "Restore failed: Calibre library path is not configured."
 msgstr ""
 
-#: cps/admin.py:2980
+#: cps/admin.py:2988
 #, python-format
 msgid "Restore failed: metadata.db not found at %(path)s"
 msgstr ""
 
-#: cps/admin.py:2985
+#: cps/admin.py:2993
 #, python-format
 msgid "Restore failed: app.db not found at %(path)s"
 msgstr ""
 
-#: cps/admin.py:3057 cps/admin.py:3097
+#: cps/admin.py:3065 cps/admin.py:3105
 #, fuzzy, python-format
 msgid "Restore failed: %(err)s"
 msgstr "連接錯誤"
 
-#: cps/admin.py:3074
+#: cps/admin.py:3082
 msgid "Restore completed but app.db cleanup failed. See logs for details."
 msgstr ""
 
-#: cps/admin.py:3093
+#: cps/admin.py:3101
 #, python-format
 msgid ""
 "Restore complete. Backups and restore log saved to %(dir)s. All book-linked "
@@ -865,233 +865,263 @@ msgstr "未安裝"
 msgid "Execution permissions missing"
 msgstr "缺少執行權限"
 
-#: cps/cwa_functions.py:153
+#: cps/cwa_functions.py:210
 msgid "Theme switching is temporarily disabled until v5.0.0"
 msgstr ""
 
-#: cps/cwa_functions.py:252
+#: cps/cwa_functions.py:309
 msgid ""
 "Library Refresh 🔄 Checking for any books that may have been missed, please "
 "wait..."
 msgstr ""
 
-#: cps/cwa_functions.py:849
+#: cps/cwa_functions.py:919
+#, fuzzy, python-format
+msgid "Amazon cookie file upload failed: %(error)s"
+msgstr "連接錯誤"
+
+#: cps/cwa_functions.py:922
+msgid "Amazon cookies imported from uploaded file."
+msgstr ""
+
+#: cps/cwa_functions.py:1112
 msgid "Invalid cron expression for duplicate scans. Changes were not saved."
 msgstr ""
 
-#: cps/cwa_functions.py:913
+#: cps/cwa_functions.py:1177
 #, fuzzy
 msgid "Calibre-Web Automated User Settings"
 msgstr "Calibre 電子書轉換器設置"
 
-#: cps/cwa_functions.py:959 cps/cwa_functions.py:961 cps/cwa_functions.py:965
-#: cps/cwa_functions.py:967 cps/cwa_functions.py:970 cps/cwa_functions.py:972
+#: cps/cwa_functions.py:1223 cps/cwa_functions.py:1225
+#: cps/cwa_functions.py:1229 cps/cwa_functions.py:1231
+#: cps/cwa_functions.py:1234 cps/cwa_functions.py:1236
 msgid "Timestamp"
 msgstr ""
 
-#: cps/cwa_functions.py:959 cps/cwa_functions.py:961
+#: cps/cwa_functions.py:1223 cps/cwa_functions.py:1225
 #: cps/templates/tasks.html:43
 #, fuzzy
 msgid "Book ID"
 msgstr "書籍"
 
-#: cps/cwa_functions.py:959 cps/templates/book_edit.html:83
+#: cps/cwa_functions.py:1223 cps/templates/book_edit.html:83
 #: cps/templates/search_form.html:8
 msgid "Book Title"
 msgstr "書名"
 
-#: cps/cwa_functions.py:959
+#: cps/cwa_functions.py:1223
 #, fuzzy
 msgid "Book Author"
 msgstr "作者"
 
-#: cps/cwa_functions.py:959
+#: cps/cwa_functions.py:1223
 msgid "Trigger Type"
 msgstr ""
 
-#: cps/cwa_functions.py:961 cps/cwa_functions.py:967
+#: cps/cwa_functions.py:1225 cps/cwa_functions.py:1231
 #, fuzzy
 msgid "Filepath"
 msgstr "文件格式"
 
-#: cps/cwa_functions.py:965 cps/cwa_functions.py:967 cps/cwa_functions.py:970
-#: cps/cwa_functions.py:972
+#: cps/cwa_functions.py:1229 cps/cwa_functions.py:1231
+#: cps/cwa_functions.py:1234 cps/cwa_functions.py:1236
 #, fuzzy
 msgid "Filename"
 msgstr "名稱"
 
-#: cps/cwa_functions.py:965
+#: cps/cwa_functions.py:1229
 msgid "Manual?"
 msgstr ""
 
-#: cps/cwa_functions.py:965
+#: cps/cwa_functions.py:1229
 msgid "No. Fixes"
 msgstr ""
 
-#: cps/cwa_functions.py:965 cps/cwa_functions.py:970 cps/cwa_functions.py:972
+#: cps/cwa_functions.py:1229 cps/cwa_functions.py:1234
+#: cps/cwa_functions.py:1236
 msgid "Original Backed Up?"
 msgstr ""
 
-#: cps/cwa_functions.py:967
+#: cps/cwa_functions.py:1231
 msgid "Fixes Applied"
 msgstr ""
 
-#: cps/cwa_functions.py:972
+#: cps/cwa_functions.py:1236
 msgid "Original Format"
 msgstr ""
 
-#: cps/cwa_functions.py:972
+#: cps/cwa_functions.py:1236
 #, fuzzy
 msgid "End Format"
 msgstr "上傳格式"
 
-#: cps/cwa_functions.py:1048 cps/cwa_functions.py:1077
+#: cps/cwa_functions.py:1312 cps/cwa_functions.py:1341
 #, fuzzy
 msgid "Unknown User"
 msgstr "未知"
 
-#: cps/cwa_functions.py:1185
+#: cps/cwa_functions.py:1449
 #, fuzzy
 msgid "Calibre-Web Automated Stats & Activity"
 msgstr "Calibre-Web測試郵件"
 
-#: cps/cwa_functions.py:1569
+#: cps/cwa_functions.py:1833
 msgid "Calibre-Web Automated - Full Enforcement History"
 msgstr ""
 
-#: cps/cwa_functions.py:1578
+#: cps/cwa_functions.py:1842
 msgid "Calibre-Web Automated - Full Enforcement History (w/ Paths)"
 msgstr ""
 
-#: cps/cwa_functions.py:1587
+#: cps/cwa_functions.py:1851
 msgid "Calibre-Web Automated - Full Import History"
 msgstr ""
 
-#: cps/cwa_functions.py:1596
+#: cps/cwa_functions.py:1860
 msgid "Calibre-Web Automated - Full Conversion History"
 msgstr ""
 
-#: cps/cwa_functions.py:1605
+#: cps/cwa_functions.py:1869
 msgid "Calibre-Web Automated - Full EPUB Fixer History (w/out Paths & Fixes)"
 msgstr ""
 
-#: cps/cwa_functions.py:1614
+#: cps/cwa_functions.py:1878
 msgid "Calibre-Web Automated - Full EPUB Fixer History (w/ Paths & Fixes)"
 msgstr ""
 
-#: cps/cwa_functions.py:1632
+#: cps/cwa_functions.py:1896
 msgid "✅ All Monitoring Services are running as intended! 👍"
 msgstr ""
 
-#: cps/cwa_functions.py:1634
+#: cps/cwa_functions.py:1898
 msgid ""
 "🔴 The Ingest Service is running but the Metadata Change Detector is not"
 msgstr ""
 
-#: cps/cwa_functions.py:1636
+#: cps/cwa_functions.py:1900
 msgid ""
 "🔴 The Metadata Change Detector is running but the Ingest Service is not"
 msgstr ""
 
-#: cps/cwa_functions.py:1638
+#: cps/cwa_functions.py:1902
 msgid ""
 "⛔ Neither the Ingest Service or the Metadata Change Detector are running"
 msgstr ""
 
-#: cps/cwa_functions.py:1640
+#: cps/cwa_functions.py:1904
 msgid "An Error has occurred"
 msgstr ""
 
-#: cps/cwa_functions.py:1811 cps/cwa_functions.py:1837
+#: cps/cwa_functions.py:2075 cps/cwa_functions.py:2101
 msgid "Calibre-Web Automated - Convert Library"
 msgstr ""
 
-#: cps/cwa_functions.py:1953 cps/cwa_functions.py:1977
+#: cps/cwa_functions.py:2223 cps/cwa_functions.py:2247
 #, fuzzy
 msgid "Calibre-Web Automated - EPUB Fixer Service"
 msgstr "Calibre 電子書轉換器設置"
 
-#: cps/cwa_functions.py:2031
+#: cps/cwa_functions.py:2302
 msgid "Single-book EPUB Fixer is not supported with Google Drive libraries."
 msgstr ""
 
-#: cps/cwa_functions.py:2038
+#: cps/cwa_functions.py:2309
 #, fuzzy
 msgid "Invalid book selection."
 msgstr "無效角色"
 
-#: cps/cwa_functions.py:2044
+#: cps/cwa_functions.py:2315
 #, fuzzy
 msgid "Book not found."
 msgstr "找不到Token"
 
-#: cps/cwa_functions.py:2050
+#: cps/cwa_functions.py:2321
 #, fuzzy
 msgid "Selected book has no EPUB format."
 msgstr "合併選中的書籍"
 
-#: cps/cwa_functions.py:2054
+#: cps/cwa_functions.py:2325
 #, fuzzy
 msgid "EPUB file not found on disk."
 msgstr "硬碟上找不到 %(format)s 格式"
 
-#: cps/cwa_functions.py:2069
+#: cps/cwa_functions.py:2340
 #, fuzzy
 msgid "EPUB Fixer started for selected book."
 msgstr "合併選中的書籍"
 
-#: cps/cwa_functions.py:2072
+#: cps/cwa_functions.py:2343
 msgid "Failed to start EPUB Fixer for selected book."
 msgstr ""
 
-#: cps/cwa_functions.py:2119
+#: cps/cwa_functions.py:2390
 msgid "You must be an admin to access this page."
 msgstr ""
 
-#: cps/cwa_functions.py:2134
+#: cps/cwa_functions.py:2405
 msgid "Both username and image data are required."
 msgstr ""
 
-#: cps/cwa_functions.py:2142
+#: cps/cwa_functions.py:2413
 msgid "Invalid image data format. Must be a valid image."
 msgstr ""
 
-#: cps/cwa_functions.py:2150
+#: cps/cwa_functions.py:2421
 msgid "Unsupported image type. Only PNG and JPEG are allowed."
 msgstr ""
 
-#: cps/cwa_functions.py:2162
+#: cps/cwa_functions.py:2433
 msgid "Image is too large. Please use an image smaller than 500KB."
 msgstr ""
 
-#: cps/cwa_functions.py:2166
+#: cps/cwa_functions.py:2437
 msgid "Invalid Base64 image data."
 msgstr ""
 
-#: cps/cwa_functions.py:2170
+#: cps/cwa_functions.py:2441
 #, fuzzy
 msgid "Invalid image data format."
 msgstr "無效的郵件地址格式"
 
-#: cps/cwa_functions.py:2175
+#: cps/cwa_functions.py:2446
 msgid "Error validating image data."
 msgstr ""
 
-#: cps/cwa_functions.py:2193
+#: cps/cwa_functions.py:2464
 #, fuzzy
 msgid "Profile picture updated successfully."
 msgstr "成功刪除 {} 個用戶"
 
-#: cps/cwa_functions.py:2206
+#: cps/cwa_functions.py:2477
 msgid "CWA Profile Picture Management (WIP)"
+msgstr ""
+
+#: cps/cwa_functions.py:2530 cps/web.py:2051 cps/web.py:2107
+#, fuzzy
+msgid "Please configure the SMTP mail settings first..."
+msgstr "請先配置SMTP郵箱設置..."
+
+#: cps/cwa_functions.py:2533 cps/web.py:2055
+#, fuzzy
+msgid "Oops! Please update your profile with a valid eReader Email."
+msgstr "請先設置您的kindle郵箱。"
+
+#: cps/cwa_functions.py:2582
+msgid ""
+"Send books missing from Kindle task queued. Auto-check will run in 5 minutes."
+msgstr ""
+
+#: cps/cwa_functions.py:2584
+msgid "Send books missing from Kindle task queued. Check Tasks page."
 msgstr ""
 
 #: cps/db.py:1240 cps/templates/config_edit.html:294
 #: cps/templates/config_view_edit.html:79
 #: cps/templates/config_view_edit.html:90 cps/templates/email_edit.html:41
-#: cps/web.py:645 cps/web.py:679 cps/web.py:724 cps/web.py:764 cps/web.py:793
-#: cps/web.py:1599 cps/web.py:1636 cps/web.py:1687 cps/web.py:1719
-#: cps/web.py:1758
+#: cps/web.py:723 cps/web.py:757 cps/web.py:802 cps/web.py:842 cps/web.py:871
+#: cps/web.py:1689 cps/web.py:1726 cps/web.py:1777 cps/web.py:1809
+#: cps/web.py:1848
 msgid "None"
 msgstr "無"
 
@@ -1184,8 +1214,8 @@ msgstr "不能上傳文件附檔名為“%(ext)s”的文件到此服務器"
 msgid "File to be uploaded must have an extension"
 msgstr "要上傳的文件必須具有附檔名"
 
-#: cps/editbooks.py:849 cps/editbooks.py:1431 cps/web.py:612 cps/web.py:2790
-#: cps/web.py:2881 cps/web.py:2966
+#: cps/editbooks.py:849 cps/editbooks.py:1431 cps/web.py:690 cps/web.py:2915
+#: cps/web.py:3006 cps/web.py:3120
 msgid ""
 "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！選擇書名無法打開。文件不存在或者文件不可訪問"
@@ -1213,7 +1243,8 @@ msgid "Error editing book: {}"
 msgstr ""
 
 #: cps/editbooks.py:1102 cps/editbooks.py:1147 cps/editbooks.py:1856
-#: cps/updater.py:618 cps/uploader.py:97 cps/uploader.py:106
+#: cps/templates/detail.html:888 cps/updater.py:618 cps/uploader.py:97
+#: cps/uploader.py:106
 msgid "Unknown"
 msgstr "未知"
 
@@ -1300,8 +1331,8 @@ msgstr "Google Drive %(fn)s 上找不到 %(format)s"
 msgid "%(format)s not found: %(fn)s"
 msgstr "找不到 %(format)s：%(fn)s"
 
-#: cps/helper.py:102 cps/helper.py:226 cps/templates/detail.html:516
-#: cps/templates/detail.html:520
+#: cps/helper.py:102 cps/helper.py:226 cps/templates/detail.html:542
+#: cps/templates/detail.html:552
 #, fuzzy
 msgid "Send to eReader"
 msgstr "發送到Kindle"
@@ -1681,7 +1712,7 @@ msgstr "{} 星"
 
 #: cps/remotelogin.py:76 cps/templates/layout.html:134
 #: cps/templates/layout.html:176 cps/templates/login.html:11
-#: cps/templates/login.html:39 cps/web.py:2187
+#: cps/templates/login.html:39 cps/web.py:2312
 msgid "Login"
 msgstr "登入"
 
@@ -1722,7 +1753,7 @@ msgstr "已下載書籍"
 msgid "Show Downloaded Books"
 msgstr "顯示下載過的書籍"
 
-#: cps/render_template.py:57 cps/web.py:502
+#: cps/render_template.py:57 cps/web.py:580
 msgid "Top Rated Books"
 msgstr "最高評分書籍"
 
@@ -1730,7 +1761,7 @@ msgstr "最高評分書籍"
 msgid "Show Top Rated Books"
 msgstr "顯示最高評分書籍"
 
-#: cps/render_template.py:60 cps/web.py:851
+#: cps/render_template.py:60 cps/web.py:929
 msgid "Read Books"
 msgstr "已讀書籍"
 
@@ -1739,7 +1770,7 @@ msgstr "已讀書籍"
 msgid "Show Read and Unread"
 msgstr "顯示閱讀狀態"
 
-#: cps/render_template.py:64 cps/web.py:854
+#: cps/render_template.py:64 cps/web.py:932
 msgid "Unread Books"
 msgstr "未讀書籍"
 
@@ -1756,7 +1787,7 @@ msgstr "發現"
 msgid "Show Random Books"
 msgstr "隨機顯示書籍"
 
-#: cps/render_template.py:70 cps/templates/book_table.html:106 cps/web.py:1762
+#: cps/render_template.py:70 cps/templates/book_table.html:119 cps/web.py:1852
 msgid "Categories"
 msgstr "分類"
 
@@ -1766,10 +1797,10 @@ msgid "Show Category Section"
 msgstr "顯示分類選擇"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:98
-#: cps/templates/book_table.html:107 cps/templates/cwa_settings.html:362
-#: cps/templates/cwa_settings.html:364 cps/templates/cwa_settings.html:1103
+#: cps/templates/book_table.html:120 cps/templates/cwa_settings.html:542
+#: cps/templates/cwa_settings.html:546 cps/templates/cwa_settings.html:1448
 #: cps/templates/hardcover_review_matches.html:140
-#: cps/templates/search_form.html:70 cps/web.py:1642 cps/web.py:1654
+#: cps/templates/search_form.html:70 cps/web.py:1732 cps/web.py:1744
 msgid "Series"
 msgstr "叢書"
 
@@ -1778,8 +1809,8 @@ msgstr "叢書"
 msgid "Show Series Section"
 msgstr "顯示叢書選擇"
 
-#: cps/render_template.py:76 cps/templates/book_table.html:105
-#: cps/templates/cwa_settings.html:334 cps/templates/cwa_settings.html:336
+#: cps/render_template.py:76 cps/templates/book_table.html:118
+#: cps/templates/cwa_settings.html:498 cps/templates/cwa_settings.html:502
 #: cps/templates/hardcover_review_matches.html:134
 msgid "Authors"
 msgstr "作者"
@@ -1789,7 +1820,7 @@ msgstr "作者"
 msgid "Show Author Section"
 msgstr "顯示作者選擇"
 
-#: cps/render_template.py:80 cps/templates/book_table.html:111 cps/web.py:1610
+#: cps/render_template.py:80 cps/templates/book_table.html:124 cps/web.py:1700
 msgid "Publishers"
 msgstr "出版社"
 
@@ -1798,9 +1829,9 @@ msgstr "出版社"
 msgid "Show Publisher Section"
 msgstr "顯示出版社選擇"
 
-#: cps/render_template.py:83 cps/templates/book_table.html:109
-#: cps/templates/detail.html:706 cps/templates/search_form.html:108
-#: cps/web.py:1734
+#: cps/render_template.py:83 cps/templates/book_table.html:122
+#: cps/templates/detail.html:754 cps/templates/search_form.html:108
+#: cps/web.py:1824
 msgid "Languages"
 msgstr "語言"
 
@@ -1809,7 +1840,7 @@ msgstr "語言"
 msgid "Show Language Section"
 msgstr "顯示語言選擇"
 
-#: cps/render_template.py:87 cps/web.py:1694
+#: cps/render_template.py:87 cps/web.py:1784
 msgid "Ratings"
 msgstr "評分"
 
@@ -1827,7 +1858,7 @@ msgstr "文件格式"
 msgid "Show File Formats Section"
 msgstr "顯示文件格式選擇"
 
-#: cps/render_template.py:94 cps/web.py:877
+#: cps/render_template.py:94 cps/web.py:955
 msgid "Archived Books"
 msgstr "歸檔書籍"
 
@@ -1836,7 +1867,7 @@ msgstr "歸檔書籍"
 msgid "Show Archived Books"
 msgstr "顯示歸檔書籍"
 
-#: cps/render_template.py:99 cps/web.py:1430
+#: cps/render_template.py:99 cps/web.py:1508
 msgid "Books List"
 msgstr "書籍列表"
 
@@ -1860,7 +1891,7 @@ msgid ""
 msgstr ""
 
 #: cps/search.py:53 cps/search.py:440 cps/templates/book_edit.html:275
-#: cps/templates/cwa_epub_fixer.html:25 cps/templates/feed.xml:34
+#: cps/templates/cwa_epub_fixer.html:32 cps/templates/feed.xml:34
 #: cps/templates/index.xml:12 cps/templates/layout.html:113
 #: cps/templates/layout.html:116 cps/templates/search_form.html:247
 msgid "Search"
@@ -2077,349 +2108,357 @@ msgstr "有新的更新。單擊下面的按鈕以更新到版本: %(version)s"
 msgid "No release information available"
 msgstr "無可用發佈信息"
 
-#: cps/templates/index.html:48 cps/web.py:514
+#: cps/web.py:548
+msgid "Books Not in AWS"
+msgstr ""
+
+#: cps/templates/index.html:61 cps/web.py:592
 msgid "Discover (Random Books)"
 msgstr "發現(隨機書籍)"
 
-#: cps/web.py:564
+#: cps/web.py:642
 msgid "Hot Books (Most Downloaded)"
 msgstr "熱門書籍（最多下載）"
 
-#: cps/web.py:595
+#: cps/web.py:673
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr "%(user)s 下載過的書籍"
 
-#: cps/web.py:628
+#: cps/web.py:706
 #, python-format
 msgid "Author: %(name)s"
 msgstr "作者：%(name)s"
 
-#: cps/web.py:664
+#: cps/web.py:742
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "出版社：%(name)s"
 
-#: cps/web.py:692
+#: cps/web.py:770
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "叢書：%(serie)s"
 
-#: cps/web.py:706
+#: cps/web.py:784
 msgid "Rating: None"
 msgstr ""
 
-#: cps/web.py:715
+#: cps/web.py:793
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "評分：%(rating)s 星"
 
-#: cps/web.py:746
+#: cps/web.py:824
 #, python-format
 msgid "File format: %(format)s"
 msgstr "文件格式：%(format)s"
 
-#: cps/web.py:783
+#: cps/web.py:861
 #, python-format
 msgid "Category: %(name)s"
 msgstr "分類：%(name)s"
 
-#: cps/web.py:812
+#: cps/web.py:890
 #, python-format
 msgid "Language: %(name)s"
 msgstr "語言：%(name)s"
 
-#: cps/web.py:940
+#: cps/web.py:1018
 #, fuzzy
 msgid "Error loading magic shelf"
 msgstr "下載封面時出錯"
 
-#: cps/web.py:965
+#: cps/web.py:1043
 #, python-format
 msgid "Magic Shelf&nbsp&nbsp&nbsp—&nbsp&nbsp&nbsp%(icon)s %(name)s"
 msgstr ""
 
-#: cps/web.py:1038
+#: cps/web.py:1116
 msgid "No rules provided"
 msgstr ""
 
-#: cps/web.py:1044
+#: cps/web.py:1122
 #, fuzzy
 msgid "Invalid rules format"
 msgstr "無效的郵件地址格式"
 
-#: cps/web.py:1066
+#: cps/web.py:1144
 msgid "Error processing rules"
 msgstr ""
 
-#: cps/web.py:1070
+#: cps/web.py:1148
 #, fuzzy
 msgid "Invalid request"
 msgstr "無效角色"
 
-#: cps/web.py:1114
+#: cps/web.py:1192
 msgid "Name and rules are required"
 msgstr ""
 
-#: cps/web.py:1117 cps/web.py:1214
+#: cps/web.py:1195 cps/web.py:1292
 msgid "Shelf name too long (max 100 characters)"
 msgstr ""
 
-#: cps/web.py:1139
+#: cps/web.py:1217
 #, fuzzy
 msgid "Error creating shelf"
 msgstr "下載封面時出錯"
 
-#: cps/templates/layout.html:313 cps/web.py:1153
+#: cps/templates/layout.html:313 cps/web.py:1231
 #, fuzzy
 msgid "Create Magic Shelf"
 msgstr "創建書架"
 
-#: cps/web.py:1207
+#: cps/web.py:1285
 msgid "Permission denied to change public status"
 msgstr ""
 
-#: cps/web.py:1211
+#: cps/web.py:1289
 #, fuzzy
 msgid "Shelf name is required"
 msgstr "此欄必須填寫"
 
-#: cps/web.py:1245
+#: cps/web.py:1323
 #, fuzzy
 msgid "Error updating shelf"
 msgstr "下載封面時出錯"
 
-#: cps/web.py:1260
+#: cps/web.py:1338
 #, fuzzy
 msgid "Edit Magic Shelf"
 msgstr "編輯書架"
 
-#: cps/web.py:1273
+#: cps/web.py:1351
 #, fuzzy
 msgid "Shelf not found"
 msgstr "找不到用戶"
 
-#: cps/web.py:1278
+#: cps/web.py:1356
 msgid "Permission denied"
 msgstr ""
 
-#: cps/web.py:1309
+#: cps/web.py:1387
 #, fuzzy
 msgid "Shelf duplicated successfully"
 msgstr "成功刪除 {} 個用戶"
 
-#: cps/web.py:1315
+#: cps/web.py:1393
 #, fuzzy
 msgid "Error duplicating shelf"
 msgstr "下載封面時出錯"
 
-#: cps/templates/magic_shelf_edit.html:448 cps/web.py:1342
+#: cps/templates/magic_shelf_edit.html:448 cps/web.py:1420
 msgid ""
 "System shelves cannot be deleted. You can hide them in your user profile "
 "settings."
 msgstr ""
 
-#: cps/web.py:1359
+#: cps/web.py:1437
 #, fuzzy
 msgid "Error deleting shelf"
 msgstr "下載封面時出錯"
 
-#: cps/web.py:1375
+#: cps/web.py:1453
 msgid ""
 "You cannot hide your own shelves. Delete them instead if you don't want them."
 msgstr ""
 
-#: cps/web.py:1385
+#: cps/web.py:1463
 msgid "Shelf already hidden"
 msgstr ""
 
-#: cps/web.py:1399
+#: cps/web.py:1477
 #, fuzzy
 msgid "Error hiding shelf"
 msgstr "下載封面時出錯"
 
-#: cps/web.py:1413
+#: cps/web.py:1491
 msgid "Shelf was not hidden"
 msgstr ""
 
-#: cps/web.py:1422
+#: cps/web.py:1500
 #, fuzzy
 msgid "Error unhiding shelf"
 msgstr "下載封面時出錯"
 
-#: cps/templates/admin.html:18 cps/web.py:1569
+#: cps/templates/admin.html:18 cps/web.py:1659
 msgid "Downloads"
 msgstr "下載次數"
 
-#: cps/web.py:1721
+#: cps/web.py:1811
 msgid "File formats list"
 msgstr "文件格式列表"
 
-#: cps/web.py:1961 cps/web.py:1999
-#, fuzzy
-msgid "Please configure the SMTP mail settings first..."
-msgstr "請先配置SMTP郵箱設置..."
+#: cps/web.py:2092
+#, fuzzy, python-format
+msgid ""
+"Success! Book queued for sending to %(eReadermail)s. We will auto-check "
+"Kindle acceptance in 5 minutes."
+msgstr "書籍已經成功加入 %(eReadermail)s 的發送隊列"
 
-#: cps/web.py:1965
-#, fuzzy
-msgid "Oops! Please update your profile with a valid eReader Email."
-msgstr "請先設置您的kindle郵箱。"
-
-#: cps/web.py:1987
+#: cps/web.py:2095
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "書籍已經成功加入 %(eReadermail)s 的發送隊列"
 
-#: cps/web.py:1990 cps/web.py:2048
+#: cps/web.py:2098 cps/web.py:2173
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！發送這本書籍的時候出現錯誤：%(res)s"
 
-#: cps/web.py:2007 cps/web.py:2017
+#: cps/web.py:2115 cps/web.py:2125
 msgid "No email addresses selected"
 msgstr ""
 
-#: cps/web.py:2024
+#: cps/web.py:2132
 msgid "Additional email addresses are disabled for your account."
 msgstr ""
 
-#: cps/web.py:2046
+#: cps/web.py:2169
+#, fuzzy
+msgid ""
+"Success! Book queued for sending to the selected address(es)! We will auto-"
+"check Kindle acceptance in 5 minutes."
+msgstr "書籍已經成功加入 %(eReadermail)s 的發送隊列"
+
+#: cps/web.py:2171
 #, fuzzy
 msgid "Success! Book queued for sending to the selected address(es)!"
 msgstr "書籍已經成功加入 %(eReadermail)s 的發送隊列"
 
-#: cps/web.py:2065
+#: cps/web.py:2190
 msgid "Please wait one minute to register next user"
 msgstr ""
 
 #: cps/templates/layout.html:135 cps/templates/layout.html:177
-#: cps/templates/login.html:48 cps/templates/register.html:17 cps/web.py:2066
-#: cps/web.py:2070 cps/web.py:2075 cps/web.py:2079 cps/web.py:2085
-#: cps/web.py:2110 cps/web.py:2114 cps/web.py:2127 cps/web.py:2130
+#: cps/templates/login.html:48 cps/templates/register.html:17 cps/web.py:2191
+#: cps/web.py:2195 cps/web.py:2200 cps/web.py:2204 cps/web.py:2210
+#: cps/web.py:2235 cps/web.py:2239 cps/web.py:2252 cps/web.py:2255
 msgid "Register"
 msgstr "註冊"
 
-#: cps/web.py:2069 cps/web.py:2234
+#: cps/web.py:2194 cps/web.py:2359
 #, fuzzy
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr "郵件服務未配置，請聯繫網站管理員！"
 
-#: cps/web.py:2074 cps/web.py:2126
+#: cps/web.py:2199 cps/web.py:2251
 msgid ""
 "Oops! Email server is not configured, please contact your administrator."
 msgstr "郵件服務未配置，請聯繫網站管理員！"
 
-#: cps/web.py:2112
+#: cps/web.py:2237
 msgid "Oops! Your Email is not allowed."
 msgstr "您的電子郵件不允許註冊"
 
-#: cps/web.py:2115
+#: cps/web.py:2240
 msgid "Success! Confirmation Email has been sent."
 msgstr "確認郵件已經發送到您的郵箱。"
 
-#: cps/web.py:2163
+#: cps/web.py:2288
 #, fuzzy
 msgid ""
 "Authentication loop detected. If you're experiencing login issues, please "
 "contact your administrator."
 msgstr "Calibre-Web 實例未配置，請聯繫您的系統管理員！"
 
-#: cps/web.py:2208
+#: cps/web.py:2333
 #, fuzzy
 msgid ""
 "OAuth authentication is not properly configured. Please contact "
 "administrator."
 msgstr "郵件服務未配置，請聯繫網站管理員！"
 
-#: cps/web.py:2213 cps/web.py:2240
+#: cps/web.py:2338 cps/web.py:2365
 #, fuzzy
 msgid "Cannot activate LDAP authentication"
 msgstr "無法激活LDAP認證"
 
-#: cps/web.py:2222
+#: cps/web.py:2347
 msgid "Standard login is disabled."
 msgstr ""
 
-#: cps/web.py:2230
+#: cps/web.py:2355
 msgid "Please wait one minute before next login"
 msgstr ""
 
-#: cps/web.py:2248
+#: cps/web.py:2373
 msgid "Username cannot be empty"
 msgstr ""
 
-#: cps/web.py:2260
+#: cps/web.py:2385
 #, fuzzy, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "您現在已以“%(nickname)s”身份登入"
 
-#: cps/web.py:2279
+#: cps/web.py:2404
 #, fuzzy, python-format
 msgid ""
 "Welcome! Your account has been automatically created. You are now logged in "
 "as: '%(nickname)s'"
 msgstr "您現在已以“%(nickname)s”身份登入"
 
-#: cps/web.py:2284 cps/web.py:2287
+#: cps/web.py:2409 cps/web.py:2412
 #, fuzzy
 msgid ""
 "Authentication successful, but account creation failed. Please contact your "
 "administrator."
 msgstr "Calibre-Web 實例未配置，請聯繫您的系統管理員！"
 
-#: cps/web.py:2291
+#: cps/web.py:2416
 msgid ""
 "Authentication successful, but no local account found. Please contact your "
 "administrator to create your account."
 msgstr ""
 
-#: cps/web.py:2299
+#: cps/web.py:2424
 #, fuzzy, python-format
 msgid ""
 "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not "
 "known"
 msgstr "備援登入“%(nickname)s”：無法訪問LDAP伺服器，或用戶未知"
 
-#: cps/web.py:2305
+#: cps/web.py:2430
 #, fuzzy, python-format
 msgid "Could not login: %(message)s"
 msgstr "無法登入：%(message)s"
 
-#: cps/web.py:2328 cps/web.py:2329 cps/web.py:2372
+#: cps/web.py:2453 cps/web.py:2454 cps/web.py:2497
 #, fuzzy
 msgid "Wrong Username or Password"
 msgstr "用戶名或密碼錯誤"
 
-#: cps/web.py:2337
+#: cps/web.py:2462
 #, fuzzy
 msgid "New Password was sent to your email address"
 msgstr "新密碼已發送到您的郵箱"
 
-#: cps/web.py:2341
+#: cps/web.py:2466
 #, fuzzy
 msgid "An unknown error occurred. Please try again later."
 msgstr "發生一個未知錯誤，請稍後再試。"
 
-#: cps/web.py:2343
+#: cps/web.py:2468
 #, fuzzy
 msgid "Please enter valid username to reset password"
 msgstr "請輸入有效的用戶名進行密碼重置"
 
-#: cps/web.py:2351
+#: cps/web.py:2476
 #, fuzzy, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "您現在已以“%(nickname)s”身份登入"
 
-#: cps/web.py:2667
+#: cps/web.py:2792
 #, fuzzy
 msgid "Success! Profile Updated"
 msgstr "資料已更新"
 
-#: cps/web.py:2673
+#: cps/web.py:2798
 msgid "Oops! An account already exists for this Email."
 msgstr "使用此郵箱的賬號已經存在。"
 
-#: cps/web.py:2894
+#: cps/web.py:3019
 #, fuzzy
 msgid "Invalid book ID."
 msgstr "無效角色"
@@ -2432,7 +2471,7 @@ msgstr ""
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr "找不到包含 OAuth 信息的有效 gmail.json 文件"
 
-#: cps/tasks/auto_hardcover_id.py:45
+#: cps/tasks/auto_hardcover_id.py:46
 msgid "Auto-fetching Hardcover IDs"
 msgstr ""
 
@@ -2540,7 +2579,7 @@ msgstr ""
 msgid "Duplicate scan completed: %(count)s new groups"
 msgstr ""
 
-#: cps/tasks/mail.py:275
+#: cps/tasks/mail.py:326
 #, fuzzy
 msgid "E-mail"
 msgstr "郵箱地址"
@@ -2626,8 +2665,9 @@ msgstr "管理權限"
 msgid "Password"
 msgstr "密碼"
 
-#: cps/templates/admin.html:24 cps/templates/detail.html:494
-#: cps/templates/shelf.html:8 cps/templates/user_table.html:147
+#: cps/templates/admin.html:24 cps/templates/detail.html:512
+#: cps/templates/detail.html:513 cps/templates/shelf.html:8
+#: cps/templates/user_table.html:147
 msgid "Download"
 msgstr "下載書籍"
 
@@ -2635,16 +2675,16 @@ msgstr "下載書籍"
 msgid "View Books"
 msgstr "查看書籍"
 
-#: cps/templates/admin.html:26 cps/templates/book_table.html:47
-#: cps/templates/book_table.html:328 cps/templates/duplicates.html:501
-#: cps/templates/index.html:146 cps/templates/user_table.html:131
+#: cps/templates/admin.html:26 cps/templates/book_table.html:52
+#: cps/templates/book_table.html:341 cps/templates/duplicates.html:501
+#: cps/templates/index.html:174 cps/templates/user_table.html:131
 #: cps/templates/user_table.html:149
 msgid "Edit"
 msgstr "編輯書籍"
 
 #: cps/templates/admin.html:27 cps/templates/book_edit.html:17
-#: cps/templates/book_table.html:62 cps/templates/book_table.html:141
-#: cps/templates/book_table.html:190 cps/templates/duplicates.html:539
+#: cps/templates/book_table.html:67 cps/templates/book_table.html:154
+#: cps/templates/book_table.html:203 cps/templates/duplicates.html:539
 #: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:116
 #: cps/templates/user_edit.html:326 cps/templates/user_table.html:150
 msgid "Delete"
@@ -2898,14 +2938,14 @@ msgid "OK"
 msgstr "確定"
 
 #: cps/templates/admin.html:295 cps/templates/admin.html:309
-#: cps/templates/book_edit.html:253 cps/templates/book_table.html:172
-#: cps/templates/book_table.html:191 cps/templates/book_table.html:211
-#: cps/templates/book_table.html:231 cps/templates/book_table.html:251
-#: cps/templates/book_table.html:271 cps/templates/book_table.html:329
-#: cps/templates/book_table.html:365 cps/templates/config_db.html:111
+#: cps/templates/book_edit.html:253 cps/templates/book_table.html:185
+#: cps/templates/book_table.html:204 cps/templates/book_table.html:224
+#: cps/templates/book_table.html:244 cps/templates/book_table.html:264
+#: cps/templates/book_table.html:284 cps/templates/book_table.html:342
+#: cps/templates/book_table.html:378 cps/templates/config_db.html:111
 #: cps/templates/config_edit.html:620 cps/templates/config_view_edit.html:215
 #: cps/templates/cwa_convert_library.html:23
-#: cps/templates/cwa_epub_fixer.html:40 cps/templates/detail.html:938
+#: cps/templates/cwa_epub_fixer.html:58 cps/templates/detail.html:1049
 #: cps/templates/duplicates.html:540 cps/templates/duplicates.html:567
 #: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
 #: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
@@ -2931,39 +2971,39 @@ msgstr "通過"
 msgid "In Library"
 msgstr "在書庫"
 
-#: cps/templates/author.html:27 cps/templates/index.html:173
-#: cps/templates/search.html:31 cps/templates/shelf.html:20
+#: cps/templates/author.html:27 cps/templates/index.html:209
+#: cps/templates/search.html:33 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
 msgstr "按圖書日期排序，最新優先"
 
-#: cps/templates/author.html:28 cps/templates/index.html:174
-#: cps/templates/search.html:32 cps/templates/shelf.html:21
+#: cps/templates/author.html:28 cps/templates/index.html:214
+#: cps/templates/search.html:37 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
 msgstr "按圖書日期排序，最舊優先"
 
-#: cps/templates/author.html:29 cps/templates/index.html:175
-#: cps/templates/search.html:33 cps/templates/shelf.html:22
+#: cps/templates/author.html:29 cps/templates/index.html:219
+#: cps/templates/search.html:41 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
 msgstr "按標題按字母順序排序"
 
-#: cps/templates/author.html:30 cps/templates/index.html:176
-#: cps/templates/search.html:34 cps/templates/shelf.html:23
+#: cps/templates/author.html:30 cps/templates/index.html:223
+#: cps/templates/search.html:45 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
 msgstr "按標題逆字母順序排序"
 
-#: cps/templates/author.html:31 cps/templates/index.html:179
-#: cps/templates/search.html:37 cps/templates/shelf.html:26
+#: cps/templates/author.html:31 cps/templates/index.html:235
+#: cps/templates/search.html:57 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
 msgstr "按出版日期排序，最新優先"
 
-#: cps/templates/author.html:32 cps/templates/index.html:180
-#: cps/templates/search.html:38 cps/templates/shelf.html:27
+#: cps/templates/author.html:32 cps/templates/index.html:239
+#: cps/templates/search.html:61 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
 msgstr "按出版日期排序，最舊優先"
 
 #: cps/templates/author.html:61 cps/templates/author.html:118
-#: cps/templates/index.html:76 cps/templates/index.html:217
-#: cps/templates/search.html:71 cps/templates/shelf.html:62
+#: cps/templates/index.html:96 cps/templates/index.html:293
+#: cps/templates/search.html:105 cps/templates/shelf.html:62
 msgid "reduce"
 msgstr "減少"
 
@@ -2971,8 +3011,8 @@ msgstr "減少"
 msgid "More by"
 msgstr "更多"
 
-#: cps/templates/book_edit.html:11 cps/templates/detail.html:563
-#: cps/templates/detail.html:565
+#: cps/templates/book_edit.html:11 cps/templates/detail.html:600
+#: cps/templates/detail.html:601 cps/templates/detail.html:603
 msgid "Delete Book"
 msgstr "刪除書籍"
 
@@ -3007,14 +3047,15 @@ msgid "Uploading..."
 msgstr "正在上傳..."
 
 #: cps/templates/book_edit.html:52 cps/templates/book_edit.html:292
-#: cps/templates/book_table.html:342 cps/templates/duplicates.html:587
+#: cps/templates/book_table.html:355 cps/templates/duplicates.html:587
 #: cps/templates/layout.html:151 cps/templates/layout.html:360
 #: cps/templates/layout.html:425 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:573
 msgid "Close"
 msgstr "關閉"
 
-#: cps/templates/book_edit.html:52 cps/templates/duplicates.html:620
+#: cps/templates/book_edit.html:52 cps/templates/detail.html:882
+#: cps/templates/duplicates.html:620
 #: cps/templates/hardcover_review_matches.html:279
 #: cps/templates/hardcover_review_matches.html:288
 #: cps/templates/hardcover_review_matches.html:323
@@ -3032,7 +3073,7 @@ msgid "Upload Format"
 msgstr "上傳格式"
 
 #: cps/templates/book_edit.html:90 cps/templates/book_edit.html:371
-#: cps/templates/cwa_settings.html:1091 cps/templates/search_form.html:12
+#: cps/templates/cwa_settings.html:1434 cps/templates/search_form.html:12
 msgid "Author"
 msgstr "作者"
 
@@ -3040,7 +3081,7 @@ msgstr "作者"
 msgid "Tags"
 msgstr "標籤"
 
-#: cps/templates/book_edit.html:102 cps/templates/book_table.html:108
+#: cps/templates/book_edit.html:102 cps/templates/book_table.html:121
 msgid "Series ID"
 msgstr "叢書編號"
 
@@ -3049,25 +3090,25 @@ msgid "Published Date"
 msgstr "出版日期"
 
 #: cps/templates/book_edit.html:114 cps/templates/book_edit.html:372
-#: cps/templates/cwa_settings.html:348 cps/templates/cwa_settings.html:350
-#: cps/templates/cwa_settings.html:1109 cps/templates/detail.html:781
+#: cps/templates/cwa_settings.html:520 cps/templates/cwa_settings.html:524
+#: cps/templates/cwa_settings.html:1455 cps/templates/detail.html:834
 #: cps/templates/hardcover_review_matches.html:148
 #: cps/templates/listenmp3.html:102 cps/templates/search_form.html:16
 msgid "Publisher"
 msgstr "出版社"
 
-#: cps/templates/book_edit.html:118 cps/templates/cwa_settings.html:1097
+#: cps/templates/book_edit.html:118 cps/templates/cwa_settings.html:1441
 #: cps/templates/listenmp3.html:69
 msgid "Language"
 msgstr "語言"
 
-#: cps/templates/book_edit.html:122 cps/templates/cwa_settings.html:369
-#: cps/templates/cwa_settings.html:371
+#: cps/templates/book_edit.html:122 cps/templates/cwa_settings.html:553
+#: cps/templates/cwa_settings.html:557
 msgid "Rating"
 msgstr "評分"
 
 #: cps/templates/book_edit.html:126 cps/templates/book_edit.html:373
-#: cps/templates/cwa_settings.html:341 cps/templates/cwa_settings.html:343
+#: cps/templates/cwa_settings.html:509 cps/templates/cwa_settings.html:513
 #: cps/templates/search_form.html:154
 msgid "Description"
 msgstr "簡介"
@@ -3170,209 +3211,221 @@ msgstr "無搜索結果！請嘗試另一個關鍵字。"
 msgid "Source"
 msgstr "來源"
 
-#: cps/templates/book_table.html:12 cps/templates/book_table.html:108
+#: cps/templates/book_table.html:12 cps/templates/book_table.html:121
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
 #: cps/templates/user_table.html:100
 msgid "This Field is Required"
 msgstr "此欄必須填寫"
 
-#: cps/templates/book_table.html:44 cps/templates/book_table.html:171
+#: cps/templates/book_table.html:49 cps/templates/book_table.html:184
 #: cps/templates/duplicates.html:566
 msgid "Merge"
 msgstr "合併"
 
-#: cps/templates/book_table.html:50 cps/templates/book_table.html:210
+#: cps/templates/book_table.html:55 cps/templates/book_table.html:223
 #: cps/templates/duplicates.html:504
 #, fuzzy
 msgid "Archive"
 msgstr "歸檔"
 
-#: cps/templates/book_table.html:53 cps/templates/book_table.html:230
+#: cps/templates/book_table.html:58 cps/templates/book_table.html:243
 #, fuzzy
 msgid "Unarchive"
 msgstr "歸檔"
 
-#: cps/templates/book_table.html:56 cps/templates/book_table.html:250
+#: cps/templates/book_table.html:61 cps/templates/book_table.html:263
 #, fuzzy
 msgid "Mark as read"
 msgstr "標為未讀"
 
-#: cps/templates/book_table.html:59 cps/templates/book_table.html:270
+#: cps/templates/book_table.html:64 cps/templates/book_table.html:283
 #, fuzzy
 msgid "Mark as unread"
 msgstr "標為未讀"
 
-#: cps/templates/book_table.html:65
+#: cps/templates/book_table.html:70
 #, fuzzy
 msgid "Add to Shelf"
 msgstr "添加到書架"
 
-#: cps/templates/book_table.html:67
+#: cps/templates/book_table.html:72
 #, fuzzy
 msgid " Exchange author & title"
 msgstr "交換作者和標題"
 
-#: cps/templates/book_table.html:72
+#: cps/templates/book_table.html:77
 #, fuzzy
 msgid "Select all"
 msgstr "創建書架"
 
-#: cps/templates/book_table.html:75
+#: cps/templates/book_table.html:80
 msgid "Clear all"
 msgstr ""
 
-#: cps/templates/book_table.html:84
+#: cps/templates/book_table.html:85 cps/templates/index.html:149
+msgid "Sync all books to Amazon Kindle Library"
+msgstr ""
+
+#: cps/templates/book_table.html:86 cps/templates/index.html:150
+msgid "Mass AWS Sync"
+msgstr ""
+
+#: cps/templates/book_table.html:96
 #, fuzzy
 msgid "Update Title Sort automatically  "
 msgstr "自動更新書名排序"
 
-#: cps/templates/book_table.html:88
+#: cps/templates/book_table.html:100
 msgid "Update Author Sort automatically"
 msgstr "自動更新作者排序"
 
-#: cps/templates/book_table.html:102 cps/templates/book_table.html:108
+#: cps/templates/book_table.html:114
+msgid "AWS"
+msgstr ""
+
+#: cps/templates/book_table.html:115 cps/templates/book_table.html:121
 msgid "Enter Title"
 msgstr "輸入書名"
 
-#: cps/templates/book_table.html:102 cps/templates/config_view_edit.html:39
-#: cps/templates/cwa_settings.html:327 cps/templates/cwa_settings.html:329
-#: cps/templates/cwa_settings.html:1085 cps/templates/shelf_edit.html:8
+#: cps/templates/book_table.html:115 cps/templates/config_view_edit.html:39
+#: cps/templates/cwa_settings.html:487 cps/templates/cwa_settings.html:491
+#: cps/templates/cwa_settings.html:1427 cps/templates/shelf_edit.html:8
 #: cps/templates/tasks.html:41 cps/templates/tasks.html:64
 msgid "Title"
 msgstr "標題"
 
-#: cps/templates/book_table.html:103
+#: cps/templates/book_table.html:116
 msgid "Enter Title Sort"
 msgstr "輸入書名排序"
 
-#: cps/templates/book_table.html:103
+#: cps/templates/book_table.html:116
 msgid "Title Sort"
 msgstr "書名排序"
 
-#: cps/templates/book_table.html:104
+#: cps/templates/book_table.html:117
 msgid "Enter Author Sort"
 msgstr "輸入作者排序"
 
-#: cps/templates/book_table.html:104
+#: cps/templates/book_table.html:117
 msgid "Author Sort"
 msgstr "作者排序"
 
-#: cps/templates/book_table.html:105
+#: cps/templates/book_table.html:118
 msgid "Enter Authors"
 msgstr "輸入作者"
 
-#: cps/templates/book_table.html:106
+#: cps/templates/book_table.html:119
 msgid "Enter Categories"
 msgstr "輸入分類"
 
-#: cps/templates/book_table.html:107
+#: cps/templates/book_table.html:120
 msgid "Enter Series"
 msgstr "輸入叢書"
 
-#: cps/templates/book_table.html:109
+#: cps/templates/book_table.html:122
 msgid "Enter Languages"
 msgstr "輸入語言"
 
-#: cps/templates/book_table.html:110
+#: cps/templates/book_table.html:123
 msgid "Publishing Date"
 msgstr "出版日期"
 
-#: cps/templates/book_table.html:111
+#: cps/templates/book_table.html:124
 msgid "Enter Publishers"
 msgstr "輸入出版社"
 
-#: cps/templates/book_table.html:112
+#: cps/templates/book_table.html:125
 #, fuzzy
 msgid "Enter comments"
 msgstr "輸入網域名"
 
-#: cps/templates/book_table.html:112
+#: cps/templates/book_table.html:125
 #, fuzzy
 msgid "Comments"
 msgstr "輸入網域名"
 
-#: cps/templates/book_table.html:114
+#: cps/templates/book_table.html:127
 #, fuzzy
 msgid "Archived?"
 msgstr "歸檔"
 
-#: cps/templates/book_table.html:116
+#: cps/templates/book_table.html:129
 #, fuzzy
 msgid "Read?"
 msgstr "已讀"
 
-#: cps/templates/book_table.html:119 cps/templates/book_table.html:121
-#: cps/templates/book_table.html:123 cps/templates/book_table.html:125
-#: cps/templates/book_table.html:129 cps/templates/book_table.html:131
-#: cps/templates/book_table.html:135
+#: cps/templates/book_table.html:132 cps/templates/book_table.html:134
+#: cps/templates/book_table.html:136 cps/templates/book_table.html:138
+#: cps/templates/book_table.html:142 cps/templates/book_table.html:144
+#: cps/templates/book_table.html:148
 #, fuzzy
 msgid "Enter "
 msgstr "書號"
 
-#: cps/templates/book_table.html:158 cps/templates/book_table.html:182
-#: cps/templates/book_table.html:202 cps/templates/book_table.html:222
-#: cps/templates/book_table.html:242 cps/templates/book_table.html:262
+#: cps/templates/book_table.html:171 cps/templates/book_table.html:195
+#: cps/templates/book_table.html:215 cps/templates/book_table.html:235
+#: cps/templates/book_table.html:255 cps/templates/book_table.html:275
 #: cps/templates/duplicates.html:528 cps/templates/modal_dialogs.html:46
 #: cps/templates/tasks.html:84
 msgid "Are you really sure?"
 msgstr "您真的確認？"
 
-#: cps/templates/book_table.html:162
+#: cps/templates/book_table.html:175
 msgid "Books with Title will be merged from:"
 msgstr "這本書籍將被合併："
 
-#: cps/templates/book_table.html:166
+#: cps/templates/book_table.html:179
 msgid "Into Book with Title:"
 msgstr "合併到這本書籍："
 
-#: cps/templates/book_table.html:186
+#: cps/templates/book_table.html:199
 msgid "The following books will be deleted:"
 msgstr ""
 
-#: cps/templates/book_table.html:206
+#: cps/templates/book_table.html:219
 msgid "The following books will be archived:"
 msgstr ""
 
-#: cps/templates/book_table.html:226
+#: cps/templates/book_table.html:239
 msgid "The following books will be unarchived:"
 msgstr ""
 
-#: cps/templates/book_table.html:246
+#: cps/templates/book_table.html:259
 msgid "The following books will be marked read:"
 msgstr ""
 
-#: cps/templates/book_table.html:266
+#: cps/templates/book_table.html:279
 msgid "The following books will be marked unread:"
 msgstr ""
 
-#: cps/templates/book_table.html:282 cps/templates/detail.html:556
+#: cps/templates/book_table.html:295 cps/templates/detail.html:593
 msgid "Edit Metadata"
 msgstr "編輯元數據"
 
-#: cps/templates/book_table.html:285
+#: cps/templates/book_table.html:298
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
 msgstr ""
 
-#: cps/templates/book_table.html:287
+#: cps/templates/book_table.html:300
 msgid ""
 "Multiple values are supported for Authors, Tags/Categories, Languages, and "
 "Publishers. Use comma-separated values (e.g., \"Name1, Name2\")."
 msgstr ""
 
-#: cps/templates/book_table.html:343
+#: cps/templates/book_table.html:356
 #, fuzzy
 msgid "Select a Shelf"
 msgstr "創建書架"
 
-#: cps/templates/book_table.html:346
+#: cps/templates/book_table.html:359
 msgid "Please select a shelf to add the selected books to:"
 msgstr ""
 
-#: cps/templates/book_table.html:348
+#: cps/templates/book_table.html:361
 msgid "-- Select a Shelf --"
 msgstr ""
 
-#: cps/templates/book_table.html:366 cps/templates/email_edit.html:81
+#: cps/templates/book_table.html:379 cps/templates/email_edit.html:81
 #: cps/templates/email_edit.html:108 cps/templates/user_table.html:27
 msgid "Add"
 msgstr "新增"
@@ -4212,29 +4265,28 @@ msgid "Add Allowed/Denied custom column values"
 msgstr "添加顯示或隱藏書籍的自定義欄位值"
 
 #: cps/templates/cwa_convert_library.html:10
-#: cps/templates/cwa_epub_fixer.html:34
 #, fuzzy
 msgid "Run Archive"
 msgstr "歸檔"
 
 #: cps/templates/cwa_convert_library.html:11
-#: cps/templates/cwa_epub_fixer.html:35 cps/templates/cwa_read_log.html:9
+#: cps/templates/cwa_epub_fixer.html:49 cps/templates/cwa_read_log.html:9
 #, fuzzy
 msgid "Download Log"
 msgstr "下載書籍"
 
 #: cps/templates/cwa_convert_library.html:24
-#: cps/templates/cwa_epub_fixer.html:39 cps/templates/index.xml:7
+#: cps/templates/cwa_epub_fixer.html:54 cps/templates/index.xml:7
 msgid "Start"
 msgstr "開始"
 
 #: cps/templates/cwa_convert_library.html:27
-#: cps/templates/cwa_epub_fixer.html:44
+#: cps/templates/cwa_epub_fixer.html:63
 msgid "Schedule 5m"
 msgstr ""
 
 #: cps/templates/cwa_convert_library.html:28
-#: cps/templates/cwa_epub_fixer.html:45
+#: cps/templates/cwa_epub_fixer.html:64
 msgid "Schedule 15m"
 msgstr ""
 
@@ -4246,981 +4298,1244 @@ msgstr ""
 msgid "Error scheduling Convert Library"
 msgstr ""
 
-#: cps/templates/cwa_epub_fixer.html:22
-msgid "Run on a single book"
-msgstr ""
-
-#: cps/templates/cwa_epub_fixer.html:24
-msgid "Search by title/author"
+#: cps/templates/cwa_epub_fixer.html:26
+msgid ""
+"Run on a\n"
+"            single book"
 msgstr ""
 
 #: cps/templates/cwa_epub_fixer.html:29
+msgid "Search by title/author"
+msgstr ""
+
+#: cps/templates/cwa_epub_fixer.html:39
 #, fuzzy
 msgid "Run on selected book"
 msgstr "合併選中的書籍"
 
-#: cps/templates/cwa_epub_fixer.html:120
+#: cps/templates/cwa_epub_fixer.html:45
+#, fuzzy
+msgid ""
+"Run\n"
+"            Archive"
+msgstr "歸檔"
+
+#: cps/templates/cwa_epub_fixer.html:56
+msgid "Force All"
+msgstr ""
+
+#: cps/templates/cwa_epub_fixer.html:141
 #, fuzzy
 msgid "EPUB Fixer scheduled successfully"
 msgstr "成功刪除 {} 個用戶"
 
-#: cps/templates/cwa_epub_fixer.html:123
+#: cps/templates/cwa_epub_fixer.html:144
 #, fuzzy
 msgid "Error scheduling EPUB Fixer"
 msgstr "下載封面時出錯"
 
-#: cps/templates/cwa_epub_fixer.html:132
+#: cps/templates/cwa_epub_fixer.html:153
 #, fuzzy
 msgid "No matches found"
 msgstr "無搜索結果"
 
-#: cps/templates/cwa_epub_fixer.html:167
+#: cps/templates/cwa_epub_fixer.html:188
 #, fuzzy
 msgid "Enter a search term"
 msgstr "輸入用戶名"
 
-#: cps/templates/cwa_epub_fixer.html:175
+#: cps/templates/cwa_epub_fixer.html:196
 #, fuzzy
 msgid "Failed to search library"
 msgstr "搜索書庫"
 
-#: cps/templates/cwa_epub_fixer.html:182
+#: cps/templates/cwa_epub_fixer.html:203
 #, fuzzy
 msgid "Select a book first"
 msgstr "創建書架"
 
-#: cps/templates/cwa_epub_fixer.html:195
+#: cps/templates/cwa_epub_fixer.html:216
 #, fuzzy
 msgid "EPUB Fixer started for selected book"
 msgstr "合併選中的書籍"
 
-#: cps/templates/cwa_epub_fixer.html:200
+#: cps/templates/cwa_epub_fixer.html:221
 #, fuzzy
 msgid "Error starting EPUB Fixer"
 msgstr "下載封面時出錯"
 
-#: cps/templates/cwa_settings.html:136
+#: cps/templates/cwa_settings.html:137
 #, fuzzy
 msgid "Enable/Disable Calibre-Web Automated Services"
 msgstr "Calibre-Web 日誌: "
 
-#: cps/templates/cwa_settings.html:143
+#: cps/templates/cwa_settings.html:148
 msgid "Enable CWA Auto-Convert"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:145
+#: cps/templates/cwa_settings.html:150
 msgid ""
 "On by default, when active all ingested books will automatically be "
-"converted to the target format specified below (epub by default) \n"
+"converted to the target format\n"
+"        specified below (epub by default)\n"
 "        <em>EXCEPT</em> those you have specifically told CWA to ignore below."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:154
-msgid "Enable CWA Automatic Cover & Metadata Enforcement Service"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:156
+#: cps/templates/cwa_settings.html:164
 msgid ""
-"On by default, when active, whenever the Metadata and/or Cover Image is "
-"edited in the Web UI, the CWA Metadata Enforcement service \n"
-"        will then apply those changes the ebook files themselves. Normally "
-"in Stock CW or when this setting is disabled, the changes made \n"
-"        are only applied to what you see in the Web UI, not the ebook files "
-"themselves. This feature currently only supports files in EPUB \n"
-"        or AZW3 format."
+"Enable CWA Automatic Cover & Metadata\n"
+"        Enforcement Service"
 msgstr ""
 
 #: cps/templates/cwa_settings.html:167
-msgid "Enable CWA Kindle EPUB Fixer"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:169
 msgid ""
-"When active, the encoding among other attributes of all EPUB files processed "
-"by CWA will be checked and fixed to ensure maximum \n"
-"        compatibility with Amazon's Send-to-Kindle Service. This feature is "
-"particularly useful for users who frequently send EPUB files to their Kindle "
-"devices and have experienced issues with \n"
-"        file rejections or formatting problems."
-msgstr ""
-
-#: cps/templates/cwa_settings.html:174
-msgid ""
-"This tool was adapted from the <a href=\"https://kindle-epub-fix.netlify.app/"
-"\">kindle-epub-fix.netlify.app</a> tool made by <a href=\"https://github.com/"
-"innocenat\">innocenat</a>."
-msgstr ""
-
-#: cps/templates/cwa_settings.html:181
-msgid "Enable KOReader Sync (CWA Plugin)"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:183
-msgid ""
-"When enabled, CWA exposes the /kosync endpoints and stores KOReader-"
-"compatible checksums in metadata.db for progress syncing. Requires the "
-"KOReader plugin on your device."
+"On by default, when active, whenever the Metadata and/or Cover Image is "
+"edited in the Web UI, the CWA\n"
+"        Metadata Enforcement service\n"
+"        will then apply those changes the ebook files themselves. Normally "
+"in Stock CW or when this setting is disabled,\n"
+"        the changes made\n"
+"        are only applied to what you see in the Web UI, not the ebook files "
+"themselves. This feature currently only\n"
+"        supports files in EPUB\n"
+"        or AZW3 format."
 msgstr ""
 
 #: cps/templates/cwa_settings.html:185
-msgid ""
-"Note: Enabling this starts a checksum backfill service at startup which can "
-"temporarily lock metadata.db. To stop a running backfill, restart the "
-"container after disabling."
+msgid "Enable CWA Kindle EPUB Fixer"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:192
-msgid "Enable Aggressive EPUB Fixer Mode (riskier)"
+#: cps/templates/cwa_settings.html:187
+msgid ""
+"When active, the encoding among other attributes of all EPUB files processed "
+"by CWA will be checked and\n"
+"        fixed to ensure maximum\n"
+"        compatibility with Amazon's Send-to-Kindle Service. This feature is "
+"particularly useful for users who frequently\n"
+"        send EPUB files to their Kindle devices and have experienced issues "
+"with\n"
+"        file rejections or formatting problems."
 msgstr ""
 
 #: cps/templates/cwa_settings.html:194
 msgid ""
-"Aggressive mode applies more invasive fixes and will attempt lower-"
-"confidence encoding conversions. Safe mode is recommended for most libraries."
+"This tool was adapted from the <a\n"
+"            href=\"https://kindle-epub-fix.netlify.app/\">kindle-epub-fix."
+"netlify.app</a> tool made by <a\n"
+"            href=\"https://github.com/innocenat\">innocenat</a>."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:202
-#, fuzzy
-msgid "Enable Archived Book Cleanup"
-msgstr "歸檔書籍"
-
-#: cps/templates/cwa_settings.html:204
+#: cps/templates/cwa_settings.html:207
 msgid ""
-"Removes stale archived book references in app.db when the book no longer "
-"exists in the Calibre library. Helps keep archived counts accurate."
+"Enable KOReader Sync (CWA\n"
+"        Plugin)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:208
-msgid "Cleanup Schedule:"
+#: cps/templates/cwa_settings.html:210
+msgid ""
+"When enabled, CWA exposes the /kosync endpoints and stores KOReader-"
+"compatible checksums in metadata.db for\n"
+"        progress syncing. Requires the KOReader plugin on your device."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:213 cps/templates/cwa_settings.html:582
-msgid "Frequent Intervals"
+#: cps/templates/cwa_settings.html:213
+msgid ""
+"Note: Enabling this starts a checksum backfill service at startup which can "
+"temporarily lock metadata.db.\n"
+"        To stop a running backfill, restart the container after disabling."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:214 cps/templates/cwa_settings.html:583
-msgid "Every 15 Minutes"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:215 cps/templates/cwa_settings.html:584
-msgid "Every 30 Minutes"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:216 cps/templates/cwa_settings.html:585
-msgid "Every Hour"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:217 cps/templates/cwa_settings.html:586
-msgid "Every 2 Hours"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:218 cps/templates/cwa_settings.html:587
-msgid "Every 4 Hours"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:219 cps/templates/cwa_settings.html:588
-msgid "Every 6 Hours"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:220 cps/templates/cwa_settings.html:589
-msgid "Every 12 Hours"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:222 cps/templates/cwa_settings.html:591
-msgid "Daily/Weekly/Monthly"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:223 cps/templates/cwa_settings.html:592
-msgid "Daily at Specific Time"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:224 cps/templates/cwa_settings.html:593
-msgid "Weekly on Specific Day"
-msgstr ""
-
-#: cps/templates/cwa_settings.html:225 cps/templates/cwa_settings.html:594
-msgid "Monthly on Specific Day"
+#: cps/templates/cwa_settings.html:225
+msgid ""
+"Enable Aggressive EPUB Fixer Mode\n"
+"        (riskier)"
 msgstr ""
 
 #: cps/templates/cwa_settings.html:228
+msgid ""
+"Aggressive mode applies more invasive fixes and will attempt lower-"
+"confidence encoding conversions. Safe\n"
+"        mode is recommended for most libraries."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:242
+msgid ""
+"Enable Amazon Library Sync\n"
+"        (Scraper)"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:245
+msgid ""
+"When enabled, CWA will periodically check your Amazon \"Manage Your Content "
+"and Devices\" page to verify if\n"
+"        sent books have been successfully received and added to your library."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:257
+msgid "Amazon session health warning"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:258
+msgid "Background cookie refresh has failed"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:258
+msgid "times in a row. Sync may stop working until cookies are refreshed."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:259 cps/templates/cwa_settings.html:267
+#, fuzzy
+msgid "Last error"
+msgstr "一般錯誤"
+
+#: cps/templates/cwa_settings.html:264
+msgid "Amazon Session Health"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:265
+msgid "Consecutive heartbeat failures"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:266
+msgid "Last successful heartbeat (UTC)"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:266
+msgid "Never"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:270
+msgid "Amazon Session Cookies"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:275
+msgid "Paste your full Amazon cookie string here."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:278
+msgid "Or upload Cookie File"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:282
+msgid ""
+"Upload a Netscape-format cookies.txt export. CWA will import Amazon cookies "
+"from the file and overwrite the cookie field above when you click Save."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:288
+msgid ""
+"How do I get my\n"
+"            Amazon Session Cookie?"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:292
+msgid ""
+"Go to Amazon's <a href=\"https://www.amazon.com/hz/mycd/myx#/home/content/"
+"booksAll\"\n"
+"                  target=\"_blank\">Manage Your Content and Devices</a> page "
+"and log in."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:294
+msgid ""
+"Press <b>F12</b> (or Right-Click -> Inspect) and select the <b>Network</b> "
+"tab."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:295
+msgid "Refresh the page while the Network tab is open."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:296
+msgid ""
+"Find a request named <b>myx</b> or <b>digital-console</b> in the list and "
+"click it."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:298
+msgid ""
+"In the <b>Headers</b> tab, look for the <b>Request Headers</b> section and "
+"find the\n"
+"                <b>Cookie:</b> header."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:301
+msgid ""
+"Copy the entire string (starting with session-id=...) and paste it into the "
+"box above."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:305
+msgid ""
+"Note: Cookies eventually expire. If sync stops working, follow these steps "
+"again to update your\n"
+"              cookies."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:327
+#, fuzzy
+msgid ""
+"Enable Archived Book\n"
+"        Cleanup"
+msgstr "歸檔書籍"
+
+#: cps/templates/cwa_settings.html:330
+msgid ""
+"Removes stale archived book references in app.db when the book no longer "
+"exists in the Calibre library.\n"
+"        Helps keep archived counts accurate."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:335
+msgid ""
+"Cleanup\n"
+"          Schedule:"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:340 cps/templates/cwa_settings.html:808
+msgid "Frequent Intervals"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:342 cps/templates/cwa_settings.html:810
+msgid "Every 15 Minutes"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:344 cps/templates/cwa_settings.html:812
+msgid "Every 30 Minutes"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:346 cps/templates/cwa_settings.html:814
+msgid "Every Hour"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:348 cps/templates/cwa_settings.html:816
+msgid "Every 2 Hours"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:350 cps/templates/cwa_settings.html:818
+msgid "Every 4 Hours"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:352 cps/templates/cwa_settings.html:820
+msgid "Every 6 Hours"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:354 cps/templates/cwa_settings.html:822
+msgid "Every 12 Hours"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:356 cps/templates/cwa_settings.html:824
+msgid "Daily/Weekly/Monthly"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:358 cps/templates/cwa_settings.html:826
+msgid "Daily at Specific Time"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:360 cps/templates/cwa_settings.html:828
+msgid "Weekly on Specific Day"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:362 cps/templates/cwa_settings.html:830
+msgid "Monthly on Specific Day"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:365
 msgid "Default: daily at 03:00"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:231 cps/templates/cwa_settings.html:601
+#: cps/templates/cwa_settings.html:368 cps/templates/cwa_settings.html:838
 msgid "Day of Week:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:235 cps/templates/cwa_settings.html:606
+#: cps/templates/cwa_settings.html:372 cps/templates/cwa_settings.html:843
 msgid "Monday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:236 cps/templates/cwa_settings.html:607
+#: cps/templates/cwa_settings.html:374 cps/templates/cwa_settings.html:845
 msgid "Tuesday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:237 cps/templates/cwa_settings.html:608
+#: cps/templates/cwa_settings.html:376 cps/templates/cwa_settings.html:847
 msgid "Wednesday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:238 cps/templates/cwa_settings.html:609
+#: cps/templates/cwa_settings.html:378 cps/templates/cwa_settings.html:849
 msgid "Thursday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:239 cps/templates/cwa_settings.html:610
+#: cps/templates/cwa_settings.html:380 cps/templates/cwa_settings.html:851
 msgid "Friday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:240 cps/templates/cwa_settings.html:611
+#: cps/templates/cwa_settings.html:382 cps/templates/cwa_settings.html:853
 msgid "Saturday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:241 cps/templates/cwa_settings.html:612
+#: cps/templates/cwa_settings.html:384 cps/templates/cwa_settings.html:855
 msgid "Sunday"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:246 cps/templates/cwa_settings.html:618
+#: cps/templates/cwa_settings.html:389 cps/templates/cwa_settings.html:861
 msgid "Day of Month:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:254 cps/templates/cwa_settings.html:627
+#: cps/templates/cwa_settings.html:394 cps/templates/cwa_settings.html:867
 msgid "(1-28)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:258 cps/templates/cwa_settings.html:632
+#: cps/templates/cwa_settings.html:398 cps/templates/cwa_settings.html:872
 msgid "Time of Day:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:266 cps/templates/cwa_settings.html:641
+#: cps/templates/cwa_settings.html:406 cps/templates/cwa_settings.html:881
 #, python-format
 msgid "(Server timezone: %(tz)s)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:302
-msgid "Enable Automatic Metadata Fetching for New Books"
+#: cps/templates/cwa_settings.html:447
+msgid ""
+"Enable Automatic Metadata Fetching for\n"
+"        New Books"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:304
+#: cps/templates/cwa_settings.html:450
 msgid ""
 "When active, CWA will automatically attempt to fetch and apply metadata "
-"(title, author, description, cover, etc.) for newly ingested books using the "
-"configured metadata provider hierarchy. This helps improve the quality of "
-"book information, especially for books with poor or missing metadata."
+"(title, author, description, cover,\n"
+"        etc.) for newly ingested books using the configured metadata "
+"provider hierarchy. This helps improve the quality\n"
+"        of book information, especially for books with poor or missing "
+"metadata."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:312
-msgid "Enable Smart Metadata Application"
+#: cps/templates/cwa_settings.html:464
+msgid ""
+"Enable Smart Metadata\n"
+"        Application"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:314
+#: cps/templates/cwa_settings.html:467
 msgid ""
 "When enabled, fetched metadata will only replace existing data if it appears "
-"to be better quality (e.g., longer descriptions, higher resolution covers). "
-"When disabled, fetched metadata will replace existing data as-is from the "
-"preferred provider."
+"to be better quality (e.g.,\n"
+"        longer descriptions, higher resolution covers). When disabled, "
+"fetched metadata will replace existing data as-is\n"
+"        from the preferred provider."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:319
+#: cps/templates/cwa_settings.html:475
 #, fuzzy
 msgid "Metadata Fields to Update"
 msgstr "已成功更新元數據"
 
-#: cps/templates/cwa_settings.html:321
+#: cps/templates/cwa_settings.html:477
 msgid ""
 "Select which metadata fields should be updated when auto-fetching. Unchecked "
-"fields will never be modified during automatic metadata fetching, preserving "
-"your existing data."
+"fields will never be\n"
+"          modified during automatic metadata fetching, preserving your "
+"existing data."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:355 cps/templates/cwa_settings.html:357
+#: cps/templates/cwa_settings.html:531 cps/templates/cwa_settings.html:535
 msgid "Tags/Genres"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:376 cps/templates/cwa_settings.html:378
+#: cps/templates/cwa_settings.html:565 cps/templates/cwa_settings.html:569
 #, fuzzy
 msgid "Publication Date"
 msgstr "出版日期"
 
-#: cps/templates/cwa_settings.html:383 cps/templates/cwa_settings.html:385
+#: cps/templates/cwa_settings.html:577 cps/templates/cwa_settings.html:581
 #, fuzzy
 msgid "Identifiers (ISBN, etc.)"
 msgstr "書號"
 
-#: cps/templates/cwa_settings.html:390 cps/templates/cwa_settings.html:392
+#: cps/templates/cwa_settings.html:588
 #, fuzzy
 msgid "Cover Image"
 msgstr "發現"
 
-#: cps/templates/cwa_settings.html:398 cps/templates/cwa_settings.html:419
-#: cps/templates/cwa_settings.html:526 cps/templates/cwa_settings.html:731
+#: cps/templates/cwa_settings.html:591
+#, fuzzy
+msgid ""
+"Cover\n"
+"              Image"
+msgstr "發現"
+
+#: cps/templates/cwa_settings.html:598 cps/templates/cwa_settings.html:617
+#: cps/templates/cwa_settings.html:742 cps/templates/cwa_settings.html:963
 #: cps/templates/user_edit.html:389 cps/templates/user_edit.html:480
 msgid "Tip"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:398
+#: cps/templates/cwa_settings.html:598
 msgid ""
-"These field selections apply to both Smart and Direct replacement modes. "
-"Smart mode will additionally apply quality criteria to selected fields, "
-"while Direct mode will replace all selected fields with provider data."
+"These field selections apply to both Smart and Direct replacement\n"
+"            modes. Smart mode will additionally apply quality criteria to "
+"selected fields, while Direct mode will\n"
+"            replace all selected fields with provider data."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:403
-msgid "Cover File Max Size (MB):"
+#: cps/templates/cwa_settings.html:606
+msgid ""
+"Cover\n"
+"          File Max Size (MB):"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:416
+#: cps/templates/cwa_settings.html:614
 msgid "Range: 1-200 MB (default: 15)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:419
+#: cps/templates/cwa_settings.html:617
 msgid ""
-"Limits the maximum size of cover images downloaded from metadata providers "
-"or URLs to prevent slow or stalled saves."
+"Limits the maximum size of cover images downloaded from metadata\n"
+"            providers or URLs to prevent slow or stalled saves."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:428
+#: cps/templates/cwa_settings.html:627
 msgid "Ingest Processing Timeout"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:430
+#: cps/templates/cwa_settings.html:629
 msgid ""
 "Maximum time (in minutes) to allow for processing a single book before "
-"timing out. Files that timeout are moved to the failed backup folder for "
-"investigation."
+"timing out. Files that timeout are\n"
+"          moved to the failed backup folder for investigation."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:432
-msgid "Timeout (minutes):"
+#: cps/templates/cwa_settings.html:633
+msgid ""
+"Timeout\n"
+"          (minutes):"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:444
+#: cps/templates/cwa_settings.html:641
 msgid "Range: 5-120 minutes (default: 15)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:448
+#: cps/templates/cwa_settings.html:645
 msgid "Stale temp cleanup"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:449
+#: cps/templates/cwa_settings.html:646
 msgid ""
 "Ignored temporary upload files (.uploading, .part, etc.) can be cleaned "
-"after a set age. Setting either value to 0 disables cleanup. Changes apply "
-"on the next cleanup cycle."
+"after a set age. Setting either\n"
+"            value to 0 disables cleanup. Changes apply on the next cleanup "
+"cycle."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:454
-msgid "Stale temp age (minutes):"
+#: cps/templates/cwa_settings.html:653
+msgid ""
+"Stale temp\n"
+"            age (minutes):"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:467
+#: cps/templates/cwa_settings.html:661
 msgid "Range: 0-10080 minutes (default: 120)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:471
-msgid "Stale temp cleanup interval (seconds):"
+#: cps/templates/cwa_settings.html:666
+msgid ""
+"Stale temp\n"
+"            cleanup interval (seconds):"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:484
+#: cps/templates/cwa_settings.html:674
 msgid "Range: 0-86400 seconds (default: 600)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:490
+#: cps/templates/cwa_settings.html:680
 msgid "Auto-Send Delay for New Books"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:492
+#: cps/templates/cwa_settings.html:682
 msgid ""
 "Delay (in minutes) before automatically sending newly ingested books to "
-"eReaders. This allows time for metadata fetching and other processing to "
-"complete before sending. Only applies to users who have enabled auto-send in "
-"their profile."
+"eReaders. This allows time for\n"
+"          metadata fetching and other processing to complete before sending. "
+"Only applies to users who have enabled\n"
+"          auto-send in their profile."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:494
-msgid "Delay (minutes):"
+#: cps/templates/cwa_settings.html:687
+msgid ""
+"Delay\n"
+"          (minutes):"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:506
+#: cps/templates/cwa_settings.html:695
 msgid "Range: 1-60 minutes (default: 5)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:511
+#: cps/templates/cwa_settings.html:699
+msgid "User-Routed Ingest"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:701
+msgid ""
+"Route books from ingest subfolders to specific CWA users after import. The "
+"first folder under /cwa-book-ingest is treated as the routing key."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:705
+msgid "Private shelf name:"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:709
+msgid "Imported books are added to this private shelf for each resolved user."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:713
+msgid "Folder-to-user map (JSON):"
+msgstr ""
+
+#: cps/templates/cwa_settings.html:717
+#, python-brace-format
+msgid ""
+"Example: {\"erin\":\"erin\",\"mine\":\"josh\",\"shared\":[\"erin\","
+"\"josh\"]}. If a folder is not listed here, CWA falls back to matching the "
+"folder name directly to a username."
+msgstr ""
+
+#: cps/templates/cwa_settings.html:724
 msgid "Auto Metadata Fetch Provider Hierarchy"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:513
+#: cps/templates/cwa_settings.html:726
 msgid ""
 "Configure the order in which metadata providers are searched when "
-"automatically fetching metadata for new books. Drag and drop to reorder "
-"providers. Only enabled providers will be used."
+"automatically fetching metadata for new\n"
+"          books. Drag and drop to reorder providers. Only enabled providers "
+"will be used."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:526
-msgid "Providers are tried in order from top to bottom. Drag to reorder."
+#: cps/templates/cwa_settings.html:742
+msgid ""
+"Providers are tried in order from\n"
+"            top to bottom. Drag to reorder."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:535
+#: cps/templates/cwa_settings.html:752
 msgid "Enabled Metadata Providers"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:537
+#: cps/templates/cwa_settings.html:754
 msgid "Unchecked providers are disabled globally."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:550
+#: cps/templates/cwa_settings.html:767
 #, fuzzy
 msgid "Hardcover Auto-Fetch Settings"
 msgstr "OAuth設置"
 
-#: cps/templates/cwa_settings.html:552
+#: cps/templates/cwa_settings.html:769
 msgid ""
 "Automatically fetch and assign Hardcover IDs to books in your library. "
-"Hardcover IDs enable reading progress sync and annotation sync with "
-"Hardcover.app when using compatible eReaders."
+"Hardcover IDs enable reading\n"
+"        progress sync and annotation sync with Hardcover.app when using "
+"compatible eReaders."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:557
+#: cps/templates/cwa_settings.html:776
 msgid "Hardcover Token Required"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:558
+#: cps/templates/cwa_settings.html:777
 msgid ""
-"To enable Hardcover auto-fetch, you must set a valid HARDCOVER_TOKEN in your "
-"docker-compose environment variables or configure a global token in Basic "
-"Configuration. Without a valid token, this feature will remain disabled."
+"To enable Hardcover auto-fetch, you must set a valid HARDCOVER_TOKEN in\n"
+"          your docker-compose environment variables or configure a global "
+"token in Basic Configuration. Without a valid\n"
+"          token, this feature will remain disabled."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:569
+#: cps/templates/cwa_settings.html:794
 #, fuzzy
-msgid "Enable Hardcover Auto-Fetch"
+msgid ""
+"Enable\n"
+"          Hardcover Auto-Fetch"
 msgstr "啟用Kobo同步"
 
-#: cps/templates/cwa_settings.html:571
+#: cps/templates/cwa_settings.html:797
 msgid ""
 "Automatically search Hardcover for books without Hardcover IDs. High-"
-"confidence matches are applied automatically; low-confidence matches are "
-"queued for manual review."
+"confidence matches are applied\n"
+"          automatically; low-confidence matches are queued for manual review."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:576
+#: cps/templates/cwa_settings.html:804
 msgid "Run Schedule:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:597
-msgid "How often to automatically run the Hardcover ID fetch task"
+#: cps/templates/cwa_settings.html:833
+msgid ""
+"How often to automatically run the Hardcover ID fetch\n"
+"            task"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:677
+#: cps/templates/cwa_settings.html:919
 msgid "Minimum Confidence Threshold:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:687
-msgid "Range: 0.50-1.00 (default: 0.85)"
+#: cps/templates/cwa_settings.html:924
+msgid "Range: 0.50-0.70 (default: 0.70)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:689
+#: cps/templates/cwa_settings.html:926
 msgid ""
 "Matches with confidence scores above this threshold are automatically "
-"applied. Lower scores are queued for manual review. Higher values = fewer "
-"auto-matches but higher accuracy."
+"applied. Lower scores are queued\n"
+"            for manual review. A 70% threshold balances automation and "
+"accuracy."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:695
+#: cps/templates/cwa_settings.html:934
 msgid "Batch Size:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:705
+#: cps/templates/cwa_settings.html:939
 msgid "Range: 10-200 books per run (default: 50)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:707
+#: cps/templates/cwa_settings.html:941
 msgid ""
 "Number of books to process in each scheduled run. Smaller batches reduce API "
-"load; larger batches process your library faster."
+"load; larger batches\n"
+"            process your library faster."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:713
+#: cps/templates/cwa_settings.html:949
 msgid "Rate Limit Delay (seconds):"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:723
+#: cps/templates/cwa_settings.html:954
 msgid "Range: 0-60 seconds (default: 5.0)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:725
+#: cps/templates/cwa_settings.html:956
 msgid ""
 "Delay between API requests to Hardcover. Prevents rate limiting and protects "
-"your API key. Uses exponential backoff on errors."
+"your API key. Uses\n"
+"            exponential backoff on errors."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:731
+#: cps/templates/cwa_settings.html:963
 msgid ""
-"You can manually trigger the Hardcover auto-fetch task from the Admin panel "
-"at any time. Check the CWA Stats page to see progress and review queued "
-"matches that need manual approval."
+"You can manually trigger the Hardcover auto-fetch task from the Admin\n"
+"            panel at any time. Check the CWA Stats page to see progress and "
+"review queued matches that need manual\n"
+"            approval."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:738
+#: cps/templates/cwa_settings.html:972
 #, fuzzy
 msgid "Web UI Settings"
 msgstr "設置"
 
-#: cps/templates/cwa_settings.html:745
-msgid "Enable CWA Update Notifications"
-msgstr ""
+#: cps/templates/cwa_settings.html:983
+#, fuzzy
+msgid ""
+"Enable CWA Update\n"
+"        Notifications"
+msgstr "啟用註冊"
 
-#: cps/templates/cwa_settings.html:747
+#: cps/templates/cwa_settings.html:986
 msgid ""
 "When active, you will receive notifications in the Web UI when a new version "
 "of CWA is released"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:755
-msgid "Enable Contribute Translations Notifications"
-msgstr ""
+#: cps/templates/cwa_settings.html:998
+#, fuzzy
+msgid ""
+"Enable Contribute Translations\n"
+"        Notifications"
+msgstr "啟用註冊"
 
-#: cps/templates/cwa_settings.html:757
+#: cps/templates/cwa_settings.html:1001
 msgid ""
 "When disabled, you will no longer receive notifications in the Web UI when "
-"using a language other than English if the translations for your chosen "
-"language are not complete."
+"using a language other than\n"
+"        English if the translations for your chosen language are not "
+"complete."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:765
+#: cps/templates/cwa_settings.html:1014
 #, fuzzy
-msgid "Sync Magic Shelves to Kobo"
+msgid ""
+"Sync Magic Shelves to\n"
+"        Kobo"
 msgstr "同步所選書架到 Kobo"
 
-#: cps/templates/cwa_settings.html:767
+#: cps/templates/cwa_settings.html:1017
 msgid ""
 "When active, your Magic Shelves will be synced to your Kobo device as "
-"collections. Note: You must also enable Kobo Sync in Basic Configuration."
+"collections. Note: You must also\n"
+"        enable Kobo Sync in Basic Configuration."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:775
-msgid "Enable Blurred Backgrounds on Mobile (&lt;768px)"
+#: cps/templates/cwa_settings.html:1030
+msgid ""
+"Enable Blurred Backgrounds on Mobile\n"
+"        (&lt;768px)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:777
+#: cps/templates/cwa_settings.html:1033
 msgid ""
 "When active, the blurred cover background effect is also rendered on small "
-"screens. Disable if you notice scrolling or animation lag."
+"screens. Disable if you notice\n"
+"        scrolling or animation lag."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:782
+#: cps/templates/cwa_settings.html:1039
 #, fuzzy
 msgid "Automatic Backup Settings"
 msgstr "OAuth設置"
 
-#: cps/templates/cwa_settings.html:789
+#: cps/templates/cwa_settings.html:1050
 msgid "Enable CWA Import Auto-Backup"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:791
+#: cps/templates/cwa_settings.html:1052
 msgid ""
 "When active, a copy of all imported files will be stored in <i>/config/"
 "processed_books/imported</i>"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:799
-msgid "Enable CWA Conversion Auto-Backup"
+#: cps/templates/cwa_settings.html:1065
+msgid ""
+"Enable CWA Conversion\n"
+"        Auto-Backup"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:801
+#: cps/templates/cwa_settings.html:1068
 msgid ""
 "When active, the originals of ingested files that undergo conversion will be "
-"stored in /config/processed_books/converted"
+"stored in\n"
+"        /config/processed_books/converted"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:809
-msgid "Enable CWA EPUB Fixer Auto-Backup"
+#: cps/templates/cwa_settings.html:1081
+msgid ""
+"Enable CWA EPUB Fixer\n"
+"        Auto-Backup"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:811
+#: cps/templates/cwa_settings.html:1084
 msgid ""
 "When active, the originals of EPUBs processed by the CWA Kindle EPUB Fixer "
-"service will be stored in /config/processed_books/fixed_originals"
+"service will be stored in\n"
+"        /config/processed_books/fixed_originals"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:821
+#: cps/templates/cwa_settings.html:1099
 msgid "Enable CWA Auto-Zip Backups"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:823
+#: cps/templates/cwa_settings.html:1101
 msgid ""
 "When active, just before midnight each day, the cwa-auto-zipper service will "
-"make zip archives of all the backed up converted, imported and failed files "
-"from that day. This is to help keep the subdirectories of /config/"
-"processed_books organised and to minimise disk space usage."
+"make zip archives of all the\n"
+"        backed up converted, imported and failed files from that day. This "
+"is to help keep the subdirectories of\n"
+"        /config/processed_books organised and to minimise disk space usage."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:828
+#: cps/templates/cwa_settings.html:1108
 msgid "CWA Auto-Conversion Target Format - EPUB by Default"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:831
+#: cps/templates/cwa_settings.html:1111
 msgid ""
 "When the Auto-Convert feature is active, all ingested books will be "
-"automatically converted to the format chosen here (except those formats "
-"selected in the ignore list below)"
+"automatically converted to the format\n"
+"        chosen here (except those formats selected in the ignore list below)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:833
+#: cps/templates/cwa_settings.html:1114
 #, fuzzy
-msgid "Choose a target format:"
+msgid ""
+"Choose a\n"
+"        target format:"
 msgstr "轉換書籍格式:"
 
-#: cps/templates/cwa_settings.html:845
+#: cps/templates/cwa_settings.html:1127
 msgid ""
 "Note: CWA's Metadata Enforcement service can currently only support file in "
-"either EPUB and AZW3 format. Files in other formats will simply be ignored "
-"by the service"
+"either EPUB and AZW3\n"
+"          format. Files in other formats will simply be ignored by the "
+"service"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:851
+#: cps/templates/cwa_settings.html:1134
 msgid "CWA Auto-Convert - Ignored Formats"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:853
+#: cps/templates/cwa_settings.html:1136
 msgid ""
 "The formats selected here will be ignored by CWA's Auto-Conversion feature "
-"when it's active, meaning they will be imported as is."
+"when it's active, meaning they\n"
+"        will be imported as is."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:878
+#: cps/templates/cwa_settings.html:1171
 msgid "CWA Auto-Convert - Retained Formats"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:880
+#: cps/templates/cwa_settings.html:1173
 msgid ""
 "The formats selected here will always be added to the library, even after "
-"they have been converted to the target format. However, if the format is in "
-"the \"CWA Auto-Ingest - Ignored Formats\" list, it will not be imported. "
-"Note that the target format is always retained."
+"they have been converted to the\n"
+"        target format. However, if the format is in the \"CWA Auto-Ingest - "
+"Ignored Formats\" list, it will not be\n"
+"        imported. Note that the target format is always retained."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:907
+#: cps/templates/cwa_settings.html:1215
 msgid "CWA Auto-Ingest Automerge"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:910
+#: cps/templates/cwa_settings.html:1218
 msgid "Calibre can detect Duplicate Book Titles on Import and depending on the"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:910
+#: cps/templates/cwa_settings.html:1219
 msgid "automerge"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:911
+#: cps/templates/cwa_settings.html:1220
 msgid ""
 "setting. It can be set to delete either instance of a duplicated book or "
 "keep both (default)."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:929
+#: cps/templates/cwa_settings.html:1241
 msgid "Discards duplicate import, keeps library copy"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:933
+#: cps/templates/cwa_settings.html:1245
 msgid "Overwrites library copy with newly imported file"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:937
+#: cps/templates/cwa_settings.html:1249
 msgid "Creates a duplicate record, keeping both copies"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:943
+#: cps/templates/cwa_settings.html:1256
 msgid "CWA Auto-Ingest - Ignored Formats"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:945
+#: cps/templates/cwa_settings.html:1258
 msgid ""
 "The formats selected here will be ignored by CWA's Auto-Ingest feature, "
-"meaning files in these formats won't be added to the library by CWA during "
-"the ingest process"
+"meaning files in these formats\n"
+"        won't be added to the library by CWA during the ingest process"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:970
+#: cps/templates/cwa_settings.html:1293
 msgid "CWA Duplicate Detection System"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:973
+#: cps/templates/cwa_settings.html:1296
 msgid ""
 "Enable or disable the duplicate detection system. When disabled, duplicate "
-"scanning will not run and no notifications will be shown."
+"scanning will not run and no\n"
+"        notifications will be shown."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:978
+#: cps/templates/cwa_settings.html:1303
 #, fuzzy
 msgid "Enable Duplicate Detection"
 msgstr "啟用註冊"
 
-#: cps/templates/cwa_settings.html:982
+#: cps/templates/cwa_settings.html:1307
 msgid "When enabled, CWA will scan for duplicate books after each import"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:990
-msgid "Duplicate Detection Method"
-msgstr ""
+#: cps/templates/cwa_settings.html:1316
+#, fuzzy
+msgid ""
+"Duplicate\n"
+"          Detection Method"
+msgstr "刪除書籍"
 
-#: cps/templates/cwa_settings.html:993
+#: cps/templates/cwa_settings.html:1321
 msgid "Hybrid (SQL prefilter + Python validation)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:996
+#: cps/templates/cwa_settings.html:1324
 msgid "Python only (slowest, most robust)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:999
+#: cps/templates/cwa_settings.html:1327
 msgid "Legacy SQL only (experimental)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1005
+#: cps/templates/cwa_settings.html:1333
 msgid ""
 "Hybrid mode uses a fast SQL pre-filter to narrow candidates, then applies "
-"the robust Python logic for final results."
+"the robust Python logic for\n"
+"          final results."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1014
+#: cps/templates/cwa_settings.html:1343
 #, fuzzy
 msgid "Automatic Duplicate Scanning"
 msgstr "OAuth設置"
 
-#: cps/templates/cwa_settings.html:1017
+#: cps/templates/cwa_settings.html:1346
 msgid ""
 "Configure background duplicate scans. These run automatically without "
 "blocking the UI."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1022
+#: cps/templates/cwa_settings.html:1352
 msgid "Enable automatic duplicate scans"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1026
+#: cps/templates/cwa_settings.html:1357
 msgid "After import scans"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1029
+#: cps/templates/cwa_settings.html:1362
 msgid "Run after each import (debounced)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1032
+#: cps/templates/cwa_settings.html:1365
 msgid "Manual only"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1038
-msgid "After import debounce (seconds)"
+#: cps/templates/cwa_settings.html:1372
+msgid ""
+"After import debounce\n"
+"          (seconds)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1046
+#: cps/templates/cwa_settings.html:1381
 msgid ""
 "Wait this many seconds after the last import before starting a background "
 "scan."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1051
-msgid "Scheduled scans (cron expression)"
+#: cps/templates/cwa_settings.html:1387
+msgid ""
+"Scheduled scans (cron\n"
+"          expression)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1057
+#: cps/templates/cwa_settings.html:1395
 msgid "Leave blank to disable scheduled scans. Example:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1062
+#: cps/templates/cwa_settings.html:1400
 msgid ""
 "If enabled, after-import scans and cron scans can both run. Use “Manual "
-"only” to disable after-import scans while keeping cron schedules."
+"only” to disable after-import\n"
+"          scans while keeping cron schedules."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1069 cps/templates/duplicates.html:398
+#: cps/templates/cwa_settings.html:1408 cps/templates/duplicates.html:398
 msgid "Next scheduled scan:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1076
+#: cps/templates/cwa_settings.html:1415
 msgid "CWA Duplicate Detection Criteria"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1079
+#: cps/templates/cwa_settings.html:1418
 msgid ""
 "Configure which metadata fields are used to determine if books are "
-"duplicates. Books must match ALL selected criteria to be considered "
-"duplicates."
+"duplicates. Books must match ALL\n"
+"        selected criteria to be considered duplicates."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1086
+#: cps/templates/cwa_settings.html:1428
 msgid "Consider book titles when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1092
+#: cps/templates/cwa_settings.html:1435
 msgid "Consider book authors when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1098
+#: cps/templates/cwa_settings.html:1442
 msgid "Consider book language when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1104
+#: cps/templates/cwa_settings.html:1449
 msgid "Consider book series when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1110
+#: cps/templates/cwa_settings.html:1456
 msgid "Consider book publisher when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1115
+#: cps/templates/cwa_settings.html:1462
 #, fuzzy
 msgid "Format"
 msgstr "上傳格式"
 
-#: cps/templates/cwa_settings.html:1116
+#: cps/templates/cwa_settings.html:1463
 msgid "Consider file format when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1122 cps/templates/cwa_settings.html:1208
+#: cps/templates/cwa_settings.html:1469 cps/templates/cwa_settings.html:1575
 msgid "Note:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1122
+#: cps/templates/cwa_settings.html:1469
 msgid ""
-"At least one criterion must be selected. Title and Author are recommended as "
-"core criteria."
+"At least one criterion must be selected. Title and Author are\n"
+"          recommended as core criteria."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1128
+#: cps/templates/cwa_settings.html:1476
 msgid "Duplicate Format Priority Ranking"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1131
+#: cps/templates/cwa_settings.html:1479
 msgid ""
 "Configure which file formats are preferred when using the \"Highest Quality "
-"Format\" auto-resolution strategy. Drag and drop to reorder formats by "
-"priority (higher = better)."
+"Format\" auto-resolution\n"
+"        strategy. Drag and drop to reorder formats by priority (higher = "
+"better)."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1144
+#: cps/templates/cwa_settings.html:1494
 msgid "Tip:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1144
+#: cps/templates/cwa_settings.html:1494
 msgid ""
-"When resolving duplicates with \"Highest Quality Format\" strategy, books "
-"with higher-ranked formats will be kept. Lower priority formats will be "
-"deleted."
+"When resolving duplicates with \"Highest Quality Format\" strategy, books\n"
+"          with higher-ranked formats will be kept. Lower priority formats "
+"will be deleted."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1152
+#: cps/templates/cwa_settings.html:1503
 msgid "Duplicate Notifications & Auto-Resolution"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1155
+#: cps/templates/cwa_settings.html:1506
 msgid ""
 "Configure how you are notified about duplicate books and optionally enable "
 "automatic resolution."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1160
+#: cps/templates/cwa_settings.html:1512
 #, fuzzy
-msgid "Enable Duplicate Notifications"
+msgid ""
+"Enable Duplicate\n"
+"          Notifications"
 msgstr "啟用註冊"
 
-#: cps/templates/cwa_settings.html:1162
+#: cps/templates/cwa_settings.html:1515
 msgid ""
-"Show popup notifications when unresolved duplicates are detected. Admins and "
-"users with edit rights will see a badge on the Duplicates sidebar button and "
-"a notification popup when they login."
+"Show popup notifications when unresolved duplicates are\n"
+"        detected. Admins and users with edit rights will see a badge on the "
+"Duplicates sidebar button and a notification\n"
+"        popup when they login."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1166
+#: cps/templates/cwa_settings.html:1522
 #, fuzzy
-msgid "Enable Automatic Duplicate Resolution"
+msgid ""
+"Enable Automatic Duplicate\n"
+"          Resolution"
 msgstr "啟用註冊"
 
-#: cps/templates/cwa_settings.html:1169 cps/templates/duplicates.html:437
+#: cps/templates/cwa_settings.html:1526 cps/templates/duplicates.html:437
 msgid "Warning:"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1169
+#: cps/templates/cwa_settings.html:1526
 msgid ""
-"This will automatically delete books based on the strategy below. Original "
-"files will be backed up to"
+"This will automatically delete books based on the strategy below.\n"
+"        Original files will be backed up to"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1173
+#: cps/templates/cwa_settings.html:1531
 msgid "Auto-Resolution Strategy"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1176
+#: cps/templates/cwa_settings.html:1535
 msgid "Keep Newest"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1176
+#: cps/templates/cwa_settings.html:1535
 msgid "Delete older copies, keep the most recently added book"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1179
+#: cps/templates/cwa_settings.html:1539
 msgid "Keep Oldest"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1179
+#: cps/templates/cwa_settings.html:1539
 msgid "Delete newer copies, keep the earliest added"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1182
+#: cps/templates/cwa_settings.html:1543
 #, fuzzy
 msgid "Merge Formats"
 msgstr "刪除格式:"
 
-#: cps/templates/cwa_settings.html:1182
+#: cps/templates/cwa_settings.html:1543
 msgid "Merge formats into the newest book, delete the rest"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1185
+#: cps/templates/cwa_settings.html:1547
 msgid "Keep Highest Quality Format"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1185
-msgid "Prefer formats based on your Duplicate Format Priority Ranking"
+#: cps/templates/cwa_settings.html:1547
+msgid ""
+"Prefer formats based on your Duplicate Format Priority\n"
+"            Ranking"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1188
+#: cps/templates/cwa_settings.html:1552
 #, fuzzy
 msgid "Keep Most Metadata"
 msgstr "獲取元數據"
 
-#: cps/templates/cwa_settings.html:1188
+#: cps/templates/cwa_settings.html:1552
 msgid "Keep book with most complete information"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1191
+#: cps/templates/cwa_settings.html:1556
 msgid "Keep Largest File Size"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1191
+#: cps/templates/cwa_settings.html:1556
 msgid "Keep book with largest total file size"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1194
-msgid "Choose which book to keep when duplicates are automatically resolved."
+#: cps/templates/cwa_settings.html:1559
+msgid ""
+"Choose which\n"
+"          book to keep when duplicates are automatically resolved."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1198
+#: cps/templates/cwa_settings.html:1564
 #, fuzzy
 msgid "Rate Limiting"
 msgstr "評分"
 
-#: cps/templates/cwa_settings.html:1199
+#: cps/templates/cwa_settings.html:1565
 msgid "Cooldown Period (minutes)"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1203
+#: cps/templates/cwa_settings.html:1569
 msgid ""
-"Minimum time between automatic resolutions (0 to disable). Prevents rapid-"
-"fire deletions during batch imports."
+"Minimum time\n"
+"          between automatic resolutions (0 to disable). Prevents rapid-fire "
+"deletions during batch imports."
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1208
+#: cps/templates/cwa_settings.html:1575
 msgid ""
-"Auto-resolution runs after duplicate scans detect new duplicates. Dismissed "
-"duplicate groups are never auto-resolved."
+"Auto-resolution runs after duplicate scans detect new duplicates.\n"
+"          Dismissed duplicate groups are never auto-resolved."
 msgstr ""
 
 #: cps/templates/cwa_stats.html:66 cps/templates/cwa_stats_system.html:58
@@ -5240,185 +5555,224 @@ msgstr ""
 msgid "Click to See More"
 msgstr ""
 
-#: cps/templates/detail.html:530
+#: cps/templates/detail.html:562
 msgid "Read in Browser"
 msgstr "在線閱讀"
 
-#: cps/templates/detail.html:537 cps/templates/detail.html:538
-#: cps/templates/detail.html:844 cps/templates/listenmp3.html:158
+#: cps/templates/detail.html:570 cps/templates/detail.html:571
+#: cps/templates/detail.html:944 cps/templates/listenmp3.html:158
 msgid "Mark As Unread"
 msgstr "標為未讀"
 
-#: cps/templates/detail.html:537 cps/templates/detail.html:538
-#: cps/templates/detail.html:845 cps/templates/listenmp3.html:158
+#: cps/templates/detail.html:570 cps/templates/detail.html:571
+#: cps/templates/detail.html:945 cps/templates/listenmp3.html:158
 msgid "Mark As Read"
 msgstr "標為已讀"
 
-#: cps/templates/detail.html:539
+#: cps/templates/detail.html:572
 #, fuzzy
 msgid "Marked as read"
 msgstr "標為未讀"
 
-#: cps/templates/detail.html:540
+#: cps/templates/detail.html:573
 #, fuzzy
 msgid "Marked as unread"
 msgstr "標為未讀"
 
-#: cps/templates/detail.html:545 cps/templates/detail.html:546
-#: cps/templates/detail.html:851 cps/templates/listenmp3.html:166
+#: cps/templates/detail.html:580 cps/templates/detail.html:581
+#: cps/templates/detail.html:952 cps/templates/listenmp3.html:166
 msgid "Restore from archive"
 msgstr "從歸檔檔案還原"
 
-#: cps/templates/detail.html:545 cps/templates/detail.html:546
-#: cps/templates/detail.html:852 cps/templates/listenmp3.html:166
+#: cps/templates/detail.html:580 cps/templates/detail.html:581
+#: cps/templates/detail.html:953 cps/templates/listenmp3.html:166
 msgid "Add to archive"
 msgstr "添加到歸檔"
 
-#: cps/templates/detail.html:547 cps/templates/listenmp3.html:167
+#: cps/templates/detail.html:582 cps/templates/listenmp3.html:167
 msgid "Archived"
 msgstr "歸檔"
 
-#: cps/templates/detail.html:548
+#: cps/templates/detail.html:583
 #, fuzzy
 msgid "Restored from archive"
 msgstr "從歸檔檔案還原"
 
-#: cps/templates/detail.html:579 cps/templates/detail.html:773
-#: cps/templates/detail.html:774 cps/templates/detail.html:1288
+#: cps/templates/detail.html:620 cps/templates/detail.html:826
+#: cps/templates/detail.html:827 cps/templates/detail.html:1400
 #: cps/templates/listenmp3.html:190 cps/templates/search.html:16
 msgid "Add to shelf"
 msgstr "添加到書架"
 
-#: cps/templates/detail.html:590 cps/templates/detail.html:612
-#: cps/templates/detail.html:765 cps/templates/detail.html:1251
+#: cps/templates/detail.html:633 cps/templates/detail.html:658
+#: cps/templates/detail.html:815 cps/templates/detail.html:1363
 #: cps/templates/feed.xml:83 cps/templates/feed.xml:85
 #: cps/templates/layout.html:301 cps/templates/layout.html:310
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
-#: cps/templates/search.html:22
+#: cps/templates/search.html:24
 msgid "(Public)"
 msgstr "(公共)"
 
-#: cps/templates/detail.html:602 cps/templates/detail.html:767
+#: cps/templates/detail.html:646 cps/templates/detail.html:647
+#: cps/templates/detail.html:819
 #, fuzzy
 msgid "Remove from shelf"
 msgstr "從歸檔檔案還原"
 
-#: cps/templates/detail.html:640
+#: cps/templates/detail.html:689
 #, fuzzy
 msgid "Rating updated"
 msgstr "郵件服務器設置已更新"
 
-#: cps/templates/detail.html:641
+#: cps/templates/detail.html:689
 #, fuzzy
 msgid "Rating cleared"
 msgstr "評分大於"
 
-#: cps/templates/detail.html:659 cps/templates/listenmp3.html:62
+#: cps/templates/detail.html:706 cps/templates/listenmp3.html:62
 #, python-format
 msgid "Book %(index)s of %(range)s"
 msgstr "%(range)s 第%(index)s冊"
 
-#: cps/templates/detail.html:664
+#: cps/templates/detail.html:713
 msgid "ID"
 msgstr ""
 
-#: cps/templates/detail.html:669
+#: cps/templates/detail.html:718
 msgid "UUID"
 msgstr ""
 
-#: cps/templates/detail.html:672
+#: cps/templates/detail.html:720
 msgid "UUID copied to clipboard"
 msgstr ""
 
-#: cps/templates/detail.html:673
+#: cps/templates/detail.html:721
 msgid "Unable to copy UUID"
 msgstr ""
 
-#: cps/templates/detail.html:674 cps/templates/detail.html:675
+#: cps/templates/detail.html:721 cps/templates/detail.html:722
 msgid "Copy UUID"
 msgstr ""
 
-#: cps/templates/detail.html:680
+#: cps/templates/detail.html:727
 msgid "Date added"
 msgstr ""
 
-#: cps/templates/detail.html:684
+#: cps/templates/detail.html:731
 msgid "Last modified"
 msgstr ""
 
-#: cps/templates/detail.html:689
+#: cps/templates/detail.html:736
 msgid "File sizes"
 msgstr ""
 
-#: cps/templates/detail.html:733
+#: cps/templates/detail.html:782
 #, fuzzy
 msgid "Remove tag"
 msgstr "移除"
 
-#: cps/templates/detail.html:741 cps/templates/detail.html:742
-#: cps/templates/detail.html:1166
+#: cps/templates/detail.html:791 cps/templates/detail.html:792
+#: cps/templates/detail.html:1278
 msgid "Add tag"
 msgstr ""
 
-#: cps/templates/detail.html:787 cps/templates/listenmp3.html:111
+#: cps/templates/detail.html:841 cps/templates/listenmp3.html:111
 msgid "Published"
 msgstr "出版日期"
 
-#: cps/templates/detail.html:793
+#: cps/templates/detail.html:847
 #, fuzzy
 msgid "KOReader Progress"
 msgstr "任務進度"
 
-#: cps/templates/detail.html:863 cps/templates/listenmp3.html:177
+#: cps/templates/detail.html:857
+#, fuzzy
+msgid "Sent to Kindle"
+msgstr "發送到Kindle"
+
+#: cps/templates/detail.html:867
+#, fuzzy
+msgid "Amazon Library Status"
+msgstr "書庫統計"
+
+#: cps/templates/detail.html:871
+msgid "Confirmed"
+msgstr ""
+
+#: cps/templates/detail.html:877
+msgid "Not Found on Amazon"
+msgstr ""
+
+#: cps/templates/detail.html:879
+msgid "Sync Pending..."
+msgstr ""
+
+#: cps/templates/detail.html:884
+#, fuzzy
+msgid "State: "
+msgstr "旋轉"
+
+#: cps/templates/detail.html:895 cps/templates/index.html:167
+#, fuzzy
+msgid "Refresh"
+msgstr "搜索書庫"
+
+#: cps/templates/detail.html:964 cps/templates/listenmp3.html:177
 msgid "Description:"
 msgstr "簡介:"
 
-#: cps/templates/detail.html:880
+#: cps/templates/detail.html:982
 #, fuzzy
 msgid "Select eReader Email Addresses"
 msgstr "接收書籍的Kindle郵箱地址"
 
-#: cps/templates/detail.html:893
+#: cps/templates/detail.html:997
 #, fuzzy
 msgid "Choose email addresses:"
 msgstr "接收書籍的Kindle郵箱地址"
 
-#: cps/templates/detail.html:898
+#: cps/templates/detail.html:1003
 #, fuzzy
 msgid "Select All"
 msgstr "創建書架"
 
-#: cps/templates/detail.html:917
-msgid "Additional email addresses:"
+#: cps/templates/detail.html:1023
+msgid ""
+"Additional email\n"
+"                                            addresses:"
 msgstr ""
 
-#: cps/templates/detail.html:918
-msgid "Enter additional email addresses (separated by commas):"
+#: cps/templates/detail.html:1025
+msgid ""
+"Enter additional email addresses (separated by\n"
+"                                            commas):"
 msgstr ""
 
-#: cps/templates/detail.html:919
+#: cps/templates/detail.html:1028
 msgid "example@domain.com, another@domain.com"
 msgstr ""
 
-#: cps/templates/detail.html:920
-msgid "Enter one or more email addresses separated by commas"
+#: cps/templates/detail.html:1029
+msgid ""
+"Enter one or more email addresses separated by\n"
+"                                            commas"
 msgstr ""
 
-#: cps/templates/detail.html:925
+#: cps/templates/detail.html:1035
 #, fuzzy
 msgid "Select format:"
 msgstr "刪除格式:"
 
-#: cps/templates/detail.html:937
+#: cps/templates/detail.html:1048
 msgid "Send"
 msgstr ""
 
-#: cps/templates/detail.html:1144
+#: cps/templates/detail.html:1256
 #, fuzzy
 msgid "Failed to update tags"
 msgstr "創建封面路徑失敗"
 
-#: cps/templates/detail.html:1252
+#: cps/templates/detail.html:1364
 #, fuzzy
 msgid "Failed to update shelves"
 msgstr "創建封面路徑失敗"
@@ -5851,72 +6205,84 @@ msgstr "回到首頁"
 msgid "Logout User"
 msgstr "登出賬號"
 
-#: cps/templates/index.html:119
+#: cps/templates/index.html:81 cps/templates/index.html:278
+#: cps/templates/search.html:89
+msgid "Synced to Amazon Kindle"
+msgstr ""
+
+#: cps/templates/index.html:140
 msgid "Mobile Notice"
 msgstr ""
 
-#: cps/templates/index.html:119
+#: cps/templates/index.html:140
 msgid "Magic shelf editing works best on desktop or tablet devices."
 msgstr ""
 
-#: cps/templates/index.html:134
+#: cps/templates/index.html:153
+msgid "Send books missing from Kindle library"
+msgstr ""
+
+#: cps/templates/index.html:154
+msgid "Send Books missing from Kindle"
+msgstr ""
+
+#: cps/templates/index.html:166
 msgid "Refresh shelf to update with latest changes"
 msgstr ""
 
-#: cps/templates/index.html:135
-#, fuzzy
-msgid "Refresh"
-msgstr "搜索書庫"
-
-#: cps/templates/index.html:145
+#: cps/templates/index.html:173
 #, fuzzy
 msgid "Edit shelf rules"
 msgstr "編輯書架"
 
-#: cps/templates/index.html:159
+#: cps/templates/index.html:183
 msgid "Hide this shelf from your sidebar"
 msgstr ""
 
-#: cps/templates/index.html:159
+#: cps/templates/index.html:183
 #, fuzzy
 msgid "Show this shelf in your sidebar"
 msgstr "同步這個書架到 Kobo device"
 
-#: cps/templates/index.html:161
+#: cps/templates/index.html:186
 #, fuzzy
 msgid "Show Shelf"
 msgstr "顯示全部"
 
-#: cps/templates/index.html:161
+#: cps/templates/index.html:186
 #, fuzzy
 msgid "Hide Shelf"
 msgstr "公共書架"
 
-#: cps/templates/index.html:170
+#: cps/templates/index.html:196
 #, fuzzy
 msgid "Sort ascending according to download count"
 msgstr "按叢書編號排序"
 
-#: cps/templates/index.html:171
+#: cps/templates/index.html:200
 #, fuzzy
 msgid "Sort descending according to download count"
 msgstr "按叢書編號逆排序"
 
-#: cps/templates/index.html:177 cps/templates/search.html:35
+#: cps/templates/index.html:205
+msgid "Show books not synced to AWS"
+msgstr ""
+
+#: cps/templates/index.html:227 cps/templates/search.html:49
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
 msgstr "按作者字母順序排序"
 
-#: cps/templates/index.html:178 cps/templates/search.html:36
+#: cps/templates/index.html:231 cps/templates/search.html:53
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
 msgstr "按作者逆字母順序排序"
 
-#: cps/templates/index.html:182
+#: cps/templates/index.html:244
 msgid "Sort ascending according to series index"
 msgstr "按叢書編號排序"
 
-#: cps/templates/index.html:183
+#: cps/templates/index.html:248
 msgid "Sort descending according to series index"
 msgstr "按叢書編號逆排序"
 
@@ -6467,15 +6833,15 @@ msgstr ""
 msgid "Generate Series Cover Thumbnails"
 msgstr ""
 
-#: cps/templates/search.html:6
+#: cps/templates/search.html:5
 msgid "No Results Found"
 msgstr "無搜索結果"
 
-#: cps/templates/search.html:7
+#: cps/templates/search.html:6
 msgid "Search Term:"
 msgstr "搜索項："
 
-#: cps/templates/search.html:9
+#: cps/templates/search.html:8
 msgid "Results for:"
 msgstr "結果："
 
