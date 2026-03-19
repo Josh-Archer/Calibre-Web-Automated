@@ -1014,19 +1014,19 @@ def set_cwa_settings():
                         float_value = float(value)
                         # Validate range
                         if setting == 'hardcover_auto_fetch_min_confidence':
-                            float_value = max(0.5, min(1.0, float_value))  # Clamp between 0.5 and 1.0
+                            float_value = max(0.5, min(0.70, float_value))  # Clamp between 0.5 and 0.70
                         elif setting == 'hardcover_auto_fetch_rate_limit':
                             float_value = max(0.0, min(60.0, float_value))  # Clamp between 0 and 60 seconds
                         result[setting] = float_value
                     except (ValueError, TypeError):
                         # Use current value if conversion fails
                         if setting == 'hardcover_auto_fetch_min_confidence':
-                            result[setting] = cwa_db.cwa_settings.get(setting, 0.85)  # Default to 0.85
+                            result[setting] = cwa_db.cwa_settings.get(setting, 0.70)  # Default to 0.70
                         elif setting == 'hardcover_auto_fetch_rate_limit':
                             result[setting] = cwa_db.cwa_settings.get(setting, 5.0)  # Default to 5.0 seconds
                 else:
                     if setting == 'hardcover_auto_fetch_min_confidence':
-                        result[setting] = cwa_db.cwa_settings.get(setting, 0.85)  # Default to 0.85
+                        result[setting] = cwa_db.cwa_settings.get(setting, 0.70)  # Default to 0.70
                     elif setting == 'hardcover_auto_fetch_rate_limit':
                         result[setting] = cwa_db.cwa_settings.get(setting, 5.0)  # Default to 5.0 seconds
 

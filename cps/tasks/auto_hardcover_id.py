@@ -14,8 +14,6 @@ from typing import List, Optional
 from cps import config, db, logger, ub
 from cps.services.worker import CalibreTask, STAT_FAIL, STAT_FINISH_SUCCESS, STAT_CANCELLED, STAT_ENDED
 from flask_babel import lazy_gettext as N_
-from sqlalchemy import not_
-
 # Import the Hardcover provider
 try:
     from cps.metadata_provider.hardcover import Hardcover
@@ -23,22 +21,25 @@ except ImportError:
     Hardcover = None
 
 
+AUTO_APPLY_CONFIDENCE_THRESHOLD = 0.70
+
+
 class TaskAutoHardcoverID(CalibreTask):
     """
     Background task to automatically fetch Hardcover IDs for books in the library.
     
     This task:
-    1. Queries all books without hardcover-id, hardcover-slug, or hardcover-edition identifiers
+    1. Queries books missing Hardcover identifiers and missing a local cover
     2. Processes books in configurable batches with rate limiting
     3. Searches Hardcover API for each book using title + authors
     4. Calculates confidence scores for matches
-    5. Auto-applies high-confidence matches (>=threshold, default 0.85)
+    5. Auto-applies high-confidence matches (>=threshold, capped at 0.70)
     6. Queues low-confidence matches for manual review
     7. Implements exponential backoff on API errors
     """
 
     def __init__(self, 
-                 min_confidence: float = 0.85,
+                 min_confidence: float = AUTO_APPLY_CONFIDENCE_THRESHOLD,
                  batch_size: int = 50,
                  rate_limit_delay: float = 5.0,
                  max_backoff_errors: int = 5,
@@ -46,7 +47,7 @@ class TaskAutoHardcoverID(CalibreTask):
         super(TaskAutoHardcoverID, self).__init__(task_message)
         self.log = logger.create()
         self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
-        self.min_confidence = min_confidence
+        self.min_confidence = min(min_confidence, AUTO_APPLY_CONFIDENCE_THRESHOLD)
         self.batch_size = batch_size
         self.rate_limit_delay = rate_limit_delay
         self.max_backoff_errors = max_backoff_errors
@@ -97,11 +98,14 @@ class TaskAutoHardcoverID(CalibreTask):
             total_books = len(books)
             
             if total_books == 0:
-                self.log.info("No books found without Hardcover IDs")
+                self.log.info("No eligible books found for Hardcover auto-fetch")
                 self._handleSuccess()
                 return
             
-            self.log.info(f"Found {total_books} books without Hardcover IDs. Processing in batches of {self.batch_size}...")
+            self.log.info(
+                f"Found {total_books} eligible books without Hardcover IDs and covers. "
+                f"Processing in batches of {self.batch_size}..."
+            )
             
             # Process books in batches
             batch_count = (total_books + self.batch_size - 1) // self.batch_size
@@ -184,13 +188,17 @@ class TaskAutoHardcoverID(CalibreTask):
 
     def _get_books_without_hardcover_id(self) -> List[db.Books]:
         """
-        Query all books that don't have any Hardcover identifiers.
-        Excludes books with hardcover-id, hardcover-slug, or hardcover-edition.
+        Query books that need Hardcover processing.
+        Excludes books with hardcover-id, hardcover-slug, or hardcover-edition,
+        books that already have a cover, and books already in the review queue.
         """
+        queued_book_ids = self.calibre_db.session.query(ub.HardcoverMatchQueue.book_id)
         books = self.calibre_db.session.query(db.Books).filter(
             ~db.Books.identifiers.any(
                 db.Identifiers.type.in_(['hardcover-id', 'hardcover-slug', 'hardcover-edition'])
-            )
+            ),
+            db.Books.has_cover == 0,
+            ~db.Books.id.in_(queued_book_ids)
         ).limit(10000).all()  # Safety limit
         
         return books

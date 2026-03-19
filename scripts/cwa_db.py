@@ -493,7 +493,7 @@ class CWA_DB:
             'hardcover_auto_fetch_schedule': 'weekly',
             'hardcover_auto_fetch_schedule_day': 'sunday',
             'hardcover_auto_fetch_schedule_hour': 2,
-            'hardcover_auto_fetch_min_confidence': 0.85,
+            'hardcover_auto_fetch_min_confidence': 0.70,
             'hardcover_auto_fetch_batch_size': 50,
             'hardcover_auto_fetch_rate_limit': 5.0,
             'archived_cleanup_enabled': 1,
@@ -525,6 +525,14 @@ class CWA_DB:
                 cwa_settings[header] = bool(cwa_settings[header])
             elif isinstance(cwa_settings[header], str) and ',' in cwa_settings[header] and header not in json_settings:
                 cwa_settings[header] = cwa_settings[header].split(',')
+
+        # Harden the Hardcover auto-fetch threshold so older settings immediately
+        # honor the current 70% automatic-apply ceiling.
+        if isinstance(cwa_settings.get('hardcover_auto_fetch_min_confidence'), (int, float)):
+            cwa_settings['hardcover_auto_fetch_min_confidence'] = min(
+                0.70,
+                max(0.5, float(cwa_settings['hardcover_auto_fetch_min_confidence']))
+            )
 
         return cwa_settings
 

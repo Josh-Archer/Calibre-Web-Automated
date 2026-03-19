@@ -229,13 +229,21 @@ def trigger_hardcover_auto_fetch():
         if '/app/calibre-web-automated/scripts/' not in _sys.path:
             _sys.path.insert(1, '/app/calibre-web-automated/scripts/')
         from cwa_db import CWA_DB
-        from cps.tasks.auto_hardcover_id import TaskAutoHardcoverID
+        from cps.tasks.auto_hardcover_id import (
+            AUTO_APPLY_CONFIDENCE_THRESHOLD,
+            TaskAutoHardcoverID,
+        )
         from cps.services.worker import WorkerThread
         
         cwa_db = CWA_DB()
         cwa_settings = cwa_db.get_cwa_settings()
         
-        min_confidence = float(cwa_settings.get('hardcover_auto_fetch_min_confidence', 0.85))
+        min_confidence = float(
+            cwa_settings.get(
+                'hardcover_auto_fetch_min_confidence',
+                AUTO_APPLY_CONFIDENCE_THRESHOLD
+            )
+        )
         batch_size = int(cwa_settings.get('hardcover_auto_fetch_batch_size', 50))
         rate_limit = float(cwa_settings.get('hardcover_auto_fetch_rate_limit', 5.0))
         

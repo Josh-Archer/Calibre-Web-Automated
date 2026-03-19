@@ -251,7 +251,10 @@ def _schedule_hardcover_auto_fetch(scheduler, timezone_info):
         if '/app/calibre-web-automated/scripts/' not in _sys.path:
             _sys.path.insert(1, '/app/calibre-web-automated/scripts/')
         from cwa_db import CWA_DB
-        from .tasks.auto_hardcover_id import TaskAutoHardcoverID
+        from .tasks.auto_hardcover_id import (
+            AUTO_APPLY_CONFIDENCE_THRESHOLD,
+            TaskAutoHardcoverID,
+        )
         from os import getenv
 
         db = CWA_DB()
@@ -270,7 +273,12 @@ def _schedule_hardcover_auto_fetch(scheduler, timezone_info):
         schedule_type = cwa_settings.get('hardcover_auto_fetch_schedule', 'weekly')
         schedule_day = cwa_settings.get('hardcover_auto_fetch_schedule_day', 'sunday')
         schedule_hour = int(cwa_settings.get('hardcover_auto_fetch_schedule_hour', 2))
-        min_confidence = float(cwa_settings.get('hardcover_auto_fetch_min_confidence', 0.85))
+        min_confidence = float(
+            cwa_settings.get(
+                'hardcover_auto_fetch_min_confidence',
+                AUTO_APPLY_CONFIDENCE_THRESHOLD
+            )
+        )
         batch_size = int(cwa_settings.get('hardcover_auto_fetch_batch_size', 50))
         rate_limit = float(cwa_settings.get('hardcover_auto_fetch_rate_limit', 5.0))
         
