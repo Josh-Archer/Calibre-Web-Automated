@@ -254,6 +254,13 @@ class CWA_DB:
                 cleaned = [(_strip_quotes(p) or "").strip().lower() for p in parts]
                 cleaned = [p for p in cleaned if p]
                 return ",".join(cleaned)
+
+            legacy_broken_ignored_formats = {
+                'acsm', 'azw', 'azw3', 'azw4', 'cbz', 'cbr', 'cb7', 'cbc', 'chm',
+                'djvu', 'docx', 'fb2', 'fbz', 'html', 'htmlz', 'kepub', 'lit',
+                'lrf', 'mobi', 'odt', 'pdf', 'prc', 'pdb', 'pml', 'rb', 'rtf',
+                'snb', 'tcr', 'txt', 'txtz', 'kfx', 'kfx-zip'
+            }
             
             # Fix duplicate_scan_cron if it's the literal string "''"
             if cron_value == "''":
@@ -327,6 +334,23 @@ class CWA_DB:
                                 (normalized_value,)
                             )
                             fixes_made.append(f"{column_name}: stripped quotes/normalized")
+
+                    normalized_target = _strip_quotes(current_settings.get('auto_convert_target_format'))
+                    normalized_convert_ignored = _normalize_format_list(current_settings.get('auto_convert_ignored_formats'))
+                    normalized_ingest_ignored = _normalize_format_list(current_settings.get('auto_ingest_ignored_formats'))
+
+                    if normalized_target == 'epub':
+                        convert_set = set((normalized_convert_ignored or '').split(',')) if normalized_convert_ignored else set()
+                        ingest_set = set((normalized_ingest_ignored or '').split(',')) if normalized_ingest_ignored else set()
+
+                        if convert_set == legacy_broken_ignored_formats and ingest_set == legacy_broken_ignored_formats:
+                            self.cur.execute(
+                                "UPDATE cwa_settings SET auto_convert_ignored_formats = ?, auto_ingest_ignored_formats = ?",
+                                ('acsm', 'acsm')
+                            )
+                            fixes_made.append(
+                                "auto_*_ignored_formats: reset legacy all-format ignore list to acsm"
+                            )
             except Exception as e:
                 print(f"[cwa-db] Warning: Generic settings normalization failed: {e}")
             
@@ -529,10 +553,21 @@ class CWA_DB:
         # Harden the Hardcover auto-fetch threshold so older settings immediately
         # honor the current 70% automatic-apply ceiling.
         if isinstance(cwa_settings.get('hardcover_auto_fetch_min_confidence'), (int, float)):
-            cwa_settings['hardcover_auto_fetch_min_confidence'] = min(
+            raw_confidence = float(cwa_settings['hardcover_auto_fetch_min_confidence'])
+            clamped_confidence = min(
                 0.70,
-                max(0.5, float(cwa_settings['hardcover_auto_fetch_min_confidence']))
+                max(0.5, raw_confidence)
             )
+            cwa_settings['hardcover_auto_fetch_min_confidence'] = clamped_confidence
+            if raw_confidence != clamped_confidence:
+                try:
+                    self.cur.execute(
+                        "UPDATE cwa_settings SET hardcover_auto_fetch_min_confidence = ?",
+                        (clamped_confidence,)
+                    )
+                    self.con.commit()
+                except Exception as e:
+                    print(f"[cwa-db] Warning: Failed to persist hardcover_auto_fetch_min_confidence clamp: {e}")
 
         return cwa_settings
 

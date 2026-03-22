@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS cwa_settings(
     hardcover_auto_fetch_schedule TEXT DEFAULT 'weekly' NOT NULL,
     hardcover_auto_fetch_schedule_day TEXT DEFAULT 'sunday' NOT NULL,
     hardcover_auto_fetch_schedule_hour INTEGER DEFAULT 2 NOT NULL,
-    hardcover_auto_fetch_min_confidence REAL DEFAULT 0.85 NOT NULL,
+    hardcover_auto_fetch_min_confidence REAL DEFAULT 0.70 NOT NULL,
     hardcover_auto_fetch_batch_size INTEGER DEFAULT 50 NOT NULL,
     hardcover_auto_fetch_rate_limit REAL DEFAULT 5.0 NOT NULL,
     -- Duplicate notification and auto-resolution settings

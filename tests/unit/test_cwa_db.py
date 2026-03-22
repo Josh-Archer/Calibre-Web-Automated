@@ -62,6 +62,12 @@ class TestCWADBInitialization:
 @pytest.mark.unit
 class TestCWADBSettings:
     """Test CWA settings management."""
+
+    LEGACY_ALL_FORMATS = (
+        "acsm,azw,azw3,azw4,cbz,cbr,cb7,cbc,chm,djvu,docx,fb2,fbz,html,"
+        "htmlz,kepub,lit,lrf,mobi,odt,pdf,prc,pdb,pml,rb,rtf,snb,tcr,txt,"
+        "txtz,kfx,kfx-zip"
+    )
     
     def test_default_settings_initialized(self, temp_cwa_db):
         """Verify default settings are created on initialization."""
@@ -89,6 +95,40 @@ class TestCWADBSettings:
         settings1 = temp_cwa_db.get_cwa_settings()
         settings2 = temp_cwa_db.get_cwa_settings()
         assert settings1['auto_convert_target_format'] == settings2['auto_convert_target_format'] == 'mobi'
+
+    def test_hardcover_threshold_is_clamped_and_persisted(self, temp_cwa_db):
+        """Legacy thresholds above 70% should be repaired in the stored DB value."""
+        temp_cwa_db.cur.execute(
+            "UPDATE cwa_settings SET hardcover_auto_fetch_min_confidence = 0.85"
+        )
+        temp_cwa_db.con.commit()
+
+        settings = temp_cwa_db.get_cwa_settings()
+        assert settings['hardcover_auto_fetch_min_confidence'] == pytest.approx(0.70)
+
+        temp_cwa_db.cur.execute(
+            "SELECT hardcover_auto_fetch_min_confidence FROM cwa_settings"
+        )
+        assert temp_cwa_db.cur.fetchone()[0] == pytest.approx(0.70)
+
+    def test_legacy_all_format_ignore_lists_are_repaired(self, temp_cwa_db):
+        """Broken legacy defaults should not ignore every non-EPUB ingest format."""
+        temp_cwa_db.cur.execute(
+            """
+            UPDATE cwa_settings
+            SET auto_convert_target_format = 'epub',
+                auto_convert_ignored_formats = ?,
+                auto_ingest_ignored_formats = ?
+            """,
+            (self.LEGACY_ALL_FORMATS, self.LEGACY_ALL_FORMATS),
+        )
+        temp_cwa_db.con.commit()
+
+        temp_cwa_db.fix_malformed_setting_values()
+        settings = temp_cwa_db.get_cwa_settings()
+
+        assert settings['auto_convert_ignored_formats'] == 'acsm'
+        assert settings['auto_ingest_ignored_formats'] == 'acsm'
 
 
 @pytest.mark.unit  
