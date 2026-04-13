@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version:  Calibre-Web Automated\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-03-19 18:10+0000\n"
+"POT-Creation-Date: 2026-04-13 17:44+0000\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
@@ -4983,10 +4983,11 @@ msgid "Range: 0.50-0.70 (default: 0.70)"
 msgstr ""
 
 #: cps/templates/cwa_settings.html:926
+#, python-format
 msgid ""
 "Matches with confidence scores above this threshold are automatically "
 "applied. Lower scores are queued\n"
-"            for manual review. A 70% threshold balances automation and "
+"            for manual review. A 70%% threshold balances automation and "
 "accuracy."
 msgstr ""
 
