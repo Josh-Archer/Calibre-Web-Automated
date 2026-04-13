@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-03-19 18:10+0000\n"
+"POT-Creation-Date: 2026-04-13 17:44+0000\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton."
 "me>\n"
@@ -5146,10 +5146,11 @@ msgid "Range: 0.50-0.70 (default: 0.70)"
 msgstr "Bereik: 5-120 minuten (standaard: 15)"
 
 #: cps/templates/cwa_settings.html:926
+#, python-format
 msgid ""
 "Matches with confidence scores above this threshold are automatically "
 "applied. Lower scores are queued\n"
-"            for manual review. A 70% threshold balances automation and "
+"            for manual review. A 70%% threshold balances automation and "
 "accuracy."
 msgstr ""
 
