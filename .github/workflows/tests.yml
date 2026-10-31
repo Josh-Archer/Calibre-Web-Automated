@@ -32,7 +32,7 @@ jobs:
   # ============================================================================
   fast-tests:
     name: Fast Tests (Smoke + Unit)
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'uecb-shared' }}
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     
@@ -113,7 +113,7 @@ jobs:
   # ============================================================================
   integration-tests:
     name: Integration Tests (Docker)
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'uecb-shared' }}
     # Only run on merge to main/dev OR manual dispatch with flag
     if: |
       github.ref == 'refs/heads/main' || 
@@ -209,7 +209,7 @@ jobs:
   # ============================================================================
   e2e-tests:
     name: E2E Tests (Full Stack)
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'uecb-shared' }}
     # Run on any version tag OR manual dispatch
     if: |
       startsWith(github.ref, 'refs/tags/v') ||
@@ -322,7 +322,7 @@ jobs:
   # ============================================================================
   test-summary:
     name: Test Suite Summary
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'uecb-shared' }}
     needs: [fast-tests, integration-tests, e2e-tests]
     if: always()
     
