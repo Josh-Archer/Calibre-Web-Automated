@@ -277,10 +277,6 @@ def gdrive_sync_if_enabled():
         except Exception as e:
             print(f"[ingest-processor] WARN: GDrive sync failed: {e}", flush=True)
 
-# Acquire process lock to prevent concurrent execution
-if not process_lock.acquire(timeout=10):
-    sys.exit(2)
-
 # Ensure processed backups directory structure exists so backups never crash on missing folders
 try:
     _processed_root = "/config/processed_books"
@@ -1707,4 +1703,8 @@ def main(filepath=None):
                 pass  # Ignore errors in cleanup
 
 if __name__ == "__main__":
+    # Acquire process lock to prevent concurrent execution. Done only when run
+    # as a script so importing this module (e.g. in tests) has no side effects.
+    if not process_lock.acquire(timeout=10):
+        sys.exit(2)
     main()
