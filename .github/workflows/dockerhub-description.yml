@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 jobs:
   dockerHubDescription:
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'uecb-shared' }}
+    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || 'uecb-shared' }}
     steps:
     - uses: actions/checkout@v4
 
