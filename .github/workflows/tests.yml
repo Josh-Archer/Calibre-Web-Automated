@@ -37,6 +37,19 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     
     steps:
+      - name: Ensure base toolchain (uecb-shared image lacks it)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          # Stopgap until ghcr.io/josh-archer/shared-runner (home gitops/images/shared-runner) is published and pinned.
+          missing=""
+          for t in make gcc g++ ruby wget pkg-config; do command -v "$t" >/dev/null 2>&1 || missing="$missing $t"; done
+          if [ -n "$missing" ] && command -v apt-get >/dev/null 2>&1; then
+            echo "Installing missing tools:$missing"
+            SUDO=""; [ "$(id -u)" = 0 ] || SUDO=sudo
+            $SUDO apt-get update -qq
+            $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends build-essential pkg-config ruby wget ca-certificates
+          fi
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -121,6 +134,19 @@ jobs:
       (github.event_name == 'workflow_dispatch' && inputs.run_integration)
     
     steps:
+      - name: Ensure base toolchain (uecb-shared image lacks it)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          # Stopgap until ghcr.io/josh-archer/shared-runner (home gitops/images/shared-runner) is published and pinned.
+          missing=""
+          for t in make gcc g++ ruby wget pkg-config; do command -v "$t" >/dev/null 2>&1 || missing="$missing $t"; done
+          if [ -n "$missing" ] && command -v apt-get >/dev/null 2>&1; then
+            echo "Installing missing tools:$missing"
+            SUDO=""; [ "$(id -u)" = 0 ] || SUDO=sudo
+            $SUDO apt-get update -qq
+            $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends build-essential pkg-config ruby wget ca-certificates
+          fi
       - name: Checkout code
         uses: actions/checkout@v4
       
@@ -216,6 +242,19 @@ jobs:
       (github.event_name == 'workflow_dispatch' && inputs.run_e2e)
     
     steps:
+      - name: Ensure base toolchain (uecb-shared image lacks it)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          # Stopgap until ghcr.io/josh-archer/shared-runner (home gitops/images/shared-runner) is published and pinned.
+          missing=""
+          for t in make gcc g++ ruby wget pkg-config; do command -v "$t" >/dev/null 2>&1 || missing="$missing $t"; done
+          if [ -n "$missing" ] && command -v apt-get >/dev/null 2>&1; then
+            echo "Installing missing tools:$missing"
+            SUDO=""; [ "$(id -u)" = 0 ] || SUDO=sudo
+            $SUDO apt-get update -qq
+            $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends build-essential pkg-config ruby wget ca-certificates
+          fi
       - name: Checkout code
         uses: actions/checkout@v4
       
@@ -327,6 +366,19 @@ jobs:
     if: always()
     
     steps:
+      - name: Ensure base toolchain (uecb-shared image lacks it)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          # Stopgap until ghcr.io/josh-archer/shared-runner (home gitops/images/shared-runner) is published and pinned.
+          missing=""
+          for t in make gcc g++ ruby wget pkg-config; do command -v "$t" >/dev/null 2>&1 || missing="$missing $t"; done
+          if [ -n "$missing" ] && command -v apt-get >/dev/null 2>&1; then
+            echo "Installing missing tools:$missing"
+            SUDO=""; [ "$(id -u)" = 0 ] || SUDO=sudo
+            $SUDO apt-get update -qq
+            $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends build-essential pkg-config ruby wget ca-certificates
+          fi
       - name: Check test results
         run: |
           echo "Fast Tests: ${{ needs.fast-tests.result }}"
