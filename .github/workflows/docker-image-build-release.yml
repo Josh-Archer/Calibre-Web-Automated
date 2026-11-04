@@ -12,7 +12,7 @@ jobs:
   # JOB 1: Build Intel (amd64) on GitHub Runners
   # --------------------------------------------------------------------------------
   build-amd64:
-    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || 'uecb-shared' }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -151,7 +151,7 @@ jobs:
   # JOB 3: Merge & Tag (Runs on GitHub)
   # --------------------------------------------------------------------------------
   merge:
-    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || 'uecb-shared' }}
+    runs-on: ubuntu-latest
     needs: [build-amd64, build-arm]
     steps:
       - name: Checkout code
