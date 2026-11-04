@@ -9,7 +9,7 @@ on:
 
 jobs:
   github-releases-to-discord:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || 'uecb-shared' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
