@@ -115,11 +115,13 @@ jobs:
           retention-days: 1
 
   # --------------------------------------------------------------------------------
-  # JOB 2: Build ARM (arm64 Only) on Oracle Runner
+  # JOB 2: Build ARM (arm64 Only) on GitHub-hosted arm64 runner
   # --------------------------------------------------------------------------------
   build-arm:
-    # Use your self-hosted runner labels here
-    runs-on: home-gh-runner-calibre-web-automation
+    # Native arm64 build needs Docker/BuildKit. The shared self-hosted pool
+    # (uecb-shared) is amd64 with no Docker, so use GitHub's free arm64 runner
+    # (free for public repos) instead of a dedicated per-repo pool.
+    runs-on: ubuntu-24.04-arm
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Set build ref
@@ -178,21 +180,14 @@ jobs:
           file: ./Dockerfile
           # We build ARM64 here natively
           platforms: linux/arm64
-          # CACHE STRATEGY: Use Local Disk Cache (Persistent Runner)
-          # Saves bandwidth and time by storing cache directly on the Oracle VM
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          # CACHE: GitHub Actions cache (hosted runners are ephemeral)
+          cache-from: type=gha,scope=arm-dev
+          cache-to: type=gha,scope=arm-dev,mode=max
           outputs: |
             type=image,name=ghcr.io/${{ env.IMAGE_REPOSITORY }},push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VERSION=DEV_BUILD-${{ env.IMAGE_TAG }}-${{ vars.CURRENT_DEV_BUILD_NUM }}
-
-      # --- 4. Rotate Cache (Prevent Infinite Growth) ---
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
       # --- 5. Export Digest for Merge Job ---
       - name: Export digest
@@ -209,15 +204,6 @@ jobs:
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
-
-      # --- 6. Janitor: Clean up Docker Garbage ---
-      - name: Prune Docker Garbage
-        if: always() # Run even if build fails to keep disk clean
-        run: |
-          echo "Pruning dangling images..."
-          docker image prune -f
-          echo "Pruning old build cache (older than 1 week)..."
-          docker builder prune -f --filter "until=168h"
 
   # --------------------------------------------------------------------------------
   # JOB 3: Merge & Tag (Runs on GitHub)
